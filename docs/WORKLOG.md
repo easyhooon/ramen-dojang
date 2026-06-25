@@ -68,6 +68,7 @@
 - 로그인은 UI 기능이 아니라 사용자 소유 데이터 설계와 연결된다는 점을 기록했다.
 - Swagger/OpenAPI 작업은 code annotation 작성과 runtime Swagger UI 검증이 나뉜다는 점을 정리했다.
 - Nitro/Expo 호환성, Expo Go와 development build 차이, New Architecture/JSI/Nitro 관계를 기록했다.
+- ESLint와 oxlint의 차이, 이 프로젝트에서 oxlint-first로 trial할 근거와 주의점을 기록했다.
 
 ### 검증한 것
 
@@ -85,6 +86,7 @@
 - `cd apps/mobile && pnpm dlx expo-doctor@latest`
 - `pnpm --filter mobile exec expo config --type public`
 - env ignore 확인: 실제 `.env`, `.env.*`는 ignore되고 `.env.example`은 공유 가능
+- `.githooks/pre-commit`
 
 ### 남은 일
 
@@ -94,6 +96,7 @@
 - 로그인/사용자 소유권 반영 ERD 확정
 - `users` 테이블, `visits.user_id`, `wishlist.user_id` migration 작성
 - OAuth/Spring Security 최소 세로 slice 구현
+- oxlint trial 후 lint 정책 결정: oxlint 단독 또는 ESLint 병행
 - 브라우저 화면 실제 UI 검증
 - iOS/Android development build에서 `nitro-webview` 실제 로딩 검증
 - file upload/download이 필요해지는 시점에 native host 설정 검증

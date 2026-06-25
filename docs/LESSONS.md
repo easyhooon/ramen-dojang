@@ -300,3 +300,45 @@ TDD 기준으로는 다음 흔적이 남아야 한다.
 - 스캐폴딩/문서/설정 작업은 TDD가 애매할 수 있다.
 - 하지만 API behavior, 인증, 사용자 소유권, 프론트 query/mutation 흐름은 TDD로 잡을 수 있다.
 - 다음 기능 구현부터는 “테스트 없이 구현 후 typecheck”를 완료 기준으로 삼지 않는다.
+
+### ESLint와 oxlint는 속도보다 역할 차이를 먼저 봐야 한다
+
+ESLint는 JavaScript/TypeScript linting의 오래된 표준에 가깝다. 규칙, parser, plugin, shareable config 생태계가 크고 React, 접근성, import 정리, custom rule 같은 팀별 규칙을 섬세하게 엮기 좋다. 대신 JavaScript 기반 plugin을 많이 실행할수록 느려질 수 있다.
+
+oxlint는 Oxc compiler stack 위에 만든 Rust 기반 linter다. 공식 문서는 ESLint보다 훨씬 빠른 CI 성능, 많은 built-in rule, ESLint migration 지원을 장점으로 내세운다. 특히 아직 복잡한 ESLint 설정이 없는 프로젝트라면 “빠른 기본 lint”로 시작하기 좋다.
+
+다만 oxlint가 무조건 ESLint의 완전한 대체재라는 뜻은 아니다.
+
+- ESLint는 plugin 생태계와 edge case 호환성이 가장 강하다.
+- oxlint는 기본 속도와 built-in rule 범위가 강하지만, 일부 ESLint plugin/rule 동작은 아직 그대로 옮기기 어려울 수 있다.
+- oxlint의 JavaScript plugin 지원은 ESLint v9 API 호환을 목표로 하지만 현재 alpha 성격이 있다.
+- `.vue`, `.svelte`, `.astro` 같은 framework file은 script block 중심 지원이라, 파일 형식이 늘어나면 다시 확인해야 한다.
+
+이번 프로젝트 기준 판단:
+
+- 현재는 Vite React, Expo, TypeScript 조합이고 복잡한 ESLint 설정이 없다.
+- 따라서 처음 lint를 붙일 때는 oxlint-first가 합리적이다.
+- 하지만 바로 pre-commit 하네스에 넣기보다 trial로 돌려서 React hooks, TS/TSX, generated client 제외, mobile 파일 false positive를 먼저 본다.
+- oxlint만으로 부족한 규칙이 나오면 ESLint를 병행하거나, 꼭 필요한 plugin rule만 ESLint fallback으로 남긴다.
+
+도입 순서:
+
+```bash
+pnpm add -D -w oxlint
+```
+
+이후 `lint`, `lint:fix` 스크립트를 추가하고, 처음 한 번은 수동으로 결과를 확인한다. 유용한 신호가 많고 noise가 적으면 그때 `pnpm verify`와 `.githooks/pre-commit`에 연결한다.
+
+결론:
+
+- “최근에 나왔고 빠르다”만으로 도입하지 않는다.
+- 이 repo에서는 기존 ESLint 부채가 없으므로 oxlint를 먼저 시험해볼 가치가 크다.
+- lint는 빌드보다 훨씬 자주 실행되므로 속도가 중요하지만, 팀이 실제로 믿고 고칠 수 있는 규칙인지가 더 중요하다.
+
+참고:
+
+- [Oxlint Linter](https://oxc.rs/docs/guide/usage/linter.html)
+- [Oxlint: Migrate from ESLint](https://oxc.rs/docs/guide/usage/linter/migrate-from-eslint.html)
+- [Oxlint JavaScript Plugins](https://oxc.rs/docs/guide/usage/linter/js-plugins.html)
+- [ESLint Getting Started](https://eslint.org/docs/latest/use/getting-started)
+- [ESLint Configuration Files](https://eslint.org/docs/latest/use/configure/configuration-files)

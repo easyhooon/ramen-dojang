@@ -30,6 +30,8 @@
 - [x] TDD 작업 기준을 `AGENTS.md`에 명시
 - [x] 루트 검증 하네스 `pnpm verify`, `pnpm test` 추가
 - [x] `.githooks/pre-commit`으로 `pnpm verify` 실행
+- [ ] lint 정책 결정: oxlint 단독 vs ESLint 병행
+- [ ] oxlint trial: TS/TSX, React hooks, generated client 제외, mobile 파일 false positive 확인
 - [ ] 기존 scaffold/API/frontend 작업의 테스트 부채 정리
 
 ## Server
