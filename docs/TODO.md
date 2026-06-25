@@ -33,10 +33,10 @@
 - [x] `/health` 엔드포인트 구현
 - [x] DB 연결 설정 작성
 - [x] Swagger UI `/swagger`, OpenAPI `/openapi` 경로 설정
-- [ ] Swagger/OpenAPI 문서 메타데이터 작성
-- [ ] Swagger operation summary/description 정리
-- [ ] Swagger request/response schema 확인
-- [ ] Swagger 공통 error response 문서화
+- [x] Swagger/OpenAPI 문서 메타데이터 작성
+- [x] Swagger operation summary/description 정리
+- [x] Swagger request/response schema 확인
+- [x] Swagger 공통 error response 문서화
 - [x] PostGIS 기반 초기 Flyway migration 작성
 - [x] `shops` CRUD API 구현
 - [x] `visits` CRUD API 구현
@@ -83,4 +83,6 @@
 - [x] `http://localhost:5173/` 브라우저 열기 확인
 - [x] `server/api ./gradlew compileKotlin` 통과
 - [x] `server/api ./gradlew test` 통과
+- [x] Swagger annotation 추가 후 `server/api ./gradlew compileKotlin` 통과
+- [x] Swagger annotation 추가 후 `server/api ./gradlew test` 통과
 - [ ] Docker/Postgres 미설치로 `pnpm dev:api`는 `localhost:5432 refused`에서 실패, Flyway migration과 Swagger/OpenAPI 런타임 검증 대기

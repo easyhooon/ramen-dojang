@@ -7,7 +7,7 @@ class ApiApplicationTests {
 
 	@Test
 	fun healthReturnsOk() {
-		assertEquals(mapOf("status" to "ok"), HealthController().health())
+		assertEquals(HealthResponse(status = "ok"), HealthController().health())
 	}
 
 }

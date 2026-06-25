@@ -126,3 +126,20 @@ curl http://localhost:8080/health
 - 로그인은 UI 기능이 아니라 데이터 소유권 설계와 연결된다.
 - `users`, `visits.user_id`, `wishlist.user_id`는 나중에 덧붙일 장식이 아니라 ERD에서 먼저 고려해야 한다.
 - 인증 구현은 나중에 자를 수 있지만, 사용자 소유권을 무시한 DB/API는 나중에 migration 비용이 커진다.
+
+### Swagger 작업은 코드 문서화와 런타임 검증이 나뉜다
+
+DB가 없어도 `@OpenAPIDefinition`, `@Operation`, `@ApiResponse`, `@Schema` 같은 annotation은 작성하고 컴파일 검증할 수 있다. 하지만 `/swagger`, `/openapi` 응답을 실제로 확인하려면 Spring Boot 애플리케이션이 끝까지 떠야 하므로 DB와 Flyway가 먼저 성공해야 한다.
+
+이번에 DB 없이 가능한 작업:
+
+- OpenAPI title/description/version 작성
+- 컨트롤러별 operation summary/description 작성
+- request/response DTO schema와 example 작성
+- 공통 error response schema 문서화
+
+아직 DB 준비 후 해야 할 작업:
+
+- `/swagger` 렌더링 확인
+- `/openapi` JSON 확인
+- Swagger UI에서 shops, visits, wishlist CRUD 수동 검증
