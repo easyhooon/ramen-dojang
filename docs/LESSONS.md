@@ -34,7 +34,7 @@ server/api/src/main/resources/db/migration/V1__create_initial_schema.sql
 
 API DTO부터 만들면 화면에 필요한 응답 모양에 끌려 DB 관계가 흐려질 수 있다. 라멘집, 방문 기록, 태그, 위시리스트 관계를 먼저 ERD로 고정하고, DTO는 그 모델을 외부에 쓰기 좋게 변환하는 계층으로 두는 편이 낫다.
 
-이 프로젝트에서는 [docs/06-database-erd.md](/Users/yijihun/ramen-dojang/docs/06-database-erd.md)를 API 계약보다 먼저 보는 문서로 둔다.
+이 프로젝트에서는 [docs/06-database-erd.md](06-database-erd.md)를 API 계약보다 먼저 보는 문서로 둔다.
 
 ### `pnpm dev:api`는 Kotlin 서버를 Node로 실행하는 게 아니다
 
@@ -185,3 +185,16 @@ pnpm dev:api:docs
 - `Date` 응답을 `YYYY-MM-DD` 또는 ISO 문자열로 변환한다.
 - optional field와 nullable field 차이를 앱 타입의 `null` 기준으로 정리한다.
 - generated `ResponseError`를 앱에서 쓰는 `ApiError`로 변환한다.
+
+### 인수인계 문서는 repo-relative link가 안전하다
+
+처음 README와 AGENTS에는 `/Users/yijihun/ramen-dojang/...` 형태의 절대경로 링크가 있었다. 같은 컴퓨터에서는 편하지만, 다른 컴퓨터로 clone하면 링크가 깨진다.
+
+공유될 문서는 다음처럼 repository 기준 상대 링크를 써야 한다.
+
+```markdown
+[TODO](docs/TODO.md)
+[DB ERD](docs/06-database-erd.md)
+```
+
+Codex app 안에서 특정 파일 위치를 안내할 때는 절대경로 링크가 편하지만, git에 남는 문서는 다른 컴퓨터에서도 열리는 형태가 우선이다.

@@ -6,9 +6,9 @@
 
 - 문서 기반으로 작업한다.
 - 애매한 부분은 구현 전에 먼저 묻는다.
-- 작업 전후로 [docs/TODO.md](/Users/yijihun/ramen-dojang/docs/TODO.md)를 갱신한다.
-- 새로 배운 개념, 사용자가 물어본 개념, 문제 해결에서 얻은 깨달음은 [docs/LESSONS.md](/Users/yijihun/ramen-dojang/docs/LESSONS.md)에 기록한다.
-- DB/API 작업은 [docs/06-database-erd.md](/Users/yijihun/ramen-dojang/docs/06-database-erd.md)의 ERD를 먼저 보고 진행한다.
+- 작업 전후로 [docs/TODO.md](docs/TODO.md)를 갱신한다.
+- 새로 배운 개념, 사용자가 물어본 개념, 문제 해결에서 얻은 깨달음은 [docs/LESSONS.md](docs/LESSONS.md)에 기록한다.
+- DB/API 작업은 [docs/06-database-erd.md](docs/06-database-erd.md)의 ERD를 먼저 보고 진행한다.
 - API DTO는 DB 테이블을 그대로 노출하지 않고, 화면/API 계약에 맞는 request/response로 설계한다.
 
 ## 사용할 스킬
@@ -73,4 +73,3 @@ Swagger UI와 OpenAPI는 아래 경로로 확인한다.
   - tooling/scripts/README
 - 커밋 전 `git status --short --branch`와 `git diff --stat`를 확인한다.
 - 빌드 산출물, `.DS_Store`, `node_modules`, 비밀값은 커밋하지 않는다.
-

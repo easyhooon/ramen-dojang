@@ -16,12 +16,14 @@ docs                 Product, frontend, backend, API docs
 
 DB 관계를 먼저 잡고 API DTO를 설계합니다.
 
-- 제품 방향: [docs/01-product-overview.md](/Users/yijihun/ramen-dojang/docs/01-product-overview.md)
-- DB ERD: [docs/06-database-erd.md](/Users/yijihun/ramen-dojang/docs/06-database-erd.md)
-- API 계약: [docs/04-api-contract.md](/Users/yijihun/ramen-dojang/docs/04-api-contract.md)
-- 프론트 설계: [docs/02-frontend-plan.md](/Users/yijihun/ramen-dojang/docs/02-frontend-plan.md)
-- 백엔드 설계: [docs/03-backend-plan.md](/Users/yijihun/ramen-dojang/docs/03-backend-plan.md)
-- 학습 기록: [docs/LESSONS.md](/Users/yijihun/ramen-dojang/docs/LESSONS.md)
+- 제품 방향: [docs/01-product-overview.md](docs/01-product-overview.md)
+- DB ERD: [docs/06-database-erd.md](docs/06-database-erd.md)
+- API 계약: [docs/04-api-contract.md](docs/04-api-contract.md)
+- 프론트 설계: [docs/02-frontend-plan.md](docs/02-frontend-plan.md)
+- 백엔드 설계: [docs/03-backend-plan.md](docs/03-backend-plan.md)
+- 인수인계: [docs/HANDOFF.md](docs/HANDOFF.md)
+- 새 컴퓨터 세팅: [docs/NEW_MACHINE_SETUP.md](docs/NEW_MACHINE_SETUP.md)
+- 학습 기록: [docs/LESSONS.md](docs/LESSONS.md)
 
 ## 준비물
 
@@ -190,6 +192,6 @@ pnpm build         # API client + web 빌드
 
 ## 작업 체크리스트
 
-진행 상황은 [docs/TODO.md](/Users/yijihun/ramen-dojang/docs/TODO.md)에서 관리합니다.
+진행 상황은 [docs/TODO.md](docs/TODO.md)에서 관리합니다.
 
-프로젝트를 하며 배운 개념과 문제 해결 기록은 [docs/LESSONS.md](/Users/yijihun/ramen-dojang/docs/LESSONS.md)에 남깁니다.
+프로젝트를 하며 배운 개념과 문제 해결 기록은 [docs/LESSONS.md](docs/LESSONS.md)에 남깁니다.
