@@ -75,6 +75,7 @@
 - [x] `pnpm --filter @ramen-dojang/api-client build` 통과
 - [x] `pnpm --filter web build` 통과
 - [x] `pnpm dev:web` 실행 및 `http://localhost:5173/` HTTP 200 확인
+- [x] `http://localhost:5173/` 브라우저 열기 확인
 - [x] `server/api ./gradlew compileKotlin` 통과
 - [x] `server/api ./gradlew test` 통과
-- [ ] Docker 미설치로 `pnpm infra:up`, Flyway migration, Swagger/OpenAPI 런타임 검증 대기
+- [ ] Docker/Postgres 미설치로 `pnpm dev:api`는 `localhost:5432 refused`에서 실패, Flyway migration과 Swagger/OpenAPI 런타임 검증 대기

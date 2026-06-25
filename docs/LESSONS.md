@@ -91,3 +91,28 @@ cp apps/web/.env.example apps/web/.env.local
 cp server/api/.env.example server/api/.env
 ```
 
+### Spring Boot API는 DB가 없으면 Flyway 단계에서 먼저 멈춘다
+
+`pnpm dev:api`를 실행하면 Spring Boot는 뜨기 시작하지만, Flyway가 시작 시점에 DB connection을 잡고 migration을 적용하려 한다. `localhost:5432`에 Postgres가 없으면 API controller가 실제로 열리기 전에 애플리케이션 시작이 실패한다.
+
+이번 실행에서 확인한 증상:
+
+```text
+Unable to obtain connection from database: Connection to localhost:5432 refused.
+```
+
+원인:
+
+- 현재 환경에 `docker` CLI가 없다.
+- 로컬 Postgres도 없다.
+- 그래서 `pnpm infra:up`으로 Postgres/PostGIS를 띄울 수 없다.
+
+해결 순서:
+
+```bash
+pnpm infra:up
+pnpm dev:api
+curl http://localhost:8080/health
+```
+
+즉 Swagger/OpenAPI 런타임 확인은 DB가 먼저 준비된 뒤 가능하다.
