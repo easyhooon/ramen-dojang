@@ -145,15 +145,27 @@ curl http://localhost:8080/health
 
 ## API Client 생성
 
-현재는 `packages/api-client`에 임시 fetch client가 있습니다. 서버 OpenAPI 스펙 기준 generated client로 바꿀 때는 API 서버를 먼저 띄운 뒤 실행합니다.
+`packages/api-client/src/generated`는 서버 OpenAPI 스펙에서 생성합니다. 생성된 low-level client는 직접 수정하지 않고, `packages/api-client/src/index.ts` wrapper에서 프론트가 쓰기 좋은 타입과 함수로 감쌉니다.
+
+```bash
+pnpm dev:api:docs
+pnpm api:generate
+```
+
+`pnpm dev:api:docs`는 DB 없이 OpenAPI 문서만 뽑기 위한 서버 실행 명령입니다. 내부적으로 Flyway를 끄고, datasource 초기 연결 실패가 서버 시작을 막지 않게 합니다.
+
+```bash
+cd server/api && ./gradlew bootRun --args='--server.address=127.0.0.1 --spring.flyway.enabled=false --spring.datasource.hikari.initialization-fail-timeout=0'
+```
+
+`pnpm api:generate`는 `openapi-generator-config.json` 설정으로 `http://127.0.0.1:8080/openapi`를 읽고 `typescript-fetch` client를 생성합니다.
+
+실제 DB와 Flyway까지 함께 검증하려면 별도로 DB를 띄운 뒤 일반 API 서버를 실행합니다.
 
 ```bash
 pnpm infra:up
 pnpm dev:api
-pnpm api:generate
 ```
-
-`pnpm api:generate`는 `http://localhost:8080/openapi`를 읽어서 TypeScript client를 생성하는 명령입니다.
 
 ## DB 중지
 
@@ -170,6 +182,8 @@ pnpm install       # Node workspace 의존성 설치
 pnpm infra:up      # PostgreSQL/PostGIS 실행
 pnpm dev:web       # 프론트 개발 서버 실행
 pnpm dev:api       # Kotlin Spring Boot API 실행
+pnpm dev:api:docs  # DB 없이 OpenAPI 생성용 API 실행
+pnpm api:generate  # OpenAPI Generator TypeScript client 생성
 pnpm typecheck     # TypeScript 타입체크
 pnpm build         # API client + web 빌드
 ```

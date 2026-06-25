@@ -1,0 +1,21 @@
+{
+  "inputSpec": "http://127.0.0.1:8080/openapi",
+  "generatorName": "typescript-fetch",
+  "outputDir": "packages/api-client/src/generated",
+  "additionalProperties": {
+    "disallowAdditionalPropertiesIfNotPresent": false,
+    "enumUnknownDefaultCase": true,
+    "modelPropertyNaming": "camelCase",
+    "paramNaming": "camelCase",
+    "prefixParameterInterfaces": true,
+    "stringEnums": true,
+    "supportsES6": true,
+    "useSingleRequestParameter": true
+  },
+  "globalProperties": {
+    "apiDocs": false,
+    "apiTests": false,
+    "modelDocs": false,
+    "modelTests": false
+  }
+}

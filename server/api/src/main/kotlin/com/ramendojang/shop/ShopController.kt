@@ -32,7 +32,11 @@ import java.util.UUID
 class ShopController(
     private val shopService: ShopService,
 ) {
-    @Operation(summary = "라멘집 등록", description = "방문했거나 방문할 라멘집을 등록합니다.")
+    @Operation(
+        operationId = "createShop",
+        summary = "라멘집 등록",
+        description = "방문했거나 방문할 라멘집을 등록합니다.",
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -53,7 +57,11 @@ class ShopController(
         return ResponseEntity.created(URI.create("/shops/${shop.id}")).body(shop)
     }
 
-    @Operation(summary = "라멘집 목록 조회", description = "이름, 태그, 방문 여부로 라멘집 목록을 조회합니다.")
+    @Operation(
+        operationId = "listShops",
+        summary = "라멘집 목록 조회",
+        description = "이름, 태그, 방문 여부로 라멘집 목록을 조회합니다.",
+    )
     @ApiResponse(
         responseCode = "200",
         description = "라멘집 목록입니다.",
@@ -69,7 +77,11 @@ class ShopController(
         @RequestParam(required = false) visited: Boolean?,
     ): List<ShopResponse> = shopService.list(name = name, tag = tag, visited = visited)
 
-    @Operation(summary = "라멘집 상세 조회", description = "라멘집 ID로 상세 정보를 조회합니다.")
+    @Operation(
+        operationId = "getShop",
+        summary = "라멘집 상세 조회",
+        description = "라멘집 ID로 상세 정보를 조회합니다.",
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -90,7 +102,11 @@ class ShopController(
         @PathVariable shopId: UUID,
     ): ShopResponse = shopService.get(shopId)
 
-    @Operation(summary = "라멘집 수정", description = "라멘집 기본 정보와 태그를 수정합니다.")
+    @Operation(
+        operationId = "updateShop",
+        summary = "라멘집 수정",
+        description = "라멘집 기본 정보와 태그를 수정합니다.",
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -117,7 +133,11 @@ class ShopController(
         @Valid @RequestBody request: UpdateShopRequest,
     ): ShopResponse = shopService.update(shopId, request)
 
-    @Operation(summary = "라멘집 삭제", description = "라멘집과 연결된 방문 기록, 태그 연결, 위시리스트 항목을 삭제합니다.")
+    @Operation(
+        operationId = "deleteShop",
+        summary = "라멘집 삭제",
+        description = "라멘집과 연결된 방문 기록, 태그 연결, 위시리스트 항목을 삭제합니다.",
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "204", description = "라멘집이 삭제되었습니다."),

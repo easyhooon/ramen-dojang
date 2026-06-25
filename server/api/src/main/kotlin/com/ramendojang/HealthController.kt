@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @Tag(name = "Health", description = "API health check")
 class HealthController {
-    @Operation(summary = "헬스 체크", description = "API 서버가 요청을 받을 수 있는지 확인합니다.")
+    @Operation(
+        operationId = "getHealth",
+        summary = "헬스 체크",
+        description = "API 서버가 요청을 받을 수 있는지 확인합니다.",
+    )
     @ApiResponse(
         responseCode = "200",
         description = "API server is healthy.",

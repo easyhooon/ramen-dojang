@@ -29,7 +29,11 @@ import java.util.UUID
 class WishlistController(
     private val wishlistService: WishlistService,
 ) {
-    @Operation(summary = "위시리스트 등록 또는 수정", description = "라멘집을 위시리스트에 추가하거나 메모를 수정합니다.")
+    @Operation(
+        operationId = "upsertWishlist",
+        summary = "위시리스트 등록 또는 수정",
+        description = "라멘집을 위시리스트에 추가하거나 메모를 수정합니다.",
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -55,7 +59,11 @@ class WishlistController(
         return ResponseEntity.created(URI.create("/wishlist/${item.shopId}")).body(item)
     }
 
-    @Operation(summary = "위시리스트 조회", description = "현재 위시리스트 항목을 조회합니다.")
+    @Operation(
+        operationId = "listWishlist",
+        summary = "위시리스트 조회",
+        description = "현재 위시리스트 항목을 조회합니다.",
+    )
     @ApiResponse(
         responseCode = "200",
         description = "위시리스트 목록입니다.",
@@ -64,7 +72,11 @@ class WishlistController(
     @GetMapping
     fun list(): List<WishlistResponse> = wishlistService.list()
 
-    @Operation(summary = "위시리스트 삭제", description = "라멘집 ID 기준으로 위시리스트 항목을 삭제합니다.")
+    @Operation(
+        operationId = "deleteWishlist",
+        summary = "위시리스트 삭제",
+        description = "라멘집 ID 기준으로 위시리스트 항목을 삭제합니다.",
+    )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "204", description = "위시리스트 항목이 삭제되었습니다."),

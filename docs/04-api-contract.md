@@ -38,15 +38,18 @@ OpenAPI YAML: /openapi.yaml 또는 기본 YAML 경로 확인 후 결정
 
 ## 4. API Client 생성
 
-OpenAPI Generator의 `typescript-fetch`를 기본 후보로 둔다.
+OpenAPI Generator의 `typescript-fetch`를 사용한다. 설정 파일은 루트의 `openapi-generator-config.json`이다.
 
-예상 명령:
+문서 생성용 API 서버를 먼저 띄운다.
 
 ```bash
-openapi-generator-cli generate \
-  -i http://localhost:8080/openapi \
-  -g typescript-fetch \
-  -o packages/api-client/src/generated
+pnpm dev:api:docs
+```
+
+그 다음 생성한다.
+
+```bash
+pnpm api:generate
 ```
 
 루트 스크립트:
@@ -54,10 +57,19 @@ openapi-generator-cli generate \
 ```json
 {
   "scripts": {
-    "api:generate": "openapi-generator-cli generate -i http://localhost:8080/openapi -g typescript-fetch -o packages/api-client/src/generated"
+    "dev:api:docs": "cd server/api && ./gradlew bootRun --args='--server.address=127.0.0.1 --spring.flyway.enabled=false --spring.datasource.hikari.initialization-fail-timeout=0'",
+    "api:generate": "openapi-generator-cli generate -c openapi-generator-config.json"
   }
 }
 ```
+
+생성 기준:
+
+- 서버 DTO와 controller annotation이 OpenAPI의 원본이다.
+- 모든 operation은 `operationId`를 명시해서 generated method 이름을 고정한다.
+- OpenAPI info에는 license `identifier`를 넣어 generator validation을 통과시킨다.
+- springdoc 기본 consumes/produces media type은 `application/json`으로 둔다.
+- generated 파일은 직접 수정하지 않는다. 필요한 변환은 `packages/api-client/src/index.ts` wrapper에서 한다.
 
 ## 5. DTO 명명 규칙
 
@@ -244,8 +256,9 @@ GET    /stamps
 
 - generated client를 컴포넌트에서 직접 호출하지 않는다.
 - feature별 query/mutation wrapper를 둔다.
-- DTO 타입은 generated 타입을 re-export하거나 그대로 사용한다.
+- 앱 공개 타입은 `@ramen-dojang/api-client` wrapper에서 가져온다.
 - API 변경은 서버 DTO/OpenAPI 변경 후 `api:generate`로 반영한다.
+- 날짜, nullable 필드처럼 generator와 UI 표현이 다를 수 있는 값은 wrapper에서 변환한다.
 
 예상 구조:
 

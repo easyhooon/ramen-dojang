@@ -1,3 +1,25 @@
+import {
+  Configuration,
+  HealthApi,
+  ResponseError,
+  ShopsApi,
+  VisitsApi,
+  WishlistApi,
+} from "./generated";
+import type {
+  CreateShopRequest as GeneratedCreateShopRequest,
+  CreateVisitRequest as GeneratedCreateVisitRequest,
+  CreateWishlistRequest as GeneratedCreateWishlistRequest,
+  ShopResponse as GeneratedShopResponse,
+  UpdateShopRequest as GeneratedUpdateShopRequest,
+  UpdateVisitRequest as GeneratedUpdateVisitRequest,
+  VisitResponse as GeneratedVisitResponse,
+  WishlistResponse as GeneratedWishlistResponse,
+} from "./generated";
+
+export * as Generated from "./generated";
+export { Configuration, HealthApi, ShopsApi, VisitsApi, WishlistApi };
+
 export type UUID = string;
 
 export interface ShopResponse {
@@ -83,60 +105,121 @@ export class ApiError extends Error {
 }
 
 export function createRamenApiClient(baseUrl = "http://localhost:8080") {
-  const request = async <T>(path: string, init?: RequestInit): Promise<T> => {
-    const response = await fetch(`${baseUrl}${path}`, {
-      headers: {
-        "Content-Type": "application/json",
-        ...init?.headers,
-      },
-      ...init,
-    });
-
-    if (!response.ok) {
-      const body = await response.json().catch(() => undefined);
-      throw new ApiError(body?.message ?? "API request failed.", response.status, body?.code);
-    }
-
-    if (response.status === 204) return undefined as T;
-    return response.json() as Promise<T>;
-  };
-
-  const withQuery = (path: string, params: Array<[string, string | boolean | undefined]>) => {
-    const query = new URLSearchParams();
-    params.forEach(([key, value]) => {
-      if (value !== undefined && value !== "") query.set(key, String(value));
-    });
-    const suffix = query.toString();
-    return suffix ? `${path}?${suffix}` : path;
-  };
+  const configuration = new Configuration({ basePath: baseUrl });
+  const healthApi = new HealthApi(configuration);
+  const shopsApi = new ShopsApi(configuration);
+  const visitsApi = new VisitsApi(configuration);
+  const wishlistApi = new WishlistApi(configuration);
 
   return {
-    health: () => request<{ status: string }>("/health"),
+    health: () => call(() => healthApi.getHealth()),
     listShops: (params: ShopListParams = {}) =>
-      request<ShopResponse[]>(
-        withQuery("/shops", [
-          ["name", params.name],
-          ["tag", params.tag],
-          ["visited", params.visited],
-        ]),
-      ),
-    getShop: (shopId: UUID) => request<ShopResponse>(`/shops/${shopId}`),
+      call(() => shopsApi.listShops(params)).then((shops) => shops.map(fromGeneratedShop)),
+    getShop: (shopId: UUID) => call(() => shopsApi.getShop({ shopId })).then(fromGeneratedShop),
     createShop: (body: CreateShopRequest) =>
-      request<ShopResponse>("/shops", { method: "POST", body: JSON.stringify(body) }),
+      call(() => shopsApi.createShop({ createShopRequest: toGeneratedShopRequest(body) })).then(fromGeneratedShop),
     updateShop: (shopId: UUID, body: UpdateShopRequest) =>
-      request<ShopResponse>(`/shops/${shopId}`, { method: "PUT", body: JSON.stringify(body) }),
-    deleteShop: (shopId: UUID) => request<void>(`/shops/${shopId}`, { method: "DELETE" }),
-    listVisits: () => request<VisitResponse[]>("/visits"),
-    listShopVisits: (shopId: UUID) => request<VisitResponse[]>(`/shops/${shopId}/visits`),
-    getVisit: (visitId: UUID) => request<VisitResponse>(`/visits/${visitId}`),
+      call(() => shopsApi.updateShop({ shopId, updateShopRequest: toGeneratedShopRequest(body) })).then(fromGeneratedShop),
+    deleteShop: (shopId: UUID) => call(() => shopsApi.deleteShop({ shopId })),
+    listVisits: () => call(() => visitsApi.listVisits()).then((visits) => visits.map(fromGeneratedVisit)),
+    listShopVisits: (shopId: UUID) =>
+      call(() => visitsApi.listShopVisits({ shopId })).then((visits) => visits.map(fromGeneratedVisit)),
+    getVisit: (visitId: UUID) => call(() => visitsApi.getVisit({ visitId })).then(fromGeneratedVisit),
     createVisit: (body: CreateVisitRequest) =>
-      request<VisitResponse>("/visits", { method: "POST", body: JSON.stringify(body) }),
+      call(() => visitsApi.createVisit({ createVisitRequest: toGeneratedVisitRequest(body) })).then(fromGeneratedVisit),
     updateVisit: (visitId: UUID, body: UpdateVisitRequest) =>
-      request<VisitResponse>(`/visits/${visitId}`, { method: "PUT", body: JSON.stringify(body) }),
-    deleteVisit: (visitId: UUID) => request<void>(`/visits/${visitId}`, { method: "DELETE" }),
-    listWishlist: () => request<WishlistResponse[]>("/wishlist"),
+      call(() => visitsApi.updateVisit({ visitId, updateVisitRequest: toGeneratedVisitRequest(body) })).then(fromGeneratedVisit),
+    deleteVisit: (visitId: UUID) => call(() => visitsApi.deleteVisit({ visitId })),
+    listWishlist: () => call(() => wishlistApi.listWishlist()).then((items) => items.map(fromGeneratedWishlist)),
     addWishlist: (body: CreateWishlistRequest) =>
-      request<WishlistResponse>("/wishlist", { method: "POST", body: JSON.stringify(body) }),
-    removeWishlist: (shopId: UUID) => request<void>(`/wishlist/${shopId}`, { method: "DELETE" }),
+      call(() => wishlistApi.upsertWishlist({ createWishlistRequest: toGeneratedWishlistRequest(body) })).then(fromGeneratedWishlist),
+    removeWishlist: (shopId: UUID) => call(() => wishlistApi.deleteWishlist({ shopId })),
   };
 }
+
+const call = async <T>(request: () => Promise<T>): Promise<T> => {
+  try {
+    return await request();
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+const handleApiError = async (error: unknown): Promise<never> => {
+  if (error instanceof ResponseError) {
+    const body = await error.response.clone().json().catch(() => undefined);
+    throw new ApiError(body?.message ?? "API request failed.", error.response.status, body?.code);
+  }
+
+  throw error;
+};
+
+const toGeneratedShopRequest = (request: CreateShopRequest): GeneratedCreateShopRequest & GeneratedUpdateShopRequest => ({
+  name: request.name,
+  address: request.address,
+  latitude: request.latitude,
+  longitude: request.longitude,
+  phone: request.phone || undefined,
+  placeUrl: request.placeUrl || undefined,
+  tagNames: request.tagNames ?? [],
+});
+
+const toGeneratedVisitRequest = (request: CreateVisitRequest): GeneratedCreateVisitRequest & GeneratedUpdateVisitRequest => ({
+  shopId: request.shopId,
+  visitedAt: toDate(request.visitedAt),
+  menuName: request.menuName,
+  brothRating: request.brothRating,
+  noodleRating: request.noodleRating,
+  toppingRating: request.toppingRating,
+  overallRating: request.overallRating,
+  revisitIntention: request.revisitIntention,
+  memo: request.memo || undefined,
+});
+
+const toGeneratedWishlistRequest = (request: CreateWishlistRequest): GeneratedCreateWishlistRequest => ({
+  shopId: request.shopId,
+  note: request.note || undefined,
+});
+
+const fromGeneratedShop = (shop: GeneratedShopResponse): ShopResponse => ({
+  id: shop.id,
+  name: shop.name,
+  address: shop.address,
+  latitude: shop.latitude,
+  longitude: shop.longitude,
+  phone: shop.phone ?? null,
+  placeUrl: shop.placeUrl ?? null,
+  tags: shop.tags,
+  visited: shop.visited,
+  wishlisted: shop.wishlisted,
+  averageRating: shop.averageRating ?? null,
+});
+
+const fromGeneratedVisit = (visit: GeneratedVisitResponse): VisitResponse => ({
+  id: visit.id,
+  shopId: visit.shopId,
+  shopName: visit.shopName,
+  visitedAt: toDateString(visit.visitedAt),
+  menuName: visit.menuName,
+  brothRating: visit.brothRating,
+  noodleRating: visit.noodleRating,
+  toppingRating: visit.toppingRating,
+  overallRating: visit.overallRating,
+  revisitIntention: visit.revisitIntention,
+  memo: visit.memo ?? null,
+});
+
+const fromGeneratedWishlist = (wishlist: GeneratedWishlistResponse): WishlistResponse => ({
+  shopId: wishlist.shopId,
+  shopName: wishlist.shopName,
+  note: wishlist.note ?? null,
+  createdAt: toDateTimeString(wishlist.createdAt),
+});
+
+const toDate = (date: string): Date => new Date(`${date}T00:00:00.000Z`);
+
+const toDateString = (date: Date | string): string =>
+  typeof date === "string" ? date.slice(0, 10) : date.toISOString().slice(0, 10);
+
+const toDateTimeString = (date: Date | string): string =>
+  typeof date === "string" ? date : date.toISOString();

@@ -37,6 +37,8 @@
 - [x] Swagger operation summary/description 정리
 - [x] Swagger request/response schema 확인
 - [x] Swagger 공통 error response 문서화
+- [x] OpenAPI Generator용 operationId 고정
+- [x] OpenAPI license identifier 및 JSON media type 설정
 - [x] PostGIS 기반 초기 Flyway migration 작성
 - [x] `shops` CRUD API 구현
 - [x] `visits` CRUD API 구현
@@ -44,7 +46,7 @@
 - [x] `wishlist` 등록/목록/삭제 API 구현
 - [x] 서버 컴파일 검증
 - [ ] Flyway migration 검증
-- [ ] Swagger/OpenAPI 응답 검증
+- [x] Swagger/OpenAPI 응답 검증
 - [ ] Swagger UI에서 shops CRUD 수동 검증
 - [ ] Swagger UI에서 visits CRUD 수동 검증
 - [ ] Swagger UI에서 wishlist API 수동 검증
@@ -70,9 +72,11 @@
 ## API Client / Contract
 
 - [x] 임시 TypeScript API client package 작성
-- [ ] 서버 `/openapi` 기준 generated client 생성
-- [ ] generated client를 wrapper에서 사용하도록 전환
-- [ ] API 변경 원칙 문서화
+- [x] OpenAPI Generator 설정 파일 작성
+- [x] DB 없이 `/openapi`를 뽑는 `dev:api:docs` 스크립트 작성
+- [x] 서버 `/openapi` 기준 generated client 생성
+- [x] generated client를 wrapper에서 사용하도록 전환
+- [x] API 변경 원칙 문서화
 
 ## 검증 메모
 
@@ -85,4 +89,8 @@
 - [x] `server/api ./gradlew test` 통과
 - [x] Swagger annotation 추가 후 `server/api ./gradlew compileKotlin` 통과
 - [x] Swagger annotation 추가 후 `server/api ./gradlew test` 통과
-- [ ] Docker/Postgres 미설치로 `pnpm dev:api`는 `localhost:5432 refused`에서 실패, Flyway migration과 Swagger/OpenAPI 런타임 검증 대기
+- [x] `pnpm dev:api:docs` 실행 후 `http://127.0.0.1:8080/health` HTTP 200 확인
+- [x] `http://127.0.0.1:8080/openapi` HTTP 200 확인
+- [x] OpenAPI JSON에서 `license.identifier=MIT`, `operationId=listShops`, `application/json` response content 확인
+- [x] `pnpm api:generate` 통과
+- [ ] Docker/Postgres 미설치로 `pnpm dev:api`는 `localhost:5432 refused`에서 실패, Flyway migration 검증 대기
