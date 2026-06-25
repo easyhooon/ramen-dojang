@@ -7,6 +7,7 @@
 - 문서 기반으로 작업한다.
 - 애매한 부분은 구현 전에 먼저 묻는다.
 - 작업 전후로 [docs/TODO.md](docs/TODO.md)를 갱신한다.
+- 날짜별 작업 요약과 검증 기록은 [docs/WORKLOG.md](docs/WORKLOG.md)에 남긴다.
 - 새로 배운 개념, 사용자가 물어본 개념, 문제 해결에서 얻은 깨달음은 [docs/LESSONS.md](docs/LESSONS.md)에 기록한다.
 - DB/API 작업은 [docs/06-database-erd.md](docs/06-database-erd.md)의 ERD를 먼저 보고 진행한다.
 - API DTO는 DB 테이블을 그대로 노출하지 않고, 화면/API 계약에 맞는 request/response로 설계한다.
@@ -29,7 +30,7 @@
 2. 필요하면 `docs/TODO.md`에 작업 항목을 추가한다.
 3. 구현한다.
 4. 가능한 최소 검증을 실행한다.
-5. TODO와 LESSONS를 갱신한다.
+5. TODO, WORKLOG, LESSONS를 필요에 맞게 갱신한다.
 6. 작업 단위가 끝나면 `commit-push` 기준으로 커밋을 나눈다.
 
 ## 검증 기준

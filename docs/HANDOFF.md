@@ -7,7 +7,7 @@
 - GitHub remote: `https://github.com/easyhooon/ramen-dojang.git`
 - 기본 branch: `main`
 - 최신 기준 커밋 확인: `git log -1 --oneline`
-- 작업 방식: 문서 기반으로 진행하고, 작업 전후로 [TODO](TODO.md)와 [LESSONS](LESSONS.md)를 갱신한다.
+- 작업 방식: 문서 기반으로 진행하고, 작업 전후로 [TODO](TODO.md), [WORKLOG](WORKLOG.md), [LESSONS](LESSONS.md)를 갱신한다.
 - 에이전트 규칙: [AGENTS.md](../AGENTS.md)
 
 ## 먼저 읽을 문서
@@ -15,11 +15,12 @@
 1. [README](../README.md): 로컬 실행, 빌드, OpenAPI client 생성 절차
 2. [새 컴퓨터 세팅](NEW_MACHINE_SETUP.md): 클론 직후부터 앱 실행까지
 3. [TODO](TODO.md): 완료/미완료 작업 목록
-4. [DB ERD](06-database-erd.md): DB 관계와 확장 방향
-5. [API 계약](04-api-contract.md): DTO, endpoint, OpenAPI Generator 원칙
-6. [프론트 설계](02-frontend-plan.md), [프론트 모듈 구조](07-frontend-module-structure.md), [프론트 디자인 방향](05-frontend-design-direction.md)
-7. [백엔드 설계](03-backend-plan.md), [백엔드 모듈 구조](08-backend-module-structure.md)
-8. [도메인 언어](../CONTEXT.md)
+4. [WORKLOG](WORKLOG.md): 날짜별 작업 요약과 검증 기록
+5. [DB ERD](06-database-erd.md): DB 관계와 확장 방향
+6. [API 계약](04-api-contract.md): DTO, endpoint, OpenAPI Generator 원칙
+7. [프론트 설계](02-frontend-plan.md), [프론트 모듈 구조](07-frontend-module-structure.md), [프론트 디자인 방향](05-frontend-design-direction.md)
+8. [백엔드 설계](03-backend-plan.md), [백엔드 모듈 구조](08-backend-module-structure.md)
+9. [도메인 언어](../CONTEXT.md)
 
 ## 구현된 것
 
