@@ -4,8 +4,9 @@
 
 ## 선택 기준
 
-- 웹 앱을 기본 제품 화면으로 둔다.
-- 모바일 앱은 당장 별도 native 화면을 많이 만들기보다 웹 앱을 WebView로 감싸는 wrapper로 시작한다.
+- 웹사이트로 직접 접근 가능한 웹 앱이 제품의 본체다.
+- 모바일 앱은 별도 제품이 아니라 같은 웹 앱을 WebView로 감싸 앱 형태로 제공하는 wrapper다.
+- native 기능은 push notification, native auth callback, 파일 업로드처럼 앱 shell에서 꼭 필요한 것부터 확장한다.
 - 서버 API 계약은 OpenAPI를 기준으로 하고, 프론트 client는 생성한다.
 - DB schema 변경은 migration으로 남긴다.
 - 지도 기반 확장을 고려해 처음부터 PostGIS를 둔다.
@@ -53,7 +54,7 @@
 
 선택 이유:
 
-- 모바일 앱은 현재 웹 앱을 감싸는 shell 성격이므로 Expo로 시작 비용을 줄인다.
+- 모바일 앱은 현재 같은 웹 경험을 앱으로 배포하는 shell 성격이므로 Expo로 시작 비용을 줄인다.
 - WebView는 loading, navigation, message, error, download처럼 event가 많아 Nitro 기반 접근을 실험할 가치가 있다.
 - `nitro-webview`는 `window.ReactNativeWebView.postMessage(...)` 같은 익숙한 WebView 계약을 유지하면서 Nitro 방식의 `callback(...)`, `hybridRef`를 사용한다.
 

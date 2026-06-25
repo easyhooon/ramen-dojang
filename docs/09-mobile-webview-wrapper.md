@@ -1,6 +1,8 @@
 # Mobile WebView Wrapper
 
-모바일 앱은 처음부터 별도 native 화면을 만들지 않고, `apps/web`을 감싸는 React Native WebView wrapper로 시작한다. 앱스토어 배포, push notification, native auth callback 같은 모바일 shell 기능이 필요해질 때 이 앱을 확장한다.
+서비스의 본체는 웹사이트로 직접 접근 가능한 `apps/web`이다. 모바일 앱은 처음부터 별도 native 화면을 만들지 않고, 같은 웹 앱을 `apps/mobile`에서 React Native WebView로 감싸 앱 형태로 제공한다.
+
+앱스토어 배포, push notification, native auth callback 같은 모바일 shell 기능이 필요해질 때만 이 wrapper를 확장한다.
 
 ## 현재 선택
 
