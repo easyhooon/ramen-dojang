@@ -21,6 +21,11 @@
 ## Server
 
 - [x] DB ERD 문서 작성
+- [ ] 로그인/사용자 소유권 반영 ERD 확정
+- [ ] `users` 테이블 및 `visits.user_id`, `wishlist.user_id` migration 작성
+- [ ] 인증 방식 결정: Google/Kakao/Naver/OAuth 우선순위
+- [ ] Spring Security/OAuth 로그인 최소 세로 slice 구현
+- [ ] 현재 사용자 기준 shops visited/wishlisted/averageRating 계산으로 변경
 - [x] Spring Boot Kotlin 프로젝트 생성
 - [x] Gradle wrapper 포함 프로젝트 구성
 - [x] Spring Web/JDBC/Flyway/PostgreSQL/Validation 의존성 구성
