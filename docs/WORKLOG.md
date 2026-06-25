@@ -22,6 +22,7 @@
 - [Backend Plan](03-backend-plan.md)에 후보 보강 API, 수동 sync, cron/scheduled job 승격 기준을 정리했다.
 - 외부 검색 결과를 후보로 저장한다는 결정을 [ADR 0001](adr/0001-external-place-search-as-candidates.md)로 기록했다.
 - [LESSONS](LESSONS.md)에 외부 검색 API를 정답 DB가 아니라 후보 수집기로 쓰는 이유를 기록했다.
+- 파일명으로 찾기 쉽도록 검증 하네스 흐름을 [Verification Harness](12-verification-harness.md) 전용 문서로 분리했다.
 
 ### 검증한 것
 

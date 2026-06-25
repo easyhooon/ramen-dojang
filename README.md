@@ -141,6 +141,7 @@ pnpm verify
 ```
 
 이 명령은 타입체크, web/API client 빌드, 서버 테스트, 모바일 Expo config 검증을 순서대로 실행합니다.
+전체 흐름도는 [Verification Harness](docs/12-verification-harness.md)에 정리돼 있습니다.
 
 커밋할 때도 `.githooks/pre-commit`이 `pnpm verify`를 실행합니다. 같은 검증을 사람이 기억하지 않아도 커밋 단계에서 한 번 더 확인합니다.
 
@@ -252,6 +253,8 @@ pnpm test          # 서버 테스트 실행
 pnpm verify        # 현재 가능한 전체 검증 하네스 실행
 pnpm build         # API client + web 빌드
 ```
+
+검증 하네스 흐름은 [docs/12-verification-harness.md](docs/12-verification-harness.md)에서 확인합니다.
 
 ## 작업 체크리스트
 
