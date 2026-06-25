@@ -27,6 +27,10 @@
 - [x] `/health` 엔드포인트 구현
 - [x] DB 연결 설정 작성
 - [x] Swagger UI `/swagger`, OpenAPI `/openapi` 경로 설정
+- [ ] Swagger/OpenAPI 문서 메타데이터 작성
+- [ ] Swagger operation summary/description 정리
+- [ ] Swagger request/response schema 확인
+- [ ] Swagger 공통 error response 문서화
 - [x] PostGIS 기반 초기 Flyway migration 작성
 - [x] `shops` CRUD API 구현
 - [x] `visits` CRUD API 구현
@@ -35,6 +39,9 @@
 - [x] 서버 컴파일 검증
 - [ ] Flyway migration 검증
 - [ ] Swagger/OpenAPI 응답 검증
+- [ ] Swagger UI에서 shops CRUD 수동 검증
+- [ ] Swagger UI에서 visits CRUD 수동 검증
+- [ ] Swagger UI에서 wishlist API 수동 검증
 - [ ] API smoke test 작성 또는 수동 검증 기록
 
 ## Frontend
