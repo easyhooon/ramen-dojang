@@ -111,6 +111,7 @@ pnpm verify
 - 오늘까지의 초기 scaffold는 typecheck/build/compile 중심으로 검증했지만, TDD red-green-refactor 흔적은 부족하다. 다음 behavior 구현부터는 테스트를 먼저 추가한다.
 - `pnpm verify`는 현재 가능한 검증 하네스다. 프론트 behavior test runner와 API smoke/integration test는 아직 보강 TODO로 남아 있다.
 - sandbox 환경에서는 Gradle wrapper가 `~/.gradle` lock 파일 접근에서 막힐 수 있다. 그 경우 승인 모드로 `pnpm verify`를 다시 실행한다.
+- `.githooks/pre-commit`이 `pnpm verify`를 실행한다. 새 컴퓨터에서 hook이 없으면 `pnpm install` 후 `pnpm prepare`를 확인한다.
 
 ## Suggested Skills
 

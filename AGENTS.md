@@ -55,6 +55,12 @@ TDD 작업은 아래 흐름을 따른다.
 pnpm verify
 ```
 
+커밋 시점에는 `.githooks/pre-commit`이 같은 하네스를 강제한다.
+
+```bash
+pnpm verify
+```
+
 서버 behavior test만 빠르게 확인할 때:
 
 ```bash

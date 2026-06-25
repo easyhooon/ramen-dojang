@@ -15,13 +15,13 @@ docs                 Product, frontend, backend, API docs
 
 ## 기술 스택
 
-| 영역 | 주요 기술 | 목적 |
-| --- | --- | --- |
-| Web | React, Vite, TanStack Router, TanStack Query | 웹 앱 화면, 라우팅, 서버 상태 관리 |
-| Mobile | Expo, React Native, nitro-webview | 웹 앱을 감싸는 모바일 WebView 래퍼 |
-| API | Kotlin, Spring Boot, JDBC, Flyway, springdoc-openapi | REST API, DB migration, Swagger/OpenAPI |
-| DB/Infra | PostgreSQL, PostGIS, Docker Compose | 로컬 DB와 지도 확장 대비 공간 데이터 |
-| Contract | OpenAPI Generator, TypeScript API client | 서버 스펙 기반 프론트 client 생성 |
+| 영역     | 주요 기술                                            | 목적                                    |
+| -------- | ---------------------------------------------------- | --------------------------------------- |
+| Web      | React, Vite, TanStack Router, TanStack Query         | 웹 앱 화면, 라우팅, 서버 상태 관리      |
+| Mobile   | Expo, React Native, nitro-webview                    | 웹 앱을 감싸는 모바일 WebView 래퍼      |
+| API      | Kotlin, Spring Boot, JDBC, Flyway, springdoc-openapi | REST API, DB migration, Swagger/OpenAPI |
+| DB/Infra | PostgreSQL, PostGIS, Docker Compose                  | 로컬 DB와 지도 확장 대비 공간 데이터    |
+| Contract | OpenAPI Generator, TypeScript API client             | 서버 스펙 기반 프론트 client 생성       |
 
 라이브러리별 사용 목적은 [docs/10-tech-stack.md](docs/10-tech-stack.md)에 정리합니다.
 
@@ -140,6 +140,8 @@ pnpm verify
 ```
 
 이 명령은 타입체크, web/API client 빌드, 서버 테스트, 모바일 Expo config 검증을 순서대로 실행합니다.
+
+커밋할 때도 `.githooks/pre-commit`이 `pnpm verify`를 실행합니다. 같은 검증을 사람이 기억하지 않아도 커밋 단계에서 한 번 더 확인합니다.
 
 전체 프론트 관련 타입체크를 실행합니다.
 

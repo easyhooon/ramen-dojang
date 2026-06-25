@@ -28,6 +28,7 @@
 - [x] Expo/Nitro 호환성 기준 문서화
 - [x] TDD 작업 기준을 `AGENTS.md`에 명시
 - [x] 루트 검증 하네스 `pnpm verify`, `pnpm test` 추가
+- [x] `.githooks/pre-commit`으로 `pnpm verify` 실행
 - [ ] 기존 scaffold/API/frontend 작업의 테스트 부채 정리
 
 ## Server

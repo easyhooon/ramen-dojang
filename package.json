@@ -16,7 +16,8 @@
     "verify:mobile": "pnpm --filter mobile exec expo config --type public",
     "infra:up": "docker compose -f infra/docker-compose.yml up -d",
     "infra:down": "docker compose -f infra/docker-compose.yml down",
-    "api:generate": "openapi-generator-cli generate -c openapi-generator-config.json"
+    "api:generate": "openapi-generator-cli generate -c openapi-generator-config.json",
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.20.0",
