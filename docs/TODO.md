@@ -22,6 +22,7 @@
 - [x] README/AGENTS 문서 링크를 repo-relative로 정리
 - [x] 날짜별 작업 기록 문서 `docs/WORKLOG.md` 작성
 - [x] 기술 스택과 라이브러리 사용 목적 문서 작성
+- [x] `mattpocock/skills` 기반 개발 FLOW 문서 작성
 - [x] 프론트/백엔드 모듈 구조 문서 작성
 - [x] React Native 웹뷰 래퍼 앱 `apps/mobile` 추가
 - [x] 모바일 웹뷰 래퍼 기술 선택 문서화

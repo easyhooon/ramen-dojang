@@ -5,6 +5,7 @@
 ## 기본 원칙
 
 - 문서 기반으로 작업한다.
+- 전체 개발 흐름은 [docs/11-development-flow.md](docs/11-development-flow.md)를 따른다.
 - 애매한 부분은 구현 전에 먼저 묻는다.
 - 작업 전후로 [docs/TODO.md](docs/TODO.md)를 갱신한다.
 - 날짜별 작업 요약과 검증 기록은 [docs/WORKLOG.md](docs/WORKLOG.md)에 남긴다.
@@ -26,13 +27,14 @@
 
 ## 작업 진행
 
-1. 관련 문서를 먼저 읽는다.
-2. 필요하면 `docs/TODO.md`에 작업 항목을 추가한다.
-3. 기능 추가나 버그 수정이면 `tdd` 기준으로 public interface와 테스트할 behavior를 먼저 정한다.
-4. 구현한다.
-5. 가능한 최소 검증을 실행한다.
-6. TODO, WORKLOG, LESSONS를 필요에 맞게 갱신한다.
-7. 작업 단위가 끝나면 `commit-push` 기준으로 커밋을 나눈다.
+1. 관련 문서와 [Development Flow](docs/11-development-flow.md)를 먼저 읽는다.
+2. 요구사항이 흐리면 `/grill-with-docs` 또는 질문으로 먼저 좁힌다.
+3. 필요하면 PRD, TODO, 이슈 단위로 쪼갠다.
+4. 기능 추가나 버그 수정이면 `tdd` 기준으로 public interface와 테스트할 behavior를 먼저 정한다.
+5. 구현한다.
+6. 가능한 최소 검증을 실행한다.
+7. TODO, WORKLOG, LESSONS를 필요에 맞게 갱신한다.
+8. 작업 단위가 끝나면 `commit-push` 기준으로 커밋을 나눈다.
 
 ## TDD 기준
 
