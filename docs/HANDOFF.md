@@ -7,7 +7,7 @@
 - GitHub remote: `https://github.com/easyhooon/ramen-dojang.git`
 - 기본 branch: `main`
 - 최신 기준 커밋 확인: `git log -1 --oneline`
-- 작업 방식: 문서 기반으로 진행하고, 작업 전후로 [TODO](TODO.md), [WORKLOG](WORKLOG.md), [LESSONS](LESSONS.md)를 갱신한다.
+- 작업 방식: 문서 기반으로 진행하고, 작업 전후로 [TODO](TODO.md), 날짜별 [worklog](worklog), [LESSONS](LESSONS.md)를 갱신한다.
 - 에이전트 규칙: [AGENTS.md](../AGENTS.md)
 
 ## 먼저 읽을 문서
@@ -16,7 +16,7 @@
 2. [새 컴퓨터 세팅](NEW_MACHINE_SETUP.md): 클론 직후부터 앱 실행까지
 3. [개발 FLOW](11-development-flow.md): mattpocock/skills 기반 작업 사이클
 4. [TODO](TODO.md): 완료/미완료 작업 목록
-5. [WORKLOG](WORKLOG.md): 날짜별 작업 요약과 검증 기록
+5. [WORKLOG](WORKLOG.md), [worklog](worklog): 날짜별 작업 요약과 검증 기록
 6. [DB ERD](06-database-erd.md): DB 관계와 확장 방향
 7. [API 계약](04-api-contract.md): DTO, endpoint, OpenAPI Generator 원칙
 8. [기술 스택](10-tech-stack.md): 주요 라이브러리와 사용 목적

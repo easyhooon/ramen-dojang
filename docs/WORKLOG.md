@@ -8,36 +8,12 @@
 - 커밋 목록을 그대로 복사하기보다 작업 의도와 결과를 묶어서 쓴다.
 - 완료한 것, 검증한 것, 남은 위험을 분리한다.
 - 자세한 진행률은 [TODO](TODO.md), 배운 점은 [LESSONS](LESSONS.md), 새 세션 인수인계는 [HANDOFF](HANDOFF.md)를 본다.
+- 날짜가 바뀌면 `docs/worklog/YYYY-MM-DD.md` 파일을 새로 만들거나 갱신한다.
+- 이 파일은 worklog 인덱스와 과거 기록 보관 용도로 둔다.
 
-## 2026-06-26
+## 날짜별 기록
 
-### 한 줄 요약
-
-외부 장소 검색 결과를 바로 노출하지 않고 `shop_candidates`에 후보로 저장한 뒤 검수 후 라멘집으로 승격하는 방향을 잡았다.
-
-### 문서화 / 도메인 모델
-
-- 용어집에 `라멘집 후보`를 추가했다.
-- [DB ERD](06-database-erd.md)에 `shop_candidates` 확장 모델과 승격 규칙을 추가했다.
-- [Backend Plan](03-backend-plan.md)에 후보 보강 API, 수동 sync, cron/scheduled job 승격 기준을 정리했다.
-- 외부 검색 결과를 후보로 저장한다는 결정을 [ADR 0001](adr/0001-external-place-search-as-candidates.md)로 기록했다.
-- [LESSONS](LESSONS.md)에 외부 검색 API를 정답 DB가 아니라 후보 수집기로 쓰는 이유를 기록했다.
-- 파일명으로 찾기 쉽도록 검증 하네스 흐름을 [Verification Harness](12-verification-harness.md) 전용 문서로 분리했다.
-- Naver/Kakao/Google 장소 API에서 가져올 수 있는 최대 필드와 메뉴/썸네일 한계를 [Place Open API Data Research](13-place-open-api-research.md)에 정리했다.
-
-### 검증한 것
-
-- 문서 변경 diff 확인
-- `.githooks/pre-commit`
-
-### 남은 일
-
-- `shop_candidates` migration 작성
-- 네이버 지역 검색 API 기반 후보 sync spike 작성
-- 후보 scoring/중복 제거 기준 정의
-- 후보 검수 후 `shops`로 승격하는 admin flow 설계
-- 수동 sync가 안정된 뒤 cron/scheduled job 도입 판단
-- 방문 기록 기반 메뉴 후보화와 관리자 검수 flow 설계
+- [2026-06-26](worklog/2026-06-26.md)
 
 ## 2026-06-25
 

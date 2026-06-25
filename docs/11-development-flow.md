@@ -101,6 +101,12 @@ flowchart LR
 - 최소 구현으로 green을 만든다.
 - 모든 테스트가 green일 때만 refactor한다.
 
+TDD 용어:
+
+- Red: 기대 behavior를 테스트로 먼저 적고, 아직 구현이 없어 실패를 확인한 상태다.
+- Green: 실패하던 테스트를 통과시키는 최소 구현을 끝낸 상태다.
+- Refactor: Green 상태를 유지한 채 코드 구조를 다듬는 단계다.
+
 현재 하네스:
 
 ```bash

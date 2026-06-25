@@ -233,3 +233,10 @@ flowchart TD
 4. 후보 검수/승격 admin flow를 만든다.
 5. Google Places/Photos는 썸네일과 운영비가 진짜 필요해진 뒤 검토한다.
 6. 메뉴 데이터는 방문 기록 기반 후보화부터 시작한다.
+
+## References
+
+- [Naver 지역 검색 API](https://developers.naver.com/docs/serviceapi/search/local/local.md)
+- [Kakao Local API - 키워드로 장소 검색](https://developers.kakao.com/docs/latest/ko/local/dev-guide#search-by-keyword)
+- [Google Places API - Place Details](https://developers.google.com/maps/documentation/places/web-service/place-details)
+- [Google Places API - Place Photos](https://developers.google.com/maps/documentation/places/web-service/place-photos)

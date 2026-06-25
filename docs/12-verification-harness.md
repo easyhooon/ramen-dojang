@@ -60,6 +60,22 @@ flowchart TD
 - `pnpm test`: 현재는 서버 테스트 하네스로 연결되어 있다.
 - `pnpm verify:mobile`: Expo app config가 SDK/schema 기준으로 해석되는지 확인한다.
 
+## 용어 주의
+
+`rg`는 Red/Green의 약자가 아니라 `ripgrep` 명령이다. repo 안에서 텍스트나 파일을 빠르게 찾을 때 사용하는 검색 도구다.
+
+```bash
+rg "하네스" docs
+```
+
+TDD에서 말하는 Red/Green은 테스트 상태를 뜻한다.
+
+- Red: 기대 behavior를 테스트로 먼저 적었고, 아직 구현이 없어 테스트가 실패하는 상태다.
+- Green: 실패하던 테스트를 통과시키는 최소 구현을 끝낸 상태다.
+- Refactor: Green 상태를 유지한 채 구조를 다듬는 단계다.
+
+즉 `rg`는 검색 도구이고, Red/Green은 TDD 사이클의 상태 이름이다.
+
 ## 아직 하네스에 없는 것
 
 - 브라우저 기반 UI smoke/e2e 검증

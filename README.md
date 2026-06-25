@@ -41,7 +41,7 @@ DB 관계를 먼저 잡고 API DTO를 설계합니다.
 - 백엔드 모듈 구조: [docs/08-backend-module-structure.md](docs/08-backend-module-structure.md)
 - 인수인계: [docs/HANDOFF.md](docs/HANDOFF.md)
 - 새 컴퓨터 세팅: [docs/NEW_MACHINE_SETUP.md](docs/NEW_MACHINE_SETUP.md)
-- 날짜별 작업 기록: [docs/WORKLOG.md](docs/WORKLOG.md)
+- 날짜별 작업 기록: [docs/WORKLOG.md](docs/WORKLOG.md), [docs/worklog](docs/worklog)
 - 학습 기록: [docs/LESSONS.md](docs/LESSONS.md)
 
 ## 준비물
@@ -260,6 +260,6 @@ pnpm build         # API client + web 빌드
 
 진행 상황은 [docs/TODO.md](docs/TODO.md)에서 관리합니다.
 
-날짜별로 어떤 작업을 했는지는 [docs/WORKLOG.md](docs/WORKLOG.md)에 남깁니다.
+날짜별로 어떤 작업을 했는지는 `docs/worklog/YYYY-MM-DD.md`에 남기고, [docs/WORKLOG.md](docs/WORKLOG.md)는 인덱스로 사용합니다.
 
 프로젝트를 하며 배운 개념과 문제 해결 기록은 [docs/LESSONS.md](docs/LESSONS.md)에 남깁니다.
