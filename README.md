@@ -13,6 +13,18 @@ infra                Local Postgres/PostGIS
 docs                 Product, frontend, backend, API docs
 ```
 
+## 기술 스택
+
+| 영역 | 주요 기술 | 목적 |
+| --- | --- | --- |
+| Web | React, Vite, TanStack Router, TanStack Query | 웹 앱 화면, 라우팅, 서버 상태 관리 |
+| Mobile | Expo, React Native, nitro-webview | 웹 앱을 감싸는 모바일 WebView 래퍼 |
+| API | Kotlin, Spring Boot, JDBC, Flyway, springdoc-openapi | REST API, DB migration, Swagger/OpenAPI |
+| DB/Infra | PostgreSQL, PostGIS, Docker Compose | 로컬 DB와 지도 확장 대비 공간 데이터 |
+| Contract | OpenAPI Generator, TypeScript API client | 서버 스펙 기반 프론트 client 생성 |
+
+라이브러리별 사용 목적은 [docs/10-tech-stack.md](docs/10-tech-stack.md)에 정리합니다.
+
 ## 먼저 볼 설계 문서
 
 DB 관계를 먼저 잡고 API DTO를 설계합니다.
@@ -23,6 +35,7 @@ DB 관계를 먼저 잡고 API DTO를 설계합니다.
 - 프론트 설계: [docs/02-frontend-plan.md](docs/02-frontend-plan.md)
 - 프론트 모듈 구조: [docs/07-frontend-module-structure.md](docs/07-frontend-module-structure.md)
 - 모바일 웹뷰 래퍼: [docs/09-mobile-webview-wrapper.md](docs/09-mobile-webview-wrapper.md)
+- 기술 스택: [docs/10-tech-stack.md](docs/10-tech-stack.md)
 - 백엔드 설계: [docs/03-backend-plan.md](docs/03-backend-plan.md)
 - 백엔드 모듈 구조: [docs/08-backend-module-structure.md](docs/08-backend-module-structure.md)
 - 인수인계: [docs/HANDOFF.md](docs/HANDOFF.md)

@@ -18,9 +18,10 @@
 4. [WORKLOG](WORKLOG.md): 날짜별 작업 요약과 검증 기록
 5. [DB ERD](06-database-erd.md): DB 관계와 확장 방향
 6. [API 계약](04-api-contract.md): DTO, endpoint, OpenAPI Generator 원칙
-7. [프론트 설계](02-frontend-plan.md), [프론트 모듈 구조](07-frontend-module-structure.md), [프론트 디자인 방향](05-frontend-design-direction.md)
-8. [백엔드 설계](03-backend-plan.md), [백엔드 모듈 구조](08-backend-module-structure.md)
-9. [도메인 언어](../CONTEXT.md)
+7. [기술 스택](10-tech-stack.md): 주요 라이브러리와 사용 목적
+8. [프론트 설계](02-frontend-plan.md), [프론트 모듈 구조](07-frontend-module-structure.md), [프론트 디자인 방향](05-frontend-design-direction.md)
+9. [백엔드 설계](03-backend-plan.md), [백엔드 모듈 구조](08-backend-module-structure.md)
+10. [도메인 언어](../CONTEXT.md)
 
 ## 구현된 것
 
