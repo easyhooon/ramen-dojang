@@ -133,6 +133,14 @@ cd server/api && ./gradlew bootRun
 
 ## 빌드와 검증
 
+현재 가능한 전체 검증 하네스를 실행합니다.
+
+```bash
+pnpm verify
+```
+
+이 명령은 타입체크, web/API client 빌드, 서버 테스트, 모바일 Expo config 검증을 순서대로 실행합니다.
+
 전체 프론트 관련 타입체크를 실행합니다.
 
 ```bash
@@ -173,6 +181,12 @@ pnpm --filter mobile typecheck
 cd server/api
 ./gradlew compileKotlin
 ./gradlew test
+```
+
+루트에서도 서버 테스트만 실행할 수 있습니다.
+
+```bash
+pnpm test
 ```
 
 API 서버까지 실제로 띄우려면 DB가 먼저 떠 있어야 합니다.
@@ -231,6 +245,8 @@ pnpm dev:api       # Kotlin Spring Boot API 실행
 pnpm dev:api:docs  # DB 없이 OpenAPI 생성용 API 실행
 pnpm api:generate  # OpenAPI Generator TypeScript client 생성
 pnpm typecheck     # TypeScript 타입체크
+pnpm test          # 서버 테스트 실행
+pnpm verify        # 현재 가능한 전체 검증 하네스 실행
 pnpm build         # API client + web 빌드
 ```
 

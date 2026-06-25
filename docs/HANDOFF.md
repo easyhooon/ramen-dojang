@@ -74,6 +74,8 @@ pnpm install
 pnpm infra:up
 pnpm dev:api
 pnpm dev:web
+pnpm test
+pnpm verify
 pnpm typecheck
 pnpm build
 ```
@@ -93,6 +95,12 @@ cd server/api
 ./gradlew test
 ```
 
+현재 가능한 전체 검증 하네스:
+
+```bash
+pnpm verify
+```
+
 ## 알려진 주의점
 
 - `pnpm dev:api:docs`는 OpenAPI 생성용이다. DB 없이 `/openapi`를 뽑을 수 있지만, CRUD API를 직접 호출하면 DB 연결 오류가 날 수 있다.
@@ -101,6 +109,8 @@ cd server/api
 - Vercel 배포 시 web app은 Next.js가 아니라 Vite React다. monorepo root와 build command를 명확히 설정해야 한다.
 - `apps/mobile`은 Expo Go가 아니라 development build/prebuild 검증이 필요할 수 있다. Nitro native module을 쓰기 때문이다.
 - 오늘까지의 초기 scaffold는 typecheck/build/compile 중심으로 검증했지만, TDD red-green-refactor 흔적은 부족하다. 다음 behavior 구현부터는 테스트를 먼저 추가한다.
+- `pnpm verify`는 현재 가능한 검증 하네스다. 프론트 behavior test runner와 API smoke/integration test는 아직 보강 TODO로 남아 있다.
+- sandbox 환경에서는 Gradle wrapper가 `~/.gradle` lock 파일 접근에서 막힐 수 있다. 그 경우 승인 모드로 `pnpm verify`를 다시 실행한다.
 
 ## Suggested Skills
 

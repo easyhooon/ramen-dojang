@@ -10,6 +10,10 @@
     "dev:api:docs": "cd server/api && ./gradlew bootRun --args='--server.address=127.0.0.1 --spring.flyway.enabled=false --spring.datasource.hikari.initialization-fail-timeout=0'",
     "build": "pnpm --filter @ramen-dojang/api-client build && pnpm --filter web build",
     "typecheck": "pnpm --filter @ramen-dojang/api-client typecheck && pnpm --filter web typecheck && pnpm --filter mobile typecheck",
+    "test": "pnpm test:server",
+    "test:server": "cd server/api && ./gradlew test",
+    "verify": "pnpm typecheck && pnpm build && pnpm test && pnpm verify:mobile",
+    "verify:mobile": "pnpm --filter mobile exec expo config --type public",
     "infra:up": "docker compose -f infra/docker-compose.yml up -d",
     "infra:down": "docker compose -f infra/docker-compose.yml down",
     "api:generate": "openapi-generator-cli generate -c openapi-generator-config.json"

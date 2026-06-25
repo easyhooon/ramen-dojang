@@ -49,6 +49,20 @@ TDD 작업은 아래 흐름을 따른다.
 7. 다음 behavior로 반복한다.
 8. 모든 테스트가 green일 때만 refactor한다.
 
+현재 repo의 기본 검증 하네스:
+
+```bash
+pnpm verify
+```
+
+서버 behavior test만 빠르게 확인할 때:
+
+```bash
+pnpm test
+```
+
+TDD의 GREEN 확인은 가능한 한 해당 영역의 가장 좁은 테스트 명령으로 먼저 확인하고, 작업 단위 완료 전에는 `pnpm verify`를 실행한다.
+
 금지할 것:
 
 - 내부 구현, private method, 임시 자료구조 모양에 결합된 테스트
@@ -71,6 +85,12 @@ TDD 작업은 아래 흐름을 따른다.
 `WORKLOG.md`는 진행 상황을 사람이 읽는 일지이고, `TODO.md`는 체크리스트, `LESSONS.md`는 배운 점 기록이다. 세 문서의 역할을 섞지 않는다.
 
 ## 검증 기준
+
+전체 하네스:
+
+```bash
+pnpm verify
+```
 
 프론트/API client:
 

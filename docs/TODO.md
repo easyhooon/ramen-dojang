@@ -27,6 +27,7 @@
 - [x] 모바일 웹뷰 래퍼 기술 선택 문서화
 - [x] Expo/Nitro 호환성 기준 문서화
 - [x] TDD 작업 기준을 `AGENTS.md`에 명시
+- [x] 루트 검증 하네스 `pnpm verify`, `pnpm test` 추가
 - [ ] 기존 scaffold/API/frontend 작업의 테스트 부채 정리
 
 ## Server
@@ -114,4 +115,5 @@
 - [x] `cd apps/mobile && pnpm dlx expo-doctor@latest` 통과
 - [x] `pnpm --filter mobile exec expo config --type public` 통과
 - [x] Expo SDK 56 기준 React Native/React/TypeScript 버전 정렬
+- [x] `pnpm verify` 전체 하네스 통과
 - [ ] Docker/Postgres 미설치로 `pnpm dev:api`는 `localhost:5432 refused`에서 실패, Flyway migration 검증 대기
