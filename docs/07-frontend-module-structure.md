@@ -1,6 +1,6 @@
 # Frontend Module Structure
 
-프론트는 Vite React 앱 하나와 API client package 하나로 시작한다. Android 프로젝트에 빗대면 `apps/web`은 `:app`, `packages/api-client`는 `:core:network` 또는 `:core:api-contract`에 가깝다.
+프론트는 Vite React 앱, Expo React Native WebView wrapper, API client package로 시작한다. Android 프로젝트에 빗대면 `apps/web`과 `apps/mobile`은 각각 `:app:web`, `:app:mobile`, `packages/api-client`는 `:core:network` 또는 `:core:api-contract`에 가깝다.
 
 현재는 별도 npm package를 많이 쪼개지 않는다. 대신 앱 내부를 `routes`, `features`, `lib`로 나눠서 화면 조립, 기능 UI, 앱 공통 인프라를 분리한다.
 
@@ -28,6 +28,13 @@ apps/web/
       queryClient.ts
     styles.css
 
+apps/mobile/
+  app.json
+  index.ts
+  src/
+    App.tsx
+    config.ts
+
 packages/api-client/
   src/
     generated/
@@ -40,6 +47,7 @@ packages/api-client/
 flowchart TD
   Browser["Browser"]
   WebApp["apps/web\nVite React App"]
+  MobileApp["apps/mobile\nExpo WebView Wrapper"]
   Routes["routes\nNavigation + screen composition"]
   Features["features\nDomain UI modules"]
   Lib["lib\nApp infrastructure"]
@@ -48,6 +56,7 @@ flowchart TD
   Server["server/api\nSpring Boot API"]
 
   Browser --> WebApp
+  MobileApp --> WebApp
   WebApp --> Routes
   Routes --> Features
   Routes --> Lib
@@ -155,6 +164,28 @@ Android 비유:
 :core:api-contract
 ```
 
+### `apps/mobile`
+
+웹 앱을 네이티브 shell 안에서 띄우는 React Native wrapper app이다.
+
+역할:
+
+- `nitro-webview`로 `apps/web` 배포 URL 또는 로컬 개발 URL을 렌더링한다.
+- reload, loading, error fallback 같은 wrapper-level UX를 제공한다.
+- 나중에 push notification, native auth callback, app store 배포 설정을 붙일 수 있는 자리를 만든다.
+
+넣지 않을 것:
+
+- 웹 앱과 중복되는 CRUD 화면
+- 서버 DTO 수동 정의
+- `packages/api-client` 직접 호출
+
+Android 비유:
+
+```text
+:app:mobile
+```
+
 ## 의존 방향
 
 의존은 아래 방향으로만 흐른다.
@@ -206,8 +237,8 @@ packages/api-client -> apps/web
 ```text
 apps/
   web/
-  admin/
   mobile/
+  admin/
 packages/
   api-client/
   ui/

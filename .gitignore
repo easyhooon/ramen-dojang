@@ -9,3 +9,6 @@ build/
 *.iml
 .env
 .env.local
+.expo/
+ios/
+android/

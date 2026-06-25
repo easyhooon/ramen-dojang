@@ -21,6 +21,8 @@
 - [x] 새 컴퓨터 세팅 체크리스트 작성
 - [x] README/AGENTS 문서 링크를 repo-relative로 정리
 - [x] 프론트/백엔드 모듈 구조 문서 작성
+- [x] React Native 웹뷰 래퍼 앱 `apps/mobile` 추가
+- [x] 모바일 웹뷰 래퍼 기술 선택 문서화
 
 ## Server
 
@@ -72,6 +74,8 @@
 - [x] 프론트 타입체크 검증
 - [x] 프론트 빌드 검증
 - [ ] 브라우저 화면 검증
+- [ ] 모바일 웹뷰 래퍼 development build 검증
+- [ ] `nitro-webview` iOS/Android native setup 검증
 
 ## API Client / Contract
 
@@ -97,4 +101,5 @@
 - [x] `http://127.0.0.1:8080/openapi` HTTP 200 확인
 - [x] OpenAPI JSON에서 `license.identifier=MIT`, `operationId=listShops`, `application/json` response content 확인
 - [x] `pnpm api:generate` 통과
+- [x] `pnpm --filter mobile typecheck` 통과
 - [ ] Docker/Postgres 미설치로 `pnpm dev:api`는 `localhost:5432 refused`에서 실패, Flyway migration 검증 대기

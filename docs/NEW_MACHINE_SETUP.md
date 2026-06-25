@@ -42,6 +42,7 @@ pnpm install
 ```bash
 cp .env.example .env
 cp apps/web/.env.example apps/web/.env.local
+cp apps/mobile/.env.example apps/mobile/.env.local
 cp server/api/.env.example server/api/.env
 ```
 
@@ -125,7 +126,40 @@ pnpm typecheck
 - `packages/api-client/src/generated`는 생성물이므로 직접 수정하지 않는다.
 - 앱에서 쓰는 타입 변환은 `packages/api-client/src/index.ts`에서 한다.
 
-## 9. 검증
+## 9. 모바일 웹뷰 래퍼 실행
+
+모바일 래퍼는 `apps/web`을 WebView로 띄우는 Expo React Native 앱이다. 먼저 웹 서버를 실행한다.
+
+```bash
+pnpm dev:web
+```
+
+다른 터미널에서:
+
+```bash
+pnpm dev:mobile
+```
+
+기본 URL:
+
+```text
+EXPO_PUBLIC_WEB_URL=http://localhost:5173
+```
+
+실기기에서 확인할 때는 `localhost`가 컴퓨터가 아니라 기기 자신을 가리킬 수 있다. 이때는 `apps/mobile/.env.local`의 `EXPO_PUBLIC_WEB_URL`을 같은 네트워크의 LAN 주소로 바꾼다.
+
+```text
+EXPO_PUBLIC_WEB_URL=http://192.168.x.x:5173
+```
+
+`nitro-webview`는 native module을 사용하므로 Expo Go만으로는 부족할 수 있다. iOS/Android 검증은 development build 또는 prebuild 기반으로 진행한다.
+
+```bash
+pnpm --filter mobile ios
+pnpm --filter mobile android
+```
+
+## 10. 검증
 
 프론트와 API client:
 
@@ -142,7 +176,7 @@ cd server/api
 ./gradlew test
 ```
 
-## 10. 이어서 작업하기
+## 11. 이어서 작업하기
 
 작업 전에 확인:
 
@@ -158,6 +192,7 @@ git status --short --branch
 - [LESSONS](LESSONS.md)
 - [DB ERD](06-database-erd.md)
 - [API 계약](04-api-contract.md)
+- [모바일 웹뷰 래퍼](09-mobile-webview-wrapper.md)
 
 작업 후:
 

@@ -6,6 +6,7 @@
 
 ```text
 apps/web             Vite React frontend
+apps/mobile          Expo React Native WebView wrapper
 server/api           Kotlin Spring Boot API
 packages/api-client  TypeScript API client
 infra                Local Postgres/PostGIS
@@ -21,6 +22,7 @@ DB 관계를 먼저 잡고 API DTO를 설계합니다.
 - API 계약: [docs/04-api-contract.md](docs/04-api-contract.md)
 - 프론트 설계: [docs/02-frontend-plan.md](docs/02-frontend-plan.md)
 - 프론트 모듈 구조: [docs/07-frontend-module-structure.md](docs/07-frontend-module-structure.md)
+- 모바일 웹뷰 래퍼: [docs/09-mobile-webview-wrapper.md](docs/09-mobile-webview-wrapper.md)
 - 백엔드 설계: [docs/03-backend-plan.md](docs/03-backend-plan.md)
 - 백엔드 모듈 구조: [docs/08-backend-module-structure.md](docs/08-backend-module-structure.md)
 - 인수인계: [docs/HANDOFF.md](docs/HANDOFF.md)
@@ -52,6 +54,7 @@ pnpm install
 ```bash
 cp .env.example .env
 cp apps/web/.env.example apps/web/.env.local
+cp apps/mobile/.env.example apps/mobile/.env.local
 cp server/api/.env.example server/api/.env
 ```
 
@@ -79,6 +82,14 @@ pnpm dev:api
 pnpm dev:web
 ```
 
+모바일 웹뷰 래퍼를 확인하려면 프론트 서버를 먼저 띄운 뒤 별도 터미널에서 실행합니다.
+
+```bash
+pnpm dev:mobile
+```
+
+`apps/mobile`은 Expo 기반 React Native 앱이며 WebView 구현은 `nitro-webview`를 사용합니다. Nitro native module을 쓰므로 Expo Go만으로는 부족할 수 있고, development build 또는 prebuild 기반 검증이 필요합니다.
+
 편의상 한 터미널에서 둘을 같이 띄울 수도 있습니다.
 
 ```bash
@@ -101,6 +112,7 @@ cd server/api && ./gradlew bootRun
 ## URL
 
 - Web: `http://localhost:5173`
+- Mobile wrapper: Expo development build
 - API health: `http://localhost:8080/health`
 - Swagger UI: `http://localhost:8080/swagger`
 - OpenAPI JSON: `http://localhost:8080/openapi`
@@ -185,6 +197,7 @@ pnpm infra:down
 pnpm install       # Node workspace 의존성 설치
 pnpm infra:up      # PostgreSQL/PostGIS 실행
 pnpm dev:web       # 프론트 개발 서버 실행
+pnpm dev:mobile    # Expo React Native 웹뷰 래퍼 실행
 pnpm dev:api       # Kotlin Spring Boot API 실행
 pnpm dev:api:docs  # DB 없이 OpenAPI 생성용 API 실행
 pnpm api:generate  # OpenAPI Generator TypeScript client 생성

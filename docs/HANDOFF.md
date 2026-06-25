@@ -24,6 +24,7 @@
 ## 구현된 것
 
 - Vite React web app: `apps/web`
+- Expo React Native WebView wrapper: `apps/mobile`
 - Kotlin Spring Boot API: `server/api`
 - TypeScript API client package: `packages/api-client`
 - PostgreSQL/PostGIS local infra: `infra/docker-compose.yml`
@@ -31,6 +32,7 @@
 - Swagger UI `/swagger`, OpenAPI JSON `/openapi`
 - OpenAPI Generator `typescript-fetch` client: `packages/api-client/src/generated`
 - Generated client를 감싼 앱용 wrapper: `packages/api-client/src/index.ts`
+- Mobile WebView implementation: `nitro-webview` + `react-native-nitro-modules`
 
 ## 중요한 규칙
 
@@ -92,6 +94,7 @@ cd server/api
 - 실제 API 서버 검증은 `pnpm infra:up`으로 Postgres/PostGIS를 띄운 뒤 `pnpm dev:api`로 해야 한다.
 - OpenAPI Generator는 첫 실행 때 Maven Central에서 generator jar를 내려받는다.
 - Vercel 배포 시 web app은 Next.js가 아니라 Vite React다. monorepo root와 build command를 명확히 설정해야 한다.
+- `apps/mobile`은 Expo Go가 아니라 development build/prebuild 검증이 필요할 수 있다. Nitro native module을 쓰기 때문이다.
 
 ## Suggested Skills
 

@@ -210,3 +210,29 @@ Android 멀티모듈처럼 `:feature:shop`, `:core:network`를 먼저 만들 수
 - OpenAPI client처럼 실제로 여러 앱에서 공유될 가능성이 큰 것은 `packages/api-client`로 물리 package를 만든다.
 
 물리 multi-module/package 분리는 재사용, 독립 테스트, dependency rule 강제 필요가 생길 때 승격한다. 먼저 interface와 의존 방향을 문서화하고, 진짜 비용을 줄이는 지점에서 쪼개는 쪽이 낫다.
+
+### Nitro 계열 라이브러리는 bridge 비용을 줄이려는 선택이다
+
+`nitro-webview`를 검토하면서 Nitro Modules 계열의 장점과 비용이 정리됐다.
+
+Nitro Modules는 React Native native module을 JSI 쪽으로 직접 연결하고, 타입 기반 binding을 정적으로 생성하는 방향이다. 기존 bridge처럼 JSON serialization, `NativeEventEmitter`, thread hop에 의존하는 경로를 줄이는 것이 목표다.
+
+WebView에서 이게 의미 있는 이유:
+
+- WebView는 `onLoadStart`, `onLoadEnd`, navigation state, page message, error, download처럼 event가 많다.
+- native method도 `reload`, `goBack`, `evaluateJavaScript`, cookie 조작처럼 자주 필요할 수 있다.
+- Nitro 기반이면 이런 prop/event/method 호출이 legacy bridge round-trip을 덜 탄다.
+
+하지만 공짜는 아니다.
+
+- event handler를 `callback(...)`으로 감싸야 한다.
+- imperative method는 React `ref`가 아니라 `hybridRef`로 받는다.
+- native module이므로 Expo Go만으로는 부족할 수 있고 development build/prebuild 검증이 필요하다.
+- `nitro-webview` 자체가 `react-native-webview`보다 덜 보편적인 선택이라, 안정성/문서/사례는 계속 확인해야 한다.
+
+이번 프로젝트에서는 모바일 앱이 웹뷰 shell 성격이고 WebView 이벤트가 핵심이 될 수 있으므로 `nitro-webview`를 먼저 얹어본다. 다만 file upload/download, Android Maven repo, iOS permission 같은 native host 설정은 실제 development build에서 검증해야 한다.
+
+참고:
+
+- [nitro-webview](https://github.com/l2hyunwoo/nitro-webview)
+- [Nitro Modules](https://github.com/mrousavy/nitro)

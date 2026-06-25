@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "concurrently \"pnpm dev:web\" \"pnpm dev:api\"",
     "dev:web": "pnpm --filter web dev",
+    "dev:mobile": "pnpm --filter mobile start",
     "dev:api": "cd server/api && ./gradlew bootRun",
     "dev:api:docs": "cd server/api && ./gradlew bootRun --args='--server.address=127.0.0.1 --spring.flyway.enabled=false --spring.datasource.hikari.initialization-fail-timeout=0'",
     "build": "pnpm --filter @ramen-dojang/api-client build && pnpm --filter web build",
-    "typecheck": "pnpm --filter @ramen-dojang/api-client typecheck && pnpm --filter web typecheck",
+    "typecheck": "pnpm --filter @ramen-dojang/api-client typecheck && pnpm --filter web typecheck && pnpm --filter mobile typecheck",
     "infra:up": "docker compose -f infra/docker-compose.yml up -d",
     "infra:down": "docker compose -f infra/docker-compose.yml down",
     "api:generate": "openapi-generator-cli generate -c openapi-generator-config.json"

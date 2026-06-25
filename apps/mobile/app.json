@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "라멘 도장깨기",
+    "slug": "ramen-dojang",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ramendojang.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "웹 페이지에서 사진과 영상을 업로드할 때 카메라를 사용할 수 있습니다.",
+        "NSMicrophoneUsageDescription": "웹 페이지에서 영상 업로드를 위해 마이크를 사용할 수 있습니다.",
+        "NSPhotoLibraryUsageDescription": "웹 페이지에서 이미지를 업로드할 때 사진 보관함을 사용할 수 있습니다."
+      }
+    },
+    "android": {
+      "package": "com.ramendojang.app",
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "CAMERA",
+        "READ_MEDIA_IMAGES",
+        "READ_MEDIA_VIDEO"
+      ]
+    },
+    "extra": {
+      "webUrl": "http://localhost:5173"
+    }
+  }
+}
