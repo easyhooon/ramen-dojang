@@ -71,3 +71,23 @@ cd server/api && ./gradlew test
 - TODO에 DB 기반 검증 대기 항목을 남긴다.
 - DB가 준비되면 `pnpm infra:up` 후 API 서버를 띄우고 `/health`, `/swagger`, `/openapi`를 확인한다.
 
+### env 파일은 example만 공유한다
+
+실제 `.env` 파일은 컴퓨터마다 다르고 비밀값이 들어갈 수 있으므로 git에 올리지 않는다. 대신 `.env.example`을 커밋해서 필요한 key와 로컬 기본값을 공유한다.
+
+이 프로젝트의 기준:
+
+```text
+.env.example
+apps/web/.env.example
+server/api/.env.example
+```
+
+각 컴퓨터에서는 example 파일을 복사해서 자기 로컬 env 파일을 만든다.
+
+```bash
+cp .env.example .env
+cp apps/web/.env.example apps/web/.env.local
+cp server/api/.env.example server/api/.env
+```
+

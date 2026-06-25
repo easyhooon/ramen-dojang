@@ -13,6 +13,7 @@
 - [x] 루트 `package.json` 스크립트 작성
 - [x] `.gitignore` 작성
 - [x] 학습 기록 문서 `docs/LESSONS.md` 작성
+- [x] `.env.example` 파일과 README 복사 절차 작성
 - [x] `pnpm` 활성화 및 의존성 설치
 - [x] 분리 실행 기준 스크립트 정리
 - [x] README에 로컬 구동 순서 문서화

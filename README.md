@@ -43,6 +43,16 @@ corepack enable pnpm
 pnpm install
 ```
 
+환경변수 예시 파일을 개인 로컬 env 파일로 복사합니다.
+
+```bash
+cp .env.example .env
+cp apps/web/.env.example apps/web/.env.local
+cp server/api/.env.example server/api/.env
+```
+
+`.env`, `.env.local`은 개인 로컬 설정이므로 git에 올리지 않습니다.
+
 ## 개발 실행
 
 프론트와 서버는 분리해서 실행하는 것을 기본으로 둡니다.
