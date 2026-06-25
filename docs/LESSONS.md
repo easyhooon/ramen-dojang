@@ -198,3 +198,15 @@ pnpm dev:api:docs
 ```
 
 Codex app 안에서 특정 파일 위치를 안내할 때는 절대경로 링크가 편하지만, git에 남는 문서는 다른 컴퓨터에서도 열리는 형태가 우선이다.
+
+### 모듈 구조는 처음부터 물리적으로 쪼갤 필요는 없다
+
+Android 멀티모듈처럼 `:feature:shop`, `:core:network`를 먼저 만들 수도 있지만, 초기 웹/서버 프로젝트에서는 package와 folder 구조만으로도 충분한 경우가 많다.
+
+이번 프로젝트의 기준:
+
+- 프론트는 `apps/web` 안에서 `routes`, `features`, `lib`로 나눈다.
+- 서버는 단일 Spring Boot module 안에서 `shop`, `visit`, `wishlist`, `common` 도메인 package로 나눈다.
+- OpenAPI client처럼 실제로 여러 앱에서 공유될 가능성이 큰 것은 `packages/api-client`로 물리 package를 만든다.
+
+물리 multi-module/package 분리는 재사용, 독립 테스트, dependency rule 강제 필요가 생길 때 승격한다. 먼저 interface와 의존 방향을 문서화하고, 진짜 비용을 줄이는 지점에서 쪼개는 쪽이 낫다.

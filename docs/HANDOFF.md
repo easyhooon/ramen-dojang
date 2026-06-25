@@ -6,7 +6,7 @@
 
 - GitHub remote: `https://github.com/easyhooon/ramen-dojang.git`
 - 기본 branch: `main`
-- 최근 기준 커밋: `d46a7ba feat: OpenAPI 생성 클라이언트 연결`
+- 최신 기준 커밋 확인: `git log -1 --oneline`
 - 작업 방식: 문서 기반으로 진행하고, 작업 전후로 [TODO](TODO.md)와 [LESSONS](LESSONS.md)를 갱신한다.
 - 에이전트 규칙: [AGENTS.md](../AGENTS.md)
 
@@ -17,8 +17,8 @@
 3. [TODO](TODO.md): 완료/미완료 작업 목록
 4. [DB ERD](06-database-erd.md): DB 관계와 확장 방향
 5. [API 계약](04-api-contract.md): DTO, endpoint, OpenAPI Generator 원칙
-6. [프론트 설계](02-frontend-plan.md), [프론트 디자인 방향](05-frontend-design-direction.md)
-7. [백엔드 설계](03-backend-plan.md)
+6. [프론트 설계](02-frontend-plan.md), [프론트 모듈 구조](07-frontend-module-structure.md), [프론트 디자인 방향](05-frontend-design-direction.md)
+7. [백엔드 설계](03-backend-plan.md), [백엔드 모듈 구조](08-backend-module-structure.md)
 8. [도메인 언어](../CONTEXT.md)
 
 ## 구현된 것
