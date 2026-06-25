@@ -236,3 +236,49 @@ WebView에서 이게 의미 있는 이유:
 
 - [nitro-webview](https://github.com/l2hyunwoo/nitro-webview)
 - [Nitro Modules](https://github.com/mrousavy/nitro)
+
+### Nitro와 Expo는 방향은 맞지만 Expo Go 검증 대상은 아니다
+
+Expo SDK 55 이후는 New Architecture가 항상 켜져 있고 끌 수 없다. Nitro Modules는 JSI와 정적 binding을 통해 native module을 붙이는 New Architecture 친화 계열이라, 큰 방향은 Expo SDK 56과 맞는다.
+
+다만 이것이 “Expo Go에서 바로 실행된다”는 뜻은 아니다. Expo Go는 고정된 native library만 들어 있는 앱이고, `nitro-webview`는 프로젝트에 추가되는 custom native module이다. 그래서 이 프로젝트의 모바일 앱은 `expo-dev-client`가 포함된 development build로 확인해야 한다.
+
+이번에 `expo-doctor`가 잡아준 문제:
+
+- `expo-dev-client`가 없는데 `expo start --dev-client`를 쓰고 있었다.
+- Expo SDK 56 기준 기대값과 다르게 React Native, React, TypeScript 버전이 어긋나 있었다.
+- SDK 55+에서는 New Architecture가 항상 켜져 있으므로 `app.json`의 `newArchEnabled` 설정이 오히려 schema 경고가 됐다.
+- `android.edgeToEdgeEnabled`도 현재 Expo config schema에서 허용되지 않아 제거했다.
+
+수정 후 확인:
+
+```bash
+cd apps/mobile
+pnpm dlx expo-doctor@latest
+pnpm --filter mobile typecheck
+```
+
+결과:
+
+```text
+21/21 checks passed. No issues detected.
+```
+
+다음 예방책:
+
+- Expo/RN/React/TypeScript 조합은 감으로 올리지 말고 `expo-doctor`를 먼저 본다.
+- `nitro-webview`처럼 native module을 추가하면 Expo Go 통과 여부가 아니라 development build 통과 여부를 기준으로 삼는다.
+- `expo-doctor` 통과는 dependency/config 검증이고, iOS/Android native build와 WebView upload/download 동작은 별도 TODO로 남긴다.
+
+### Nitro가 핫한 이유는 React Native의 기본 방향이 바뀌었기 때문이다
+
+예전 React Native native module은 JS와 native 사이를 bridge로 오가며 serialization, queue, thread hop 비용을 감수했다. Nitro Modules는 JSI 쪽에서 native 객체와 method를 더 직접적으로 연결하고, TypeScript spec에서 Swift/Kotlin/C++ binding을 생성하는 방향이다.
+
+그래서 요즘 주목받는 이유:
+
+- React Native New Architecture가 현재와 미래의 기본 경로가 됐다.
+- native module 호출 비용을 줄이는 방향이 성능상 중요해졌다.
+- 타입 기반 codegen으로 JS/native 경계의 계약을 더 분명하게 만들 수 있다.
+- WebView처럼 event와 imperative method가 많은 컴포넌트는 bridge 비용을 줄였을 때 이점이 생길 여지가 크다.
+
+하지만 Nitro가 웹 페이지 자체를 빠르게 만들어주는 것은 아니다. 웹뷰 안에서 돌아가는 `apps/web`의 렌더링 성능은 여전히 웹 앱의 bundle, React rendering, 네트워크, 브라우저 엔진 영향을 받는다. Nitro는 React Native shell과 native WebView 사이의 통신 비용을 줄이려는 선택이다.

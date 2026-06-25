@@ -88,7 +88,7 @@ pnpm dev:web
 pnpm dev:mobile
 ```
 
-`apps/mobile`은 Expo 기반 React Native 앱이며 WebView 구현은 `nitro-webview`를 사용합니다. Nitro native module을 쓰므로 Expo Go만으로는 부족할 수 있고, development build 또는 prebuild 기반 검증이 필요합니다.
+`apps/mobile`은 Expo 기반 React Native 앱이며 WebView 구현은 `nitro-webview`를 사용합니다. Nitro native module을 쓰므로 Expo Go가 아니라 `expo-dev-client`가 포함된 development build 또는 prebuild 기반으로 확인합니다.
 
 편의상 한 터미널에서 둘을 같이 띄울 수도 있습니다.
 
@@ -137,6 +137,21 @@ pnpm build
 pnpm --filter @ramen-dojang/api-client build
 pnpm --filter web build
 ```
+
+모바일 wrapper는 Expo SDK 조합과 app config를 먼저 확인합니다.
+
+```bash
+cd apps/mobile
+pnpm dlx expo-doctor@latest
+```
+
+그 다음 TypeScript를 확인합니다.
+
+```bash
+pnpm --filter mobile typecheck
+```
+
+`expo-doctor`가 통과해도 iOS/Android native build 성공을 보장하는 것은 아닙니다. `nitro-webview`는 native module이므로 실제 development build에서 WebView load, file upload/download, Android Maven repository 설정을 별도로 검증합니다.
 
 서버는 Gradle wrapper로 따로 검증합니다.
 

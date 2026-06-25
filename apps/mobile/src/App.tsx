@@ -123,13 +123,13 @@ const styles = StyleSheet.create({
     opacity: 0,
   },
   loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     alignItems: "center",
     backgroundColor: "rgba(255, 255, 255, 0.72)",
     justifyContent: "center",
   },
   emptyState: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     alignItems: "center",
     backgroundColor: "#fff7ed",
     justifyContent: "center",

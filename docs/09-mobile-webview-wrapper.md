@@ -7,6 +7,7 @@
 ```text
 apps/mobile
   Expo React Native app
+  expo-dev-client
   nitro-webview
   react-native-nitro-modules
 ```
@@ -70,6 +71,27 @@ pnpm dev:mobile
 EXPO_PUBLIC_WEB_URL=http://192.168.x.x:5173
 ```
 
+## Expo 호환성 기준
+
+현재 기준은 Expo SDK 56 + React Native 0.85.3 + React 19.2.3이다. Expo SDK 55 이후는 New Architecture가 항상 켜져 있으므로 `app.json`에 `newArchEnabled`를 따로 두지 않는다.
+
+Nitro Modules는 JSI/New Architecture 쪽으로 직접 붙는 native module 계열이라 방향성은 Expo SDK 56과 맞다. 다만 `nitro-webview`는 Expo Go에 기본 탑재된 라이브러리가 아니므로 Expo Go만으로는 확인할 수 없다. `expo-dev-client`가 포함된 development build 또는 `expo prebuild` 이후 native build로 확인한다.
+
+현재 로컬 검증:
+
+```bash
+cd apps/mobile
+pnpm dlx expo-doctor@latest
+```
+
+결과:
+
+```text
+21/21 checks passed. No issues detected.
+```
+
+이 결과는 Expo SDK 버전 조합과 app config schema가 맞다는 뜻이다. iOS/Android native build, WebView 실제 로딩, file upload/download 동작까지 보장하지는 않는다.
+
 ## Nitro 사용 시 코드 규칙
 
 `nitro-webview`의 event prop은 raw function이 아니라 `callback(...)`으로 감싼다.
@@ -97,15 +119,17 @@ const webViewRef = useRef<NitroWebViewType | null>(null);
 
 ## 주의점
 
-- Nitro native module을 쓰므로 Expo Go만으로는 부족할 수 있다.
+- Nitro native module을 쓰므로 Expo Go만으로는 부족하다.
 - iOS/Android 확인은 development build 또는 `expo run:ios`, `expo run:android` 기반으로 한다.
 - `nitro-webview`의 Android file download 지원은 Mozilla Maven repository 설정이 필요할 수 있다.
 - file upload를 쓰려면 iOS camera/photo/microphone permission string과 Android media permission을 확인해야 한다.
+- `nitro-webview` npm package에는 별도 Expo config plugin이 포함되어 있지 않으므로, prebuild 후 필요한 native 설정이 자동 반영되는지 직접 확인한다.
 - 지금 단계에서는 `ios/`, `android/` native output을 git에 커밋하지 않는다. prebuild 후 native 설정이 안정되면 별도 커밋으로 판단한다.
 
 ## 다음 작업
 
 - `pnpm --filter mobile typecheck`
+- `pnpm dlx expo-doctor@latest`
 - iOS development build에서 기본 WebView load 확인
 - Android development build에서 기본 WebView load 확인
 - file upload/download이 필요해지는 시점에 native host 설정 검증
@@ -114,4 +138,5 @@ const webViewRef = useRef<NitroWebViewType | null>(null);
 
 - [nitro-webview](https://github.com/l2hyunwoo/nitro-webview)
 - [Nitro Modules](https://github.com/mrousavy/nitro)
-- [Expo create a project](https://docs.expo.dev/get-started/create-a-project/)
+- [Expo New Architecture](https://docs.expo.dev/guides/new-architecture/)
+- [Expo development builds](https://docs.expo.dev/develop/development-builds/introduction/)

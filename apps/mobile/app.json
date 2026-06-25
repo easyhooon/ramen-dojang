@@ -5,7 +5,6 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ramendojang.app",
@@ -17,7 +16,6 @@
     },
     "android": {
       "package": "com.ramendojang.app",
-      "edgeToEdgeEnabled": true,
       "permissions": [
         "CAMERA",
         "READ_MEDIA_IMAGES",
