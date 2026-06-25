@@ -31,6 +31,20 @@
 
 - [Naver 지역 검색 API](https://developers.naver.com/docs/serviceapi/search/local/local.md)
 
+### 장소 API는 메뉴 API가 아니다
+
+Naver/Kakao/Google 장소 API를 공식 문서 기준으로 보면, 장소 발견과 기본 정보 보강에는 쓸 수 있지만 라멘 메뉴 목록과 가격을 안정적으로 가져오는 API로 보기는 어렵다.
+
+이번 조사에서 확인한 기준:
+
+- Naver/Kakao는 상호명, 주소, 좌표, 카테고리, 장소 URL 정도가 현실적인 핵심 데이터다.
+- Kakao는 장소 ID가 있어 후보 중복 제거에 유리하다.
+- Google은 사진, 영업시간, 평점, 리뷰 수, 웹사이트 같은 보조 정보까지 가능하지만 비용, FieldMask, attribution, 캐싱 정책을 고려해야 한다.
+- 썸네일은 있으면 좋은 optional 데이터이고, 없으면 placeholder UX를 전제로 둔다.
+- 메뉴 목록, 가격, 대표 메뉴는 자동 수집 대상이 아니라 방문 기록/메뉴판 사진/관리자 검수로 쌓아야 한다.
+
+자세한 조사 결과는 [Place Open API Data Research](13-place-open-api-research.md)에 둔다.
+
 ## 2026-06-25
 
 ### Flyway는 DB 변경 이력을 코드처럼 관리하는 도구다

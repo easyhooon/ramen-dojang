@@ -105,6 +105,22 @@
 - 라멘집과 방문 기록은 관계형 모델이 자연스럽다.
 - 지도 기반 도장깨기로 확장할 계획이 있으므로 위치 검색을 고려해 PostGIS를 먼저 선택했다.
 
+## External Place Data
+
+| Provider/API | 사용 후보 | 목적 |
+| --- | --- | --- |
+| Naver Search Local API | `shop_candidates` sync | 라멘집 후보의 상호명, 주소, 좌표, 카테고리, 상세 URL을 수집한다. |
+| Kakao Local API | `shop_candidates` sync | 장소 ID 기반 중복 제거와 음식점 카테고리 검색 후보를 수집한다. |
+| Google Places / Photos | future | 비용과 정책을 검토한 뒤 썸네일, 영업시간, 평점 같은 보조 데이터를 보강할 때 검토한다. |
+
+선택 기준:
+
+- 외부 API 결과는 `shops`에 바로 넣지 않고 `shop_candidates`에 저장한다.
+- 상호명, 주소, 좌표는 상대적으로 신뢰 가능한 핵심 데이터다.
+- 전화번호, 장소 URL, 썸네일, 영업시간, 평점은 provider별 optional 데이터로 본다.
+- 메뉴 목록과 가격은 공개 장소 API에서 안정적으로 가져올 수 없으므로 MVP 자동 수집 범위에서 제외한다.
+- provider별 최대 제공 필드와 한계는 [Place Open API Data Research](13-place-open-api-research.md)를 기준으로 한다.
+
 ## API Contract / Generated Client
 
 | 기술 | 사용 위치 | 목적 |
