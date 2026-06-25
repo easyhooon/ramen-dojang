@@ -43,6 +43,12 @@
 - [ ] 인증/사용자 소유권 behavior 목록 작성 후 TDD 첫 세로 slice 선택
 - [ ] Spring Security/OAuth 로그인 최소 세로 slice 구현
 - [ ] 현재 사용자 기준 shops visited/wishlisted/averageRating 계산으로 변경
+- [ ] 외부 검색 결과를 `shop_candidates`로 저장하는 ERD 확정
+- [ ] `shop_candidates` Flyway migration 작성
+- [ ] 네이버 지역 검색 API 기반 후보 sync spike 작성
+- [ ] 라멘집 후보 scoring/중복 제거 기준 정의
+- [ ] 후보 검수 후 `shops`로 승격하는 admin flow 설계
+- [ ] 수동 sync가 안정된 뒤 cron/scheduled job 도입 판단
 - [x] Spring Boot Kotlin 프로젝트 생성
 - [x] Gradle wrapper 포함 프로젝트 구성
 - [x] Spring Web/JDBC/Flyway/PostgreSQL/Validation 의존성 구성
