@@ -28,10 +28,33 @@
 
 1. 관련 문서를 먼저 읽는다.
 2. 필요하면 `docs/TODO.md`에 작업 항목을 추가한다.
-3. 구현한다.
-4. 가능한 최소 검증을 실행한다.
-5. TODO, WORKLOG, LESSONS를 필요에 맞게 갱신한다.
-6. 작업 단위가 끝나면 `commit-push` 기준으로 커밋을 나눈다.
+3. 기능 추가나 버그 수정이면 `tdd` 기준으로 public interface와 테스트할 behavior를 먼저 정한다.
+4. 구현한다.
+5. 가능한 최소 검증을 실행한다.
+6. TODO, WORKLOG, LESSONS를 필요에 맞게 갱신한다.
+7. 작업 단위가 끝나면 `commit-push` 기준으로 커밋을 나눈다.
+
+## TDD 기준
+
+기능 추가, 버그 수정, API 동작 변경은 기본적으로 `tdd` 스킬을 적용한다. 단순 문서 수정, repo 설정 정리, 스캐폴딩만 하는 작업은 예외로 둘 수 있지만, 그 경우에도 검증 명령과 남은 테스트 부채를 TODO/WORKLOG에 남긴다.
+
+TDD 작업은 아래 흐름을 따른다.
+
+1. 사용자가 기대하는 public interface와 중요한 behavior를 확인한다.
+2. behavior 하나를 고른다.
+3. 해당 behavior를 public interface로 검증하는 테스트를 먼저 작성한다.
+4. 실패를 확인한다.
+5. 그 테스트를 통과하는 최소 구현을 한다.
+6. 통과를 확인한다.
+7. 다음 behavior로 반복한다.
+8. 모든 테스트가 green일 때만 refactor한다.
+
+금지할 것:
+
+- 내부 구현, private method, 임시 자료구조 모양에 결합된 테스트
+- 테스트를 여러 개 한꺼번에 먼저 쓰고 구현을 나중에 몰아서 하는 horizontal slice
+- RED 상태에서 refactor
+- 테스트 없이 API 동작을 바꾸고 typecheck/build만으로 완료 처리
 
 ## 하루 작업 정리
 

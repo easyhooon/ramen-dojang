@@ -42,6 +42,7 @@
 - API가 바뀌면 서버 DTO/controller annotation을 고친 뒤 `pnpm api:generate`로 다시 생성한다.
 - generated client가 만드는 `Date`, optional field는 wrapper에서 앱 타입으로 변환한다.
 - DB/API 변경은 먼저 [DB ERD](06-database-erd.md)를 확인한다.
+- 기능 추가/버그 수정/API 동작 변경은 [AGENTS.md](../AGENTS.md)의 TDD 기준을 따른다.
 - 실제 `.env`, `.env.local`은 git에 올리지 않는다. `*.example`만 공유한다.
 - 작업 단위가 끝나면 검증 후 커밋/푸시한다.
 
@@ -52,10 +53,11 @@
 1. 로그인/사용자 소유권 반영 ERD 확정
 2. `users` 테이블, `visits.user_id`, `wishlist.user_id` Flyway migration 추가
 3. 인증 방식 결정: Google/Kakao/Naver/OAuth 우선순위
-4. Spring Security/OAuth 최소 세로 slice 구현
-5. Swagger UI에서 shops, visits, wishlist CRUD 수동 검증
-6. 브라우저 화면 검증
-7. Vercel 배포 설정 정리
+4. 인증/사용자 소유권 behavior 목록 작성 후 TDD 첫 세로 slice 선택
+5. Spring Security/OAuth 최소 세로 slice 구현
+6. Swagger UI에서 shops, visits, wishlist CRUD 수동 검증
+7. 브라우저 화면 검증
+8. Vercel 배포 설정 정리
 
 현재 대기 중인 검증:
 
@@ -63,6 +65,7 @@
 - `pnpm dev:api`
 - Flyway migration 실제 적용 확인
 - Swagger UI CRUD 수동 검증
+- 기존 scaffold/API/frontend 작업의 테스트 부채 정리
 
 ## 자주 쓰는 명령
 
@@ -97,6 +100,7 @@ cd server/api
 - OpenAPI Generator는 첫 실행 때 Maven Central에서 generator jar를 내려받는다.
 - Vercel 배포 시 web app은 Next.js가 아니라 Vite React다. monorepo root와 build command를 명확히 설정해야 한다.
 - `apps/mobile`은 Expo Go가 아니라 development build/prebuild 검증이 필요할 수 있다. Nitro native module을 쓰기 때문이다.
+- 오늘까지의 초기 scaffold는 typecheck/build/compile 중심으로 검증했지만, TDD red-green-refactor 흔적은 부족하다. 다음 behavior 구현부터는 테스트를 먼저 추가한다.
 
 ## Suggested Skills
 

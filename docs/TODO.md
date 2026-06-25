@@ -26,6 +26,8 @@
 - [x] React Native 웹뷰 래퍼 앱 `apps/mobile` 추가
 - [x] 모바일 웹뷰 래퍼 기술 선택 문서화
 - [x] Expo/Nitro 호환성 기준 문서화
+- [x] TDD 작업 기준을 `AGENTS.md`에 명시
+- [ ] 기존 scaffold/API/frontend 작업의 테스트 부채 정리
 
 ## Server
 
@@ -33,6 +35,7 @@
 - [ ] 로그인/사용자 소유권 반영 ERD 확정
 - [ ] `users` 테이블 및 `visits.user_id`, `wishlist.user_id` migration 작성
 - [ ] 인증 방식 결정: Google/Kakao/Naver/OAuth 우선순위
+- [ ] 인증/사용자 소유권 behavior 목록 작성 후 TDD 첫 세로 slice 선택
 - [ ] Spring Security/OAuth 로그인 최소 세로 slice 구현
 - [ ] 현재 사용자 기준 shops visited/wishlisted/averageRating 계산으로 변경
 - [x] Spring Boot Kotlin 프로젝트 생성
@@ -60,6 +63,7 @@
 - [ ] Swagger UI에서 visits CRUD 수동 검증
 - [ ] Swagger UI에서 wishlist API 수동 검증
 - [ ] API smoke test 작성 또는 수동 검증 기록
+- [ ] shops/visits/wishlist API behavior test 보강
 
 ## Frontend
 
@@ -77,6 +81,7 @@
 - [x] 프론트 타입체크 검증
 - [x] 프론트 빌드 검증
 - [ ] 브라우저 화면 검증
+- [ ] 주요 화면 query/mutation behavior test 전략 결정
 - [x] 모바일 Expo SDK 패키지 조합 `expo-doctor` 검증
 - [ ] 모바일 웹뷰 래퍼 development build 검증
 - [ ] `nitro-webview` iOS/Android native setup 검증

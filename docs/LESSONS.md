@@ -282,3 +282,21 @@ pnpm --filter mobile typecheck
 - WebView처럼 event와 imperative method가 많은 컴포넌트는 bridge 비용을 줄였을 때 이점이 생길 여지가 크다.
 
 하지만 Nitro가 웹 페이지 자체를 빠르게 만들어주는 것은 아니다. 웹뷰 안에서 돌아가는 `apps/web`의 렌더링 성능은 여전히 웹 앱의 bundle, React rendering, 네트워크, 브라우저 엔진 영향을 받는다. Nitro는 React Native shell과 native WebView 사이의 통신 비용을 줄이려는 선택이다.
+
+### typecheck/build 검증은 TDD 흔적이 아니다
+
+초기 스캐폴딩을 빠르게 진행하면서 `pnpm typecheck`, `pnpm build`, `./gradlew compileKotlin`, `./gradlew test` 같은 검증은 많이 실행했다. 하지만 이것은 “이미 만든 구조가 깨지지 않는다”는 확인이지, behavior를 먼저 테스트로 정의하고 구현한 TDD 흐름은 아니다.
+
+TDD 기준으로는 다음 흔적이 남아야 한다.
+
+- public interface 기준 behavior를 먼저 적는다.
+- behavior 하나에 대한 실패 테스트를 먼저 만든다.
+- 최소 구현으로 green을 만든다.
+- 다음 behavior로 반복한다.
+- 모든 테스트가 green일 때만 refactor한다.
+
+이번 깨달음:
+
+- 스캐폴딩/문서/설정 작업은 TDD가 애매할 수 있다.
+- 하지만 API behavior, 인증, 사용자 소유권, 프론트 query/mutation 흐름은 TDD로 잡을 수 있다.
+- 다음 기능 구현부터는 “테스트 없이 구현 후 typecheck”를 완료 기준으로 삼지 않는다.
