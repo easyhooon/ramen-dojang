@@ -69,6 +69,7 @@
 - Swagger/OpenAPI 작업은 code annotation 작성과 runtime Swagger UI 검증이 나뉜다는 점을 정리했다.
 - Nitro/Expo 호환성, Expo Go와 development build 차이, New Architecture/JSI/Nitro 관계를 기록했다.
 - ESLint와 oxlint의 차이, 이 프로젝트에서 oxlint-first로 trial할 근거와 주의점을 기록했다.
+- `pnpm verify`와 `.githooks/pre-commit`이 어떤 순서로 동작하는지 Mermaid 흐름도로 기록했다.
 
 ### 검증한 것
 

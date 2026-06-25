@@ -58,6 +58,7 @@ pnpm verify
 ```
 
 커밋 시점에는 `.githooks/pre-commit`이 같은 하네스를 강제한다.
+하네스의 세부 흐름도는 [Development Flow](docs/11-development-flow.md)의 “검증 하네스 흐름”을 따른다.
 
 ```bash
 pnpm verify
