@@ -101,7 +101,7 @@
 - [ ] Swagger UI에서 shops catalog CRUD 수동 검증
 - [ ] Swagger UI에서 visits CRUD 수동 검증, 개인 기록 서버 동기화 재개 시
 - [ ] Swagger UI에서 wishlist API 수동 검증, 개인 기록 서버 동기화 재개 시
-- [ ] API smoke test 작성 또는 수동 검증 기록
+- [x] API smoke test 작성 또는 수동 검증 기록
 - [ ] shops/visits/wishlist API behavior test 보강
 
 ## Frontend
@@ -176,4 +176,6 @@
 - [x] `http://127.0.0.1:8080/health` 응답 `{"status":"ok"}` 확인
 - [x] Homebrew PostgreSQL 17/PostGIS 설치 후 `pnpm dev:api` 실제 DB 모드 실행 확인
 - [x] Flyway V1/V2 migration 적용 확인
+- [x] 로컬 DB reset 후 `POST /shops` 기본 썸네일 저장과 `GET /shops` 응답 확인
+- [x] 인앱 브라우저에서 `/shops` 라멘집 카드 기본 썸네일 렌더링 확인
 - [ ] Swagger UI API별 수동 smoke 확인

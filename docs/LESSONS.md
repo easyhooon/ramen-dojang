@@ -412,6 +412,20 @@ pnpm add -D -w oxlint
 - Docker가 없는 환경에서 Homebrew로 PostGIS를 쓸 때는 `find /opt/homebrew -name postgis.control`로 지원되는 PostgreSQL major version을 먼저 확인한다.
 - PATH에 여러 PostgreSQL 버전이 섞이면 절대 경로(`/opt/homebrew/opt/postgresql@17/bin/...`)를 쓴다.
 
+### 현재 Docker는 로컬 개발 DB 인프라용이다
+
+지금 Docker는 앱 배포용이 아니라 PostgreSQL/PostGIS 개발 DB를 쉽게 띄우기 위한 용도다. repo 기준으로 `infra/docker-compose.yml`에는 PostGIS가 포함된 PostgreSQL 컨테이너만 있다.
+
+| 용도 | 현재 사용 여부 | 설명 |
+| --- | --- | --- |
+| Postgres DB 실행 | 사용 | `ramen_dojang` 개발 DB를 로컬에서 띄운다. |
+| PostGIS 포함 DB 제공 | 사용 | 라멘집 위치 검색과 거리 계산을 위해 필요하다. |
+| API 서버 컨테이너화 | 아직 아님 | Spring Boot는 로컬 `./gradlew bootRun`으로 실행한다. |
+| 웹 프론트 컨테이너화 | 아님 | Vite dev server와 Vercel 배포를 사용한다. |
+| 운영 배포 | 아직 아님 | 서버 클라우드 배포 방식은 별도로 정한다. |
+
+Docker를 두는 이유는 PostGIS 로컬 설치의 버전/권한 문제를 줄이기 위해서다. 혼자 개발 중이고 Homebrew PostgreSQL이 잘 돌아가면 필수는 아니지만, 새 컴퓨터에서 빠르게 DB를 띄우는 안전한 경로로 남긴다.
+
 ### PostgreSQL은 null query parameter 타입을 추론하지 못할 수 있다
 
 증상:
@@ -486,3 +500,17 @@ Exposed는 JetBrains의 Kotlin SQL/DAO 라이브러리라 Ktor와 함께 쓰는 
 `curl http://localhost:8080/health`가 성공해도 Vite dev server(`localhost:5174`)에서 Spring API(`localhost:8080`)를 호출하면 브라우저의 CORS 정책을 통과해야 한다. API 서버가 살아 있는데 화면에 “API 서버 연결을 확인해주세요”가 뜨면 서버 health뿐 아니라 `Origin` 헤더를 포함한 응답의 `Access-Control-Allow-Origin`도 확인한다.
 
 로컬 개발에서는 Spring `WebMvcConfigurer`로 `http://localhost:*`, `http://127.0.0.1:*`를 허용하면 충분하다. 운영에서는 Vercel 도메인과 앱인토스 도메인만 좁혀서 허용한다.
+
+### Smoke test와 E2E test는 깊이가 다르다
+
+Smoke test는 배포나 로컬 실행 직후 “불이 붙었는지” 빠르게 보는 최소 확인이다. E2E test는 사용자의 실제 흐름을 처음부터 끝까지 자동으로 검증한다.
+
+| 구분 | Smoke test | E2E test |
+| --- | --- | --- |
+| 목적 | 핵심 경로가 죽지 않았는지 빠르게 확인 | 실제 사용자 시나리오가 끝까지 맞는지 확인 |
+| 범위 | health, 주요 API 1~2개, 대표 화면 렌더링 | 화면 이동, 입력, 저장, 조회, 삭제 같은 전체 흐름 |
+| 속도 | 빠름 | 상대적으로 느림 |
+| 실패 의미 | 서버/DB/빌드/배포가 크게 깨졌을 가능성 | 기능 흐름이나 화면 계약이 깨졌을 가능성 |
+| 예시 | `/health`, `GET /shops`, 기본 썸네일 렌더링 확인 | 라멘집 검색 → 방문 리뷰 작성 → 홈 기록 반영 확인 |
+
+이번 프로젝트에서는 개발 중 빠른 확인은 smoke test로 충분하다. 출시 전 핵심 플로우가 고정되면 Playwright 같은 도구로 E2E test를 붙인다.
