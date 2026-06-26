@@ -29,7 +29,8 @@ flowchart TD
   B -->|"git commit"| D[".githooks/pre-commit"]
   D --> C
 
-  C --> E["pnpm typecheck"]
+  C --> P["pnpm verify:ponytail"]
+  P --> E["pnpm typecheck"]
   E --> E1["@ramen-dojang/api-client<br/>tsc --noEmit"]
   E1 --> E2["web<br/>tsc -b --noEmit"]
   E2 --> E3["mobile<br/>tsc --noEmit"]
@@ -47,6 +48,7 @@ flowchart TD
 
   H1 --> I["하네스 통과"]
 
+  P -. 실패 .-> V["즉시 중단<br/>새 dependency 목적 문서화"]
   E -. 실패 .-> X["즉시 중단<br/>type error 수정"]
   F -. 실패 .-> Y["즉시 중단<br/>build error 수정"]
   G -. 실패 .-> Z["즉시 중단<br/>server test 수정"]
@@ -55,6 +57,7 @@ flowchart TD
 
 ## 단계별 의미
 
+- `pnpm verify:ponytail`: 새 dependency를 추가했다면 [Tech Stack](10-tech-stack.md)에 사용 목적도 같이 적었는지 확인한다.
 - `pnpm typecheck`: API client, web, mobile TypeScript 계약이 깨졌는지 확인한다.
 - `pnpm build`: generated client package와 Vite web production build가 가능한지 확인한다.
 - `pnpm test`: 현재는 서버 테스트 하네스로 연결되어 있다.
@@ -83,6 +86,7 @@ TDD에서 말하는 Red/Green은 테스트 상태를 뜻한다.
 - DB/Flyway 실환경 migration 검증
 - 모바일 iOS/Android development build 검증
 - lint trial 후 확정될 `pnpm lint`
+- 더 정교한 과설계 감지. 현재 ponytail gate는 자동 판별 가능한 dependency 추가만 막는다.
 
 ## 관련 파일
 
