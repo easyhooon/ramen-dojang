@@ -7,9 +7,9 @@
 - 웹사이트와 토스 미니앱을 제품의 1차 배포 경로로 본다.
 - 웹 기술 기반 구현을 유지하고, `apps/web`을 웹사이트와 토스 미니앱의 공통 코어로 둔다.
 - native 기능은 웹사이트와 토스 미니앱 환경이 제공하지 못하는 요구가 생길 때만 별도 앱 shell로 확장한다.
-- 1차 MVP는 서버 없이 localStorage로 저장한다.
-- 서버 모드에서는 API 계약은 OpenAPI를 기준으로 하고, 프론트 client는 생성한다.
-- 서버 모드에서는 DB schema 변경은 migration으로 남긴다.
+- 1차 MVP는 로그인 없이 공용 라멘집 catalog는 서버에서 받고, 개인 방문 기록과 위시리스트는 localStorage에 저장한다.
+- API 계약은 OpenAPI를 기준으로 하고, 프론트 client는 생성한다.
+- DB schema 변경은 migration으로 남긴다.
 - 지도 기반 확장을 고려해 서버 쪽에는 PostGIS를 둔다.
 
 ## Monorepo / Tooling
@@ -34,9 +34,9 @@
 | Vite | `apps/web` | 빠른 개발 서버와 web build를 담당한다. |
 | @vitejs/plugin-react | `apps/web` | Vite에서 React transform과 Fast Refresh를 사용한다. |
 | TanStack Router | `apps/web` | 라멘집 상세, 방문 기록 등 URL 기반 화면 전환을 관리한다. |
-| localStorage | `apps/web` | 1차 MVP에서 서버 없이 라멘집, 방문 기록, 위시리스트를 저장한다. |
-| TanStack Query | `apps/web`, server mode | API 호출 결과, loading/error 상태, cache invalidation을 관리한다. |
-| @ramen-dojang/api-client | `apps/web`, server mode | OpenAPI에서 생성한 client를 앱 타입으로 감싼 공용 client다. |
+| localStorage | `apps/web` | 1차 MVP에서 개인 방문 기록과 위시리스트를 저장한다. |
+| TanStack Query | `apps/web` | 서버 catalog 조회와 로컬 개인 기록의 loading/error 상태, cache invalidation을 관리한다. |
+| @ramen-dojang/api-client | `apps/web` | OpenAPI에서 생성한 서버 catalog client를 앱 타입으로 감싼 공용 client다. |
 | @apps-in-toss/web-framework | `apps/web` | 기존 Vite 앱을 앱인토스 Granite dev/build/packaging 흐름에 태우기 위해 사용한다. |
 | @toss/tds-mobile | `apps/web` | 앱인토스 비게임 심사와 토스 UX 일관성을 위해 Button, ListRow, TextField 같은 TDS 컴포넌트를 사용한다. |
 | @toss/tds-mobile-ait | `apps/web` | 앱인토스 환경에서 TDS가 올바르게 동작하도록 `TDSMobileAITProvider`를 제공한다. |
@@ -49,9 +49,10 @@
 선택 이유:
 
 - 이 프로젝트는 기록형 서비스라 목록, 상세, 수정 화면이 URL로 표현되는 것이 중요하다.
-- 1차 앱인토스 MVP는 개인 기록 앱이므로 localStorage가 서버보다 싸고 빠르다.
-- 서버 모드에서는 서버 상태를 화면 local state와 분리하는 편이 낫기 때문에 TanStack Query를 둔다.
-- 서버 모드에서는 프론트가 서버 DTO를 손으로 맞추지 않도록 generated API client를 사용한다.
+- 1차 앱인토스 MVP에서도 라멘집 catalog는 서버에서 받아 앱 업데이트 없이 갱신한다.
+- 개인 방문 기록과 위시리스트는 로그인 전까지 localStorage가 서버 동기화보다 싸고 빠르다.
+- 서버 상태를 화면 local state와 분리하는 편이 낫기 때문에 TanStack Query를 둔다.
+- 프론트가 서버 DTO를 손으로 맞추지 않도록 generated API client를 사용한다.
 - Granite는 Vite 대체가 아니라 앱인토스용 wrapper다. 기존 `vite dev`, `vite build`를 `granite.config.ts`에서 호출한다.
 - TDS 2.5.0은 React 18까지 peer dependency로 선언되어 있어, React 19에서 실제 빌드와 런타임을 확인하며 적용한다.
 - Sentry는 첫 샌드박스/콘솔 업로드 후 외부 테스트를 시작할 때 초기화한다. 지금은 의존성만 명시하고 DSN, source map upload, token 설정은 보류한다.
@@ -166,8 +167,8 @@
 현재 배포 방향:
 
 - web: 공개 웹사이트는 Vercel, 토스 미니앱은 앱인토스 `.ait` 업로드와 샌드박스 테스트
-- API: 1차 MVP에서는 배포하지 않음
-- DB: 1차 MVP에서는 배포하지 않음
+- API: 공용 라멘집 catalog 서버로 배포 필요
+- DB: 공용 라멘집 catalog 저장소로 배포 필요
 - mobile: Expo/EAS/native build는 스토어 배포가 다시 필요해질 때 검토
 
 아직 확정하지 않은 것:
@@ -176,7 +177,7 @@
 - Toss Mini App SDK/TDS 적용 방식
 - 웹사이트 도메인
 - 사용자 식별 방식: 1차 MVP는 로그인 없음, `getAnonymousKey`와 토스 로그인은 동기화가 필요해질 때 재검토
-- API/DB production hosting, 서버 모드 재개 시
+- API/DB production hosting
 - mobile store 배포 여부
 
 앱인토스 콘솔 앱 만들기 초안:

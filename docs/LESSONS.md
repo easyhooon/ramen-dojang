@@ -431,6 +431,16 @@ pnpm add -D -w oxlint
 
 - nullable filter parameter를 SQL에 넣을 때는 타입 cast를 명시하거나, filter가 있을 때만 WHERE 절을 붙인다.
 
+### Spring Boot Kotlin의 주류 ORM은 JPA/Hibernate다
+
+ORM은 Object-Relational Mapping의 약자다. DB row와 table을 애플리케이션의 객체와 관계로 매핑해주고, insert/update/select 같은 반복적인 SQL과 객체 변환을 줄여준다. 보통 entity mapping, 변경 감지, relation loading, transaction 안의 persistence context, repository 패턴을 제공한다.
+
+Kotlin Spring Boot 3에서 가장 주류인 선택지는 Spring Data JPA + Hibernate다. Spring 생태계 문서, 예제, 팀 경험, 라이브러리 호환성이 가장 넓다. 다만 Kotlin에서는 JPA proxy 때문에 `kotlin-jpa`/`all-open`/`no-arg` 설정, entity의 `data class` 사용 주의, lazy loading과 equals/hashCode 주의가 따라온다.
+
+Exposed는 JetBrains의 Kotlin SQL/DAO 라이브러리라 Ktor와 함께 쓰는 경우가 많지만, Spring Boot의 주류 ORM 선택지는 아니다. jOOQ는 타입 안전 SQL DSL에 가깝고 ORM이라기보다 SQL을 명시적으로 쓰는 선택지다. Spring JDBC/JdbcClient는 지금 프로젝트처럼 SQL을 직접 쓰는 가장 얇은 선택지다.
+
+이번 프로젝트는 아직 ORM을 쓰지 않는다. 현재는 Spring JDBC와 직접 SQL, Flyway migration으로 충분하다. PostGIS 쿼리와 catalog 검색처럼 SQL 모양이 중요한 부분이 있어, SQL 중복과 mapping 실수가 실제로 늘어나기 전까지 ORM은 보류한다.
+
 ### 앱인토스에서 Vite와 Granite는 양자택일이 아니다
 
 앱인토스 미니앱을 만든다고 해서 기존 Vite 앱을 버릴 필요는 없다. Vite는 웹 개발 서버와 번들러 역할을 계속 맡고, Granite는 앱인토스용 설정, 빌드, 패키징 레이어로 얹는다.
@@ -461,8 +471,12 @@ pnpm add -D -w oxlint
 
 참고: [앱인토스 찍먹해보기](https://velog.io/@dbwls/%EC%95%B1%EC%9D%B8%ED%86%A0%EC%8A%A4-%EC%B0%8D%EB%A8%B9%ED%95%B4%EB%B3%B4%EA%B8%B0)
 
-### 첫 앱인토스 MVP는 서버 없이도 배울 수 있다
+### 첫 앱인토스 MVP도 catalog 서버는 필요하다
 
-개인 기록 앱의 첫 검증 목표가 “사용감이 괜찮은가”라면 서버, 로그인, DB, PostGIS는 필수가 아니다. 로컬 저장만으로도 라멘집 등록, 방문 기록, 위시리스트, 앱인토스 샌드박스 실행, 모바일 반응형 문제를 먼저 확인할 수 있다.
+개인 기록 앱의 첫 검증 목표가 “사용감이 괜찮은가”라도 라멘집 catalog를 앱에 하드코딩하면 데이터 갱신과 검색 품질이 바로 막힌다. 앱 진입 때마다 많은 라멘집 데이터를 코드에 박아 배포할 수는 없으므로, 검수된 라멘집 목록과 검색은 서버가 맡아야 한다.
 
-서버는 이미 만들어 둔 자산으로 보관한다. 기기 간 동기화, 공개 라멘집 DB, 외부 장소 후보 수집, 토스 로그인처럼 서버가 없으면 풀 수 없는 요구가 실제로 생길 때 다시 연결한다.
+다만 로그인은 여전히 1차 필수 조건이 아니다. 이번 프로젝트의 최소 구조는 공용 라멘집 catalog 서버와 localStorage 개인 기록이다. 서버는 `shops` 목록/상세/검색을 제공하고, 앱은 방문 기록과 위시리스트를 로컬에 저장한다. 기기 간 동기화나 토스 로그인은 개인 기록을 여러 기기에서 이어 써야 할 때 붙인다.
+
+### 초기에는 모니터링 툴보다 health와 로그면 충분하다
+
+아직 운영 트래픽이 없는 단계에서는 Prometheus, Grafana 같은 모니터링 스택을 먼저 붙이지 않는다. 로컬 개발은 터미널 로그와 `/health` 확인으로 충분하고, 앱인토스 WebView 오류 추적은 Sentry DSN을 준비한 뒤 붙인다. 운영 전에는 최소 기준을 다시 정한다.

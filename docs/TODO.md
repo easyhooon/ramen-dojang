@@ -9,7 +9,7 @@
 - [ ] Vercel 프로젝트 생성: Root Directory `apps/web`, Framework Preset `Vite`, Output Directory `dist`
 - [ ] 웹사이트 도메인 결정 및 Vercel 연결
 - [x] 앱인토스 콘솔 앱 만들기 완료
-- [x] 1차 MVP 방향 결정: 로그인/서버 없이 로컬 저장 기반 토스 미니앱으로 먼저 출시 시도
+- [x] 1차 MVP 방향 결정: 로그인 없이 서버 catalog + 로컬 개인 기록 기반 토스 미니앱으로 먼저 출시 시도
 - [ ] 앱인토스 앱 정보 등록하기
 - [ ] 앱인토스 약관 등록하기
 - [ ] 앱인토스 `.ait` 업로드 후 샌드박스 실행 확인
@@ -20,6 +20,7 @@
 - [ ] MVP 사용자 식별은 앱인토스 `getAnonymousKey`로 가능한지 확인
 - [ ] 토스 로그인 테스트 앱 개발 가능 범위와 운영 배포 전 사업자 인증, 앱인토스 서버 API용 mTLS 인증서/방화벽/secret 관리 필요사항 확인
 - [ ] Sentry 프로젝트/DSN/API key 발급 후 앱인토스 WebView JS 오류 추적 설정
+- [ ] 운영 전 최소 모니터링 기준 결정: 현재는 별도 모니터링 툴 없이 터미널 로그, `/health`, Sentry 예정만 사용
 - [ ] 기존 Expo/Nitro WebView wrapper 유지/삭제 판단
 - [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
 
@@ -48,6 +49,7 @@
 - [x] 루트 검증 하네스 `pnpm verify`, `pnpm test` 추가
 - [x] `.githooks/pre-commit`으로 `pnpm verify` 실행
 - [x] ponytail 기준 dependency 추가 문서화 gate를 `pnpm verify`에 연결
+- [ ] pnpm 11 minimum release age / approve-builds 정책에 맞춰 Granite/Sentry 계열 의존성 설치 절차 정리
 - [ ] lint 정책 결정: oxlint 단독 vs ESLint 병행
 - [ ] oxlint trial: TS/TSX, React hooks, generated client 제외, mobile 파일 false positive 확인
 - [ ] 기존 scaffold/API/frontend 작업의 테스트 부채 정리
@@ -55,7 +57,7 @@
 
 ## Server
 
-1차 앱인토스 MVP에서는 서버를 출시 필수 경로에서 제외한다. 아래 항목은 동기화, 공개 라멘집 DB, 외부 후보 수집이 필요해질 때 재개한다.
+1차 앱인토스 MVP에서도 서버는 공용 라멘집 catalog 용도로 필요하다. 아래 개인 기록 동기화/로그인 항목은 필요해질 때 재개한다.
 
 - [x] DB ERD 문서 작성
 - [ ] 로그인/사용자 소유권 반영 ERD 확정
@@ -73,6 +75,7 @@
 - [ ] 후보 검수 후 `shops`로 승격하는 admin flow 설계
 - [ ] 메뉴 데이터 축적 방식 설계: 방문 기록 기반 후보화, 메뉴판 사진, 관리자 검수
 - [ ] 수동 sync가 안정된 뒤 cron/scheduled job 도입 판단
+- [ ] 앱 출시 전 초기 라멘집 seed 데이터 투입 방식 결정: SQL seed, admin script, Swagger 수동 등록 중 택일
 - [x] Spring Boot Kotlin 프로젝트 생성
 - [x] Gradle wrapper 포함 프로젝트 구성
 - [x] Spring Web/JDBC/Flyway/PostgreSQL/Validation 의존성 구성
@@ -94,10 +97,10 @@
 - [x] 서버 컴파일 검증
 - [x] Flyway migration 검증
 - [x] Swagger/OpenAPI 응답 검증
-- [ ] Swagger UI에서 shops CRUD 수동 검증, 서버 모드 재개 시
-- [ ] Swagger UI에서 visits CRUD 수동 검증, 서버 모드 재개 시
-- [ ] Swagger UI에서 wishlist API 수동 검증, 서버 모드 재개 시
-- [ ] API smoke test 작성 또는 수동 검증 기록, 서버 모드 재개 시
+- [ ] Swagger UI에서 shops catalog CRUD 수동 검증
+- [ ] Swagger UI에서 visits CRUD 수동 검증, 개인 기록 서버 동기화 재개 시
+- [ ] Swagger UI에서 wishlist API 수동 검증, 개인 기록 서버 동기화 재개 시
+- [ ] API smoke test 작성 또는 수동 검증 기록
 - [ ] shops/visits/wishlist API behavior test 보강
 
 ## Frontend
@@ -117,12 +120,14 @@
 - [x] 프론트 빌드 검증
 - [ ] 브라우저 화면 검증
 - [ ] 웹사이트 + 토스 미니앱 공통 UX로 프론트 IA/화면 범위 재정리
-- [x] 1차 MVP를 API 의존 없는 `localStorage` 저장 모드로 전환
-- [x] 라멘집/방문 기록/위시리스트 local repository 작성
-- [ ] 앱인토스 샌드박스에서 서버 없이 핵심 CRUD 수동 테스트
+- [x] 1차 MVP를 서버 catalog + 로컬 개인 기록 모드로 전환
+- [x] 방문 기록/위시리스트 local repository 작성
+- [x] 라멘집 목록/상세를 서버 catalog API로 재연결
+- [ ] 앱인토스 샌드박스에서 서버 catalog 조회와 로컬 방문 기록/위시리스트 수동 테스트
 - [x] TDS Provider 연결 및 핵심 액션 버튼 1차 치환
-- [ ] TDS 컴포넌트 기준으로 기존 UI 치환 범위 산정
-- [ ] TDS ListRow/TextField/TextArea/Dialog 적용 범위 산정
+- [x] TDS 컴포넌트 기준으로 기존 UI 치환 범위 산정
+- [x] TDS TextField/TextArea/Badge 1차 치환
+- [ ] TDS ListRow/Dialog/Selector 적용 범위 산정
 - [x] `pnpm --filter web build:ait`로 앱인토스 Granite 산출물 생성 확인
 - [ ] Sentry 초기화 시 `enableNative: false` 적용 및 sourcemap upload 절차 확인
 - [ ] 주요 화면 query/mutation behavior test 전략 결정
@@ -164,4 +169,4 @@
 - [x] `http://127.0.0.1:8080/health` 응답 `{"status":"ok"}` 확인
 - [x] Homebrew PostgreSQL 17/PostGIS 설치 후 `pnpm dev:api` 실제 DB 모드 실행 확인
 - [x] Flyway V1/V2 migration 적용 확인
-- [ ] Swagger UI API별 수동 smoke 확인, 서버 모드 재개 시
+- [ ] Swagger UI API별 수동 smoke 확인

@@ -1,6 +1,6 @@
 # 라멘 도장깨기
 
-라멘집 방문 기록을 쌓고, 이후 동기화와 지도 기반 도장깨기로 확장하는 웹사이트 + 토스 미니앱 서비스입니다. 1차 MVP는 로그인과 서버 없이 `apps/web`의 로컬 저장 기반 토스 미니앱으로 먼저 올려봅니다.
+라멘집 방문 기록을 쌓고, 이후 동기화와 지도 기반 도장깨기로 확장하는 웹사이트 + 토스 미니앱 서비스입니다. 1차 MVP는 로그인 없이 공용 라멘집 카탈로그는 서버에서 받고, 개인 방문 기록과 위시리스트는 `apps/web`의 로컬 저장에 둡니다.
 
 ## 구조
 
@@ -17,12 +17,12 @@ docs                 Product, frontend, backend, API docs
 
 | 영역     | 주요 기술                                            | 목적                                    |
 | -------- | ---------------------------------------------------- | --------------------------------------- |
-| Web      | React, Vite, TanStack Router, localStorage          | 웹사이트/미니앱 화면, 로컬 기록 저장    |
+| Web      | React, Vite, TanStack Router, TanStack Query, localStorage | 웹사이트/미니앱 화면, 서버 카탈로그 조회와 로컬 개인 기록 저장 |
 | Mini App | Toss Mini App SDK, Toss Design System                | 토스 미니앱 등록과 토스 앱 안의 UI      |
 | Mobile   | Expo, React Native, nitro-webview                    | 보류된 모바일 WebView 래퍼              |
-| API      | Kotlin, Spring Boot, JDBC, Flyway, springdoc-openapi | 2차 서버 동기화, Swagger/OpenAPI        |
-| DB/Infra | PostgreSQL, PostGIS, Docker Compose                  | 2차 서버 모드와 지도 확장 대비          |
-| Contract | OpenAPI Generator, TypeScript API client             | 2차 서버 스펙 기반 프론트 client 생성   |
+| API      | Kotlin, Spring Boot, JDBC, Flyway, springdoc-openapi | 공용 라멘집 카탈로그와 Swagger/OpenAPI  |
+| DB/Infra | PostgreSQL, PostGIS, Docker Compose                  | 공용 라멘집 DB와 지도 확장 대비         |
+| Contract | OpenAPI Generator, TypeScript API client             | 서버 스펙 기반 프론트 client 생성       |
 
 라이브러리별 사용 목적은 [docs/10-tech-stack.md](docs/10-tech-stack.md)에 정리합니다.
 
@@ -78,19 +78,7 @@ cp server/api/.env.example server/api/.env
 
 ## 개발 실행
 
-1차 MVP는 프론트만 실행해도 됩니다.
-
-```bash
-pnpm dev:web
-```
-
-앱인토스 산출물은 아래 명령으로 만듭니다.
-
-```bash
-pnpm --filter web build:ait
-```
-
-서버 모드를 확인할 때는 프론트와 서버를 분리해서 실행합니다.
+1차 MVP도 라멘집 검색에는 API 서버가 필요합니다. 개인 방문 기록과 위시리스트만 브라우저 localStorage에 저장합니다.
 
 먼저 DB를 실행합니다.
 
@@ -108,6 +96,12 @@ pnpm dev:api
 
 ```bash
 pnpm dev:web
+```
+
+앱인토스 산출물은 아래 명령으로 만듭니다.
+
+```bash
+pnpm --filter web build:ait
 ```
 
 모바일 웹뷰 래퍼를 확인하려면 프론트 서버를 먼저 띄운 뒤 별도 터미널에서 실행합니다.
