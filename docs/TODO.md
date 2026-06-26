@@ -123,6 +123,8 @@
 - [x] 프론트 타입체크 검증
 - [x] 프론트 빌드 검증
 - [x] 브라우저 화면 검증
+- [ ] Stitch 시안을 `docs/05-frontend-design-direction.md`에 화면별로 옮기기
+- [ ] Stitch 시안 기준으로 홈/라멘집 목록/방문 추가 IA와 카피 재정리
 - [ ] 웹사이트 + 토스 미니앱 공통 UX로 프론트 IA/화면 범위 재정리
 - [x] 1차 MVP를 서버 catalog + 로컬 개인 기록 모드로 전환
 - [x] 방문 기록/위시리스트 local repository 작성
