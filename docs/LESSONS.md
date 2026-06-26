@@ -480,3 +480,9 @@ Exposed는 JetBrains의 Kotlin SQL/DAO 라이브러리라 Ktor와 함께 쓰는 
 ### 초기에는 모니터링 툴보다 health와 로그면 충분하다
 
 아직 운영 트래픽이 없는 단계에서는 Prometheus, Grafana 같은 모니터링 스택을 먼저 붙이지 않는다. 로컬 개발은 터미널 로그와 `/health` 확인으로 충분하고, 앱인토스 WebView 오류 추적은 Sentry DSN을 준비한 뒤 붙인다. 운영 전에는 최소 기준을 다시 정한다.
+
+### curl 성공과 브라우저 성공은 CORS 때문에 다르다
+
+`curl http://localhost:8080/health`가 성공해도 Vite dev server(`localhost:5174`)에서 Spring API(`localhost:8080`)를 호출하면 브라우저의 CORS 정책을 통과해야 한다. API 서버가 살아 있는데 화면에 “API 서버 연결을 확인해주세요”가 뜨면 서버 health뿐 아니라 `Origin` 헤더를 포함한 응답의 `Access-Control-Allow-Origin`도 확인한다.
+
+로컬 개발에서는 Spring `WebMvcConfigurer`로 `http://localhost:*`, `http://127.0.0.1:*`를 허용하면 충분하다. 운영에서는 Vercel 도메인과 앱인토스 도메인만 좁혀서 허용한다.
