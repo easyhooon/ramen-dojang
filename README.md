@@ -1,12 +1,12 @@
 # 라멘 도장깨기
 
-라멘집 방문 기록을 쌓고, 이후 지도 기반 도장깨기로 확장하는 웹 앱 서비스입니다. 사용자는 웹사이트로 바로 접근할 수 있고, 모바일 앱은 같은 웹 앱을 Expo React Native WebView 래퍼로 감싸서 제공합니다.
+라멘집 방문 기록을 쌓고, 이후 동기화와 지도 기반 도장깨기로 확장하는 웹사이트 + 토스 미니앱 서비스입니다. 1차 MVP는 로그인과 서버 없이 `apps/web`의 로컬 저장 기반 토스 미니앱으로 먼저 올려봅니다.
 
 ## 구조
 
 ```text
 apps/web             Vite React frontend
-apps/mobile          Expo React Native WebView wrapper
+apps/mobile          Expo React Native WebView wrapper, deferred
 server/api           Kotlin Spring Boot API
 packages/api-client  TypeScript API client
 infra                Local Postgres/PostGIS
@@ -17,11 +17,12 @@ docs                 Product, frontend, backend, API docs
 
 | 영역     | 주요 기술                                            | 목적                                    |
 | -------- | ---------------------------------------------------- | --------------------------------------- |
-| Web      | React, Vite, TanStack Router, TanStack Query         | 웹 앱 화면, 라우팅, 서버 상태 관리      |
-| Mobile   | Expo, React Native, nitro-webview                    | 웹 앱을 감싸는 모바일 WebView 래퍼      |
-| API      | Kotlin, Spring Boot, JDBC, Flyway, springdoc-openapi | REST API, DB migration, Swagger/OpenAPI |
-| DB/Infra | PostgreSQL, PostGIS, Docker Compose                  | 로컬 DB와 지도 확장 대비 공간 데이터    |
-| Contract | OpenAPI Generator, TypeScript API client             | 서버 스펙 기반 프론트 client 생성       |
+| Web      | React, Vite, TanStack Router, localStorage          | 웹사이트/미니앱 화면, 로컬 기록 저장    |
+| Mini App | Toss Mini App SDK, Toss Design System                | 토스 미니앱 등록과 토스 앱 안의 UI      |
+| Mobile   | Expo, React Native, nitro-webview                    | 보류된 모바일 WebView 래퍼              |
+| API      | Kotlin, Spring Boot, JDBC, Flyway, springdoc-openapi | 2차 서버 동기화, Swagger/OpenAPI        |
+| DB/Infra | PostgreSQL, PostGIS, Docker Compose                  | 2차 서버 모드와 지도 확장 대비          |
+| Contract | OpenAPI Generator, TypeScript API client             | 2차 서버 스펙 기반 프론트 client 생성   |
 
 라이브러리별 사용 목적은 [docs/10-tech-stack.md](docs/10-tech-stack.md)에 정리합니다.
 
@@ -77,7 +78,19 @@ cp server/api/.env.example server/api/.env
 
 ## 개발 실행
 
-프론트와 서버는 분리해서 실행하는 것을 기본으로 둡니다.
+1차 MVP는 프론트만 실행해도 됩니다.
+
+```bash
+pnpm dev:web
+```
+
+앱인토스 산출물은 아래 명령으로 만듭니다.
+
+```bash
+pnpm --filter web build:ait
+```
+
+서버 모드를 확인할 때는 프론트와 서버를 분리해서 실행합니다.
 
 먼저 DB를 실행합니다.
 
@@ -163,6 +176,21 @@ pnpm build
 pnpm --filter @ramen-dojang/api-client build
 pnpm --filter web build
 ```
+
+## 웹 배포
+
+공개 웹사이트는 Vercel로 배포합니다.
+
+Vercel 프로젝트 설정:
+
+```text
+Root Directory: apps/web
+Framework Preset: Vite
+Build Command: pnpm build
+Output Directory: dist
+```
+
+`apps/web/vercel.json`에는 Vite SPA deep link가 `/index.html`로 열리도록 rewrite를 둡니다.
 
 모바일 wrapper는 Expo SDK 조합과 app config를 먼저 확인합니다.
 

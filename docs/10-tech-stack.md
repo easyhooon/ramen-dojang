@@ -4,12 +4,13 @@
 
 ## 선택 기준
 
-- 웹사이트로 직접 접근 가능한 웹 앱이 제품의 본체다.
-- 모바일 앱은 별도 제품이 아니라 같은 웹 앱을 WebView로 감싸 앱 형태로 제공하는 wrapper다.
-- native 기능은 push notification, native auth callback, 파일 업로드처럼 앱 shell에서 꼭 필요한 것부터 확장한다.
-- 서버 API 계약은 OpenAPI를 기준으로 하고, 프론트 client는 생성한다.
-- DB schema 변경은 migration으로 남긴다.
-- 지도 기반 확장을 고려해 처음부터 PostGIS를 둔다.
+- 웹사이트와 토스 미니앱을 제품의 1차 배포 경로로 본다.
+- 웹 기술 기반 구현을 유지하고, `apps/web`을 웹사이트와 토스 미니앱의 공통 코어로 둔다.
+- native 기능은 웹사이트와 토스 미니앱 환경이 제공하지 못하는 요구가 생길 때만 별도 앱 shell로 확장한다.
+- 1차 MVP는 서버 없이 localStorage로 저장한다.
+- 서버 모드에서는 API 계약은 OpenAPI를 기준으로 하고, 프론트 client는 생성한다.
+- 서버 모드에서는 DB schema 변경은 migration으로 남긴다.
+- 지도 기반 확장을 고려해 서버 쪽에는 PostGIS를 둔다.
 
 ## Monorepo / Tooling
 
@@ -33,20 +34,36 @@
 | Vite | `apps/web` | 빠른 개발 서버와 web build를 담당한다. |
 | @vitejs/plugin-react | `apps/web` | Vite에서 React transform과 Fast Refresh를 사용한다. |
 | TanStack Router | `apps/web` | 라멘집 상세, 방문 기록 등 URL 기반 화면 전환을 관리한다. |
-| TanStack Query | `apps/web` | API 호출 결과, loading/error 상태, cache invalidation을 관리한다. |
-| @ramen-dojang/api-client | `apps/web` | OpenAPI에서 생성한 client를 앱 타입으로 감싼 공용 client다. |
+| localStorage | `apps/web` | 1차 MVP에서 서버 없이 라멘집, 방문 기록, 위시리스트를 저장한다. |
+| TanStack Query | `apps/web`, server mode | API 호출 결과, loading/error 상태, cache invalidation을 관리한다. |
+| @ramen-dojang/api-client | `apps/web`, server mode | OpenAPI에서 생성한 client를 앱 타입으로 감싼 공용 client다. |
+| @apps-in-toss/web-framework | `apps/web` | 기존 Vite 앱을 앱인토스 Granite dev/build/packaging 흐름에 태우기 위해 사용한다. |
+| @toss/tds-mobile | `apps/web` | 앱인토스 비게임 심사와 토스 UX 일관성을 위해 Button, ListRow, TextField 같은 TDS 컴포넌트를 사용한다. |
+| @toss/tds-mobile-ait | `apps/web` | 앱인토스 환경에서 TDS가 올바르게 동작하도록 `TDSMobileAITProvider`를 제공한다. |
+| @emotion/react | `apps/web` | TDS Mobile의 peer dependency다. |
+| @sentry/react-native | `apps/web`, future | 앱인토스 WebView 안의 JavaScript 오류를 Sentry로 추적할 때 사용한다. 앱인토스에서는 `enableNative: false`로 설정한다. |
+| @granite-js/plugin-sentry | `apps/web`, future | 앱인토스 배포 후 Sentry sourcemap upload 흐름을 붙일 때 사용한다. |
+| Toss Mini App SDK | `apps/web`, future | 토스 미니앱 등록과 토스 앱 안의 runtime 연동에 사용한다. 공식 문서 확인 후 적용한다. |
+| Toss Design System | `apps/web`, future | 토스 미니앱 UI를 토스 사용자 경험에 맞추고, 자체 디자인 공수를 줄인다. 공식 문서 확인 후 적용한다. |
 
 선택 이유:
 
 - 이 프로젝트는 기록형 서비스라 목록, 상세, 수정 화면이 URL로 표현되는 것이 중요하다.
-- 서버 상태는 화면 local state와 분리하는 편이 낫기 때문에 TanStack Query를 둔다.
-- 프론트가 서버 DTO를 손으로 맞추지 않도록 generated API client를 사용한다.
+- 1차 앱인토스 MVP는 개인 기록 앱이므로 localStorage가 서버보다 싸고 빠르다.
+- 서버 모드에서는 서버 상태를 화면 local state와 분리하는 편이 낫기 때문에 TanStack Query를 둔다.
+- 서버 모드에서는 프론트가 서버 DTO를 손으로 맞추지 않도록 generated API client를 사용한다.
+- Granite는 Vite 대체가 아니라 앱인토스용 wrapper다. 기존 `vite dev`, `vite build`를 `granite.config.ts`에서 호출한다.
+- TDS 2.5.0은 React 18까지 peer dependency로 선언되어 있어, React 19에서 실제 빌드와 런타임을 확인하며 적용한다.
+- Sentry는 첫 샌드박스/콘솔 업로드 후 외부 테스트를 시작할 때 초기화한다. 지금은 의존성만 명시하고 DSN, source map upload, token 설정은 보류한다.
+- 토스 미니앱으로 등록할 수 있다면 TDS 컴포넌트를 우선 사용하고, 웹사이트에서도 무리 없이 재사용 가능한 화면 조립과 도메인 표현만 직접 만든다.
 
-## Mobile
+## Mobile, Deferred
+
+현재 `apps/mobile`은 이미 만들어 둔 Expo/Nitro WebView wrapper 실험 산출물이다. 제품 1차 목표가 웹사이트 + 토스 미니앱 출시로 바뀌었으므로, 스토어 앱 배포 요구가 다시 생기기 전까지 확장하지 않는다.
 
 | 기술 | 사용 위치 | 목적 |
 | --- | --- | --- |
-| Expo | `apps/mobile` | React Native 앱 실행, prebuild, development build 흐름을 단순화한다. |
+| Expo | `apps/mobile`, deferred | React Native 앱 실행, prebuild, development build 흐름을 단순화한다. |
 | expo-dev-client | `apps/mobile` | Expo Go에 없는 custom native module을 포함한 development build를 실행한다. |
 | React Native | `apps/mobile` | 모바일 앱 shell과 native WebView wrapper 화면을 만든다. |
 | nitro-webview | `apps/mobile` | 웹 앱을 띄우는 WebView 구현체다. Nitro Modules 기반으로 event/method bridge 비용을 줄이는 방향이다. |
@@ -54,7 +71,7 @@
 
 선택 이유:
 
-- 모바일 앱은 현재 같은 웹 경험을 앱으로 배포하는 shell 성격이므로 Expo로 시작 비용을 줄인다.
+- 모바일 앱은 같은 웹 경험을 앱으로 배포하는 shell 성격이므로 Expo로 시작 비용을 줄일 수 있다.
 - WebView는 loading, navigation, message, error, download처럼 event가 많아 Nitro 기반 접근을 실험할 가치가 있다.
 - `nitro-webview`는 `window.ReactNativeWebView.postMessage(...)` 같은 익숙한 WebView 계약을 유지하면서 Nitro 방식의 `callback(...)`, `hybridRef`를 사용한다.
 
@@ -97,13 +114,16 @@
 | 기술 | 사용 위치 | 목적 |
 | --- | --- | --- |
 | PostgreSQL | `infra/docker-compose.yml` | 라멘집, 방문 기록, 위시리스트 같은 관계형 데이터를 저장한다. |
-| PostGIS | `infra/docker-compose.yml`, migration | 이후 지도 기반 검색과 위치 데이터 확장을 대비한다. |
+| PostGIS | `infra/docker-compose.yml`, migration | 라멘집 좌표를 `geography(Point, 4326)`로 저장하고, 이후 주변 검색과 지도 bounds 조회를 DB에서 처리한다. |
 | Docker Compose | `infra/docker-compose.yml` | 로컬 개발 DB를 같은 설정으로 띄운다. |
 
 선택 이유:
 
 - 라멘집과 방문 기록은 관계형 모델이 자연스럽다.
 - 지도 기반 도장깨기로 확장할 계획이 있으므로 위치 검색을 고려해 PostGIS를 먼저 선택했다.
+- 단순 `latitude`, `longitude` 숫자 컬럼만으로도 화면 표시와 디버깅은 가능하지만, 반경 검색, 거리 정렬, 지도 viewport 안의 라멘집 조회는 직접 계산을 구현해야 한다.
+- PostGIS를 쓰면 `shops.location`에 GiST index를 걸고 `ST_DWithin`, `ST_Distance` 같은 DB 함수를 사용해 위치 조건을 안정적으로 처리할 수 있다.
+- MVP에서는 CRUD가 먼저라 주변 검색 API는 아직 만들지 않는다. 다만 migration 단계에서 `location`과 index를 잡아 두어 나중에 schema를 다시 흔들지 않는다.
 
 ## External Place Data
 
@@ -145,13 +165,23 @@
 
 현재 배포 방향:
 
-- web: Vercel 우선 검토
-- API: 아직 미정
-- DB: API 배포 방식에 맞춰 managed PostgreSQL/PostGIS 검토
-- mobile: Expo development build로 검증 후 EAS build 또는 native build 흐름 검토
+- web: 공개 웹사이트는 Vercel, 토스 미니앱은 앱인토스 `.ait` 업로드와 샌드박스 테스트
+- API: 1차 MVP에서는 배포하지 않음
+- DB: 1차 MVP에서는 배포하지 않음
+- mobile: Expo/EAS/native build는 스토어 배포가 다시 필요해질 때 검토
 
 아직 확정하지 않은 것:
 
-- 인증 제공자: Google/Kakao/Naver/OAuth 우선순위
-- API/DB production hosting
-- mobile store 배포 방식
+- 토스 미니앱 등록 요건과 심사 기준
+- Toss Mini App SDK/TDS 적용 방식
+- 웹사이트 도메인
+- 사용자 식별 방식: 1차 MVP는 로그인 없음, `getAnonymousKey`와 토스 로그인은 동기화가 필요해질 때 재검토
+- API/DB production hosting, 서버 모드 재개 시
+- mobile store 배포 여부
+
+앱인토스 콘솔 앱 만들기 초안:
+
+- 어떤 앱을 만들고 싶나요: 다녀온 라멘집과 가고 싶은 라멘집을 기록하고, 방문 메모와 평점을 모아 나만의 라멘 도장을 하나씩 쌓아가는 서비스
+- 앱 이름: 라멘 도장깨기
+- appName: `ramen-dojang`
+- 앱 유형: 비게임

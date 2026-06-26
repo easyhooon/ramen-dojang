@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Button } from "@toss/tds-mobile";
 import { ShopForm } from "../features/shops/ShopForm";
 import { VisitCard } from "../features/visits/VisitCard";
 import { VisitForm } from "../features/visits/VisitForm";
@@ -18,13 +19,18 @@ export function ShopDetailPage() {
   });
   const deleteShop = useMutation({
     mutationFn: () => api.deleteShop(shopId),
-    onSuccess: () => navigate({ to: "/shops" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["shops"] });
+      queryClient.invalidateQueries({ queryKey: ["visits"] });
+      navigate({ to: "/shops" });
+    },
   });
   const createVisit = useMutation({
     mutationFn: api.createVisit,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["shops"] });
       queryClient.invalidateQueries({ queryKey: ["visits"] });
+      queryClient.invalidateQueries({ queryKey: ["shops", shopId, "visits"] });
     },
   });
   const addWishlist = useMutation({
@@ -48,10 +54,10 @@ export function ShopDetailPage() {
           <p className="muted">{shop.data.address}</p>
         </div>
         <div className="actions">
-          <button className="button" onClick={() => shop.data?.wishlisted ? removeWishlist.mutate() : addWishlist.mutate()}>
+          <Button variant="weak" onClick={() => shop.data?.wishlisted ? removeWishlist.mutate() : addWishlist.mutate()}>
             {shop.data.wishlisted ? "가고싶음 해제" : "가고싶음"}
-          </button>
-          <button className="danger" onClick={() => deleteShop.mutate()}>삭제</button>
+          </Button>
+          <Button color="danger" onClick={() => deleteShop.mutate()}>삭제</Button>
         </div>
       </div>
 
@@ -76,4 +82,3 @@ export function ShopDetailPage() {
     </div>
   );
 }
-

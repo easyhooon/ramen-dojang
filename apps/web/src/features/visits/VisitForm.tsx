@@ -1,4 +1,5 @@
 import type { CreateVisitRequest, ShopResponse, VisitResponse } from "@ramen-dojang/api-client";
+import { Button } from "@toss/tds-mobile";
 import { useState } from "react";
 
 export function VisitForm({
@@ -66,7 +67,7 @@ export function VisitForm({
         메모
         <textarea value={value.memo ?? ""} onChange={(event) => setValue({ ...value, memo: event.target.value })} rows={4} />
       </label>
-      <button className="primary" type="submit" disabled={!value.shopId}>{submitLabel}</button>
+      <Button type="submit" display="full" disabled={!value.shopId}>{submitLabel}</Button>
     </form>
   );
 }
@@ -77,4 +78,3 @@ const ratingLabel = {
   toppingRating: "토핑",
   overallRating: "종합",
 };
-

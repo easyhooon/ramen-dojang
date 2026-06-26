@@ -1,4 +1,5 @@
 import type { CreateShopRequest, ShopResponse } from "@ramen-dojang/api-client";
+import { Button } from "@toss/tds-mobile";
 import { useState } from "react";
 
 const defaultValue: CreateShopRequest = {
@@ -80,8 +81,7 @@ export function ShopForm({
         태그
         <input value={tags} onChange={(event) => setTags(event.target.value)} placeholder="쇼유, 이에케이" />
       </label>
-      <button className="primary" type="submit">{submitLabel}</button>
+      <Button type="submit" display="full">{submitLabel}</Button>
     </form>
   );
 }
-

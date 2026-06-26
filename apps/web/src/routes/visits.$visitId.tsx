@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Button } from "@toss/tds-mobile";
 import { VisitForm } from "../features/visits/VisitForm";
 import { api } from "../lib/api";
 
@@ -11,11 +12,18 @@ export function VisitDetailPage() {
   const shops = useQuery({ queryKey: ["shops"], queryFn: () => api.listShops() });
   const updateVisit = useMutation({
     mutationFn: (request: Parameters<typeof api.updateVisit>[1]) => api.updateVisit(visitId, request),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["visits"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["shops"] });
+      queryClient.invalidateQueries({ queryKey: ["visits"] });
+    },
   });
   const deleteVisit = useMutation({
     mutationFn: () => api.deleteVisit(visitId),
-    onSuccess: () => navigate({ to: "/" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["shops"] });
+      queryClient.invalidateQueries({ queryKey: ["visits"] });
+      navigate({ to: "/" });
+    },
   });
 
   if (visit.isLoading) return <div className="empty">불러오는 중입니다.</div>;
@@ -29,7 +37,7 @@ export function VisitDetailPage() {
           <h1>{visit.data.menuName}</h1>
           <p className="muted">{visit.data.shopName} · {visit.data.visitedAt}</p>
         </div>
-        <button className="danger" onClick={() => deleteVisit.mutate()}>삭제</button>
+        <Button color="danger" onClick={() => deleteVisit.mutate()}>삭제</Button>
       </div>
       <section className="panel narrow">
         <h2>방문 기록 수정</h2>
@@ -38,4 +46,3 @@ export function VisitDetailPage() {
     </div>
   );
 }
-
