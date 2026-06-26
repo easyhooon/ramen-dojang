@@ -159,6 +159,33 @@ p {
   gap: 12px;
 }
 
+.taste-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.taste-card {
+  background: white;
+  border: 1px solid #e5e8eb;
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  min-height: 104px;
+  padding: 18px;
+}
+
+.taste-card span {
+  color: #6b7684;
+  font-size: 0.9rem;
+}
+
+.taste-card strong {
+  color: #191f28;
+  font-size: 1.55rem;
+  line-height: 1.2;
+}
+
 .item-card {
   align-items: center;
   display: grid;
@@ -400,7 +427,8 @@ textarea {
 
   .metrics,
   .two-column,
-  .form-grid {
+  .form-grid,
+  .taste-grid {
     grid-template-columns: 1fr;
   }
 
