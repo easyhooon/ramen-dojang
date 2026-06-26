@@ -45,7 +45,7 @@ export function VisitForm({
       <TextField variant="box" label="방문일" type="date" value={value.visitedAt} onChange={(event) => setValue({ ...value, visitedAt: event.target.value })} required />
       <TextField className="full" variant="box" label="메뉴" value={value.menuName} onChange={(event) => setValue({ ...value, menuName: event.target.value })} required />
       {(["brothRating", "noodleRating", "toppingRating", "overallRating"] as const).map((key) => (
-        <TextField key={key} variant="box" label={ratingLabel[key]} type="number" min="1" max="5" value={value[key]} onChange={(event) => setValue({ ...value, [key]: Number(event.target.value) })} required />
+        <StarRating key={key} label={ratingLabel[key]} value={value[key]} onChange={(rating) => setValue({ ...value, [key]: rating })} />
       ))}
       <label>
         재방문
@@ -66,3 +66,26 @@ const ratingLabel = {
   toppingRating: "토핑",
   overallRating: "종합",
 };
+
+function StarRating({ label, value, onChange }: { label: string; value: number; onChange: (rating: number) => void }) {
+  return (
+    <fieldset className="star-rating">
+      <legend>{label}</legend>
+      <div className="star-rating-options">
+        {[1, 2, 3, 4, 5].map((rating) => (
+          <label className={rating <= value ? "selected" : ""} key={rating}>
+            <input
+              checked={value === rating}
+              name={label}
+              onChange={() => onChange(rating)}
+              type="radio"
+              value={rating}
+            />
+            <span aria-hidden="true">★</span>
+            <span className="sr-only">{rating}점</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}

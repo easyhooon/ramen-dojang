@@ -168,6 +168,27 @@ p {
   padding: 20px;
 }
 
+.select-card {
+  background: white;
+  border: 1px solid #e5e8eb;
+  border-radius: 8px;
+  color: #191f28;
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  text-align: left;
+}
+
+.select-card span {
+  color: #6b7684;
+}
+
+.select-card.selected {
+  background: #f5f9ff;
+  border-color: #3182f6;
+}
+
 .item-title-row,
 .actions,
 .tag-row,
@@ -265,6 +286,58 @@ p {
 .form-grid .full,
 .form-grid button {
   grid-column: 1 / -1;
+}
+
+.star-rating {
+  border: 0;
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.star-rating legend {
+  color: #4e5968;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0;
+}
+
+.star-rating-options {
+  display: flex;
+  gap: 4px;
+}
+
+.star-rating-options label {
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.star-rating-options input {
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.star-rating-options span[aria-hidden="true"] {
+  color: #d1d6db;
+}
+
+.star-rating-options .selected span[aria-hidden="true"],
+.star-rating-options input:focus-visible + span {
+  color: #3182f6;
+}
+
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 input,

@@ -24,10 +24,13 @@ export function HomePage() {
 
       <section className="section-header">
         <div>
-          <h2>최근 방문</h2>
-          <p className="muted">가장 최근에 남긴 방문 기록입니다.</p>
+          <h2>방문한 라멘집</h2>
+          <p className="muted">최근 등록한 방문 기록입니다.</p>
         </div>
-        <Link className="button" to="/shops">라멘집 관리</Link>
+        <div className="actions">
+          <Link className="primary" to="/visits/new">방문 추가</Link>
+          <Link className="button" to="/shops">라멘집 보기</Link>
+        </div>
       </section>
 
       <div className="list">
@@ -38,4 +41,3 @@ export function HomePage() {
     </div>
   );
 }
-
