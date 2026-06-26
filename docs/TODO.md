@@ -21,8 +21,9 @@
 - [ ] 토스 로그인 테스트 앱 개발 가능 범위와 운영 배포 전 사업자 인증, 앱인토스 서버 API용 mTLS 인증서/방화벽/secret 관리 필요사항 확인
 - [ ] Sentry 프로젝트/DSN/API key 발급 후 앱인토스 WebView JS 오류 추적 설정
 - [ ] 운영 전 최소 모니터링 기준 결정: 현재는 별도 모니터링 툴 없이 터미널 로그, `/health`, Sentry 예정만 사용
-- [ ] 기존 Expo/Nitro WebView wrapper 유지/삭제 판단
+- [x] 기존 Expo/Nitro WebView wrapper는 스토어 출시용 보류 자산으로 유지
 - [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
+- [ ] 운영 배포 전 CORS 허용 origin을 Vercel 도메인과 앱인토스 도메인으로 제한
 
 ## 공통 / 모노레포
 
@@ -113,12 +114,13 @@
 - [x] 라멘집 목록/필터/등록 화면 구현
 - [x] 라멘집 상세/수정/삭제/가고싶음/방문 기록 화면 구현
 - [x] 방문 기록 상세/수정/삭제 화면 구현
+- [x] DB 라멘집 검색 기반 방문 추가 화면 구현
 - [x] About 화면 구현
 - [x] `frontend-design` 기준 디자인 계획 작성
 - [x] 디자인 계획에 맞춰 UI 톤 재정리
 - [x] 프론트 타입체크 검증
 - [x] 프론트 빌드 검증
-- [ ] 브라우저 화면 검증
+- [x] 브라우저 화면 검증
 - [ ] 웹사이트 + 토스 미니앱 공통 UX로 프론트 IA/화면 범위 재정리
 - [x] 1차 MVP를 서버 catalog + 로컬 개인 기록 모드로 전환
 - [x] 방문 기록/위시리스트 local repository 작성
@@ -133,8 +135,8 @@
 - [ ] Sentry 초기화 시 `enableNative: false` 적용 및 sourcemap upload 절차 확인
 - [ ] 주요 화면 query/mutation behavior test 전략 결정
 - [x] 모바일 Expo SDK 패키지 조합 `expo-doctor` 검증
-- [ ] 모바일 웹뷰 래퍼 development build 검증, 스토어 앱 목표 재개 시
-- [ ] `nitro-webview` iOS/Android native setup 검증, 스토어 앱 목표 재개 시
+- [ ] 스토어 앱 출시 목표 재개 시 모바일 웹뷰 래퍼 development build 검증
+- [ ] 스토어 앱 출시 목표 재개 시 `nitro-webview` iOS/Android native setup 검증
 
 ## API Client / Contract
 

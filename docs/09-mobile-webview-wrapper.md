@@ -1,8 +1,8 @@
 # Mobile WebView Wrapper
 
-> 현재 제품 1차 목표가 웹사이트 + 토스 미니앱 출시로 바뀌었으므로 이 문서는 보류된 대안 기록이다. `apps/mobile`은 유지하지만, 스토어 배포가 다시 목표가 되기 전까지 확장하지 않는다.
+> 현재 제품 1차 목표가 웹사이트 + 토스 미니앱 출시로 바뀌었으므로 이 문서는 보류된 대안 기록이다. 앱인토스 출시는 `apps/web`을 Granite/TDS로 연동하면 되며, `apps/mobile`은 앱스토어/플레이스토어 출시가 다시 목표가 되기 전까지 확장하지 않는다.
 
-서비스의 현재 1차 목표는 웹사이트 + 토스 미니앱이다. `apps/mobile`은 별도 스토어 앱 배포가 필요해질 때 같은 웹 앱을 React Native WebView로 감싸 제공하기 위한 보류된 대안이다.
+서비스의 현재 1차 목표는 웹사이트 + 토스 미니앱이다. 앱인토스 자체가 웹 기반 미니앱을 실행하므로 Nitro WebView로 다시 감쌀 필요는 없다. `apps/mobile`은 별도 스토어 앱 배포가 필요해질 때 같은 웹 앱을 React Native WebView로 감싸 제공하기 위한 보류된 대안이다.
 
 앱스토어/플레이스토어 배포, push notification, native auth callback 같은 모바일 shell 기능이 토스 미니앱으로 해결되지 않을 때만 이 wrapper를 확장한다.
 
