@@ -29,7 +29,7 @@ interface LocalWishlist extends CreateWishlistRequest {
 export const api = {
   health: catalogApi.health,
   listShops: async (params: ShopListParams = {}) =>
-    (await catalogApi.listShops({ name: params.name, tag: params.tag }))
+    (await catalogApi.listShops({ name: optionalText(params.name), tag: optionalText(params.tag) }))
       .map((shop) => withLocalShopState(shop, readData()))
       .filter((shop) => params.visited === undefined || shop.visited === params.visited),
   getShop: async (shopId: UUID) => withLocalShopState(await catalogApi.getShop(shopId), readData()),
@@ -114,6 +114,11 @@ const writeData = (data: LocalData) => {
 };
 
 const emptyData = (): LocalData => ({ visits: [], wishlist: [] });
+
+const optionalText = (value?: string) => {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : undefined;
+};
 
 const getStorage = (): Storage | null => {
   try {
