@@ -70,7 +70,7 @@
 - [ ] 외부 검색 결과를 `shop_candidates`로 저장하는 ERD 확정
 - [x] Naver/Kakao/Google 장소 API 제공 필드와 한계 조사 문서 작성
 - [x] `shop_candidates` Flyway migration 작성
-- [ ] 네이버 지역 검색 API 기반 후보 sync spike 작성
+- [x] 네이버 지역 검색 API 기반 후보 sync spike 작성
 - [ ] 라멘집 후보 scoring/중복 제거 기준 정의
 - [ ] 후보 검수 후 `shops`로 승격하는 admin flow 설계
 - [ ] 메뉴 데이터 축적 방식 설계: 방문 기록 기반 후보화, 메뉴판 사진, 관리자 검수
