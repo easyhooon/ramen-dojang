@@ -1,5 +1,5 @@
 import type { CreateVisitRequest, ShopResponse, VisitResponse } from "@ramen-dojang/api-client";
-import { Button } from "@toss/tds-mobile";
+import { Button, TextArea, TextField } from "@toss/tds-mobile";
 import { useState } from "react";
 
 export function VisitForm({
@@ -42,19 +42,10 @@ export function VisitForm({
           {shops.map((shop) => <option key={shop.id} value={shop.id}>{shop.name}</option>)}
         </select>
       </label>
-      <label>
-        방문일
-        <input type="date" value={value.visitedAt} onChange={(event) => setValue({ ...value, visitedAt: event.target.value })} required />
-      </label>
-      <label className="full">
-        메뉴
-        <input value={value.menuName} onChange={(event) => setValue({ ...value, menuName: event.target.value })} required />
-      </label>
+      <TextField variant="box" label="방문일" type="date" value={value.visitedAt} onChange={(event) => setValue({ ...value, visitedAt: event.target.value })} required />
+      <TextField className="full" variant="box" label="메뉴" value={value.menuName} onChange={(event) => setValue({ ...value, menuName: event.target.value })} required />
       {(["brothRating", "noodleRating", "toppingRating", "overallRating"] as const).map((key) => (
-        <label key={key}>
-          {ratingLabel[key]}
-          <input type="number" min="1" max="5" value={value[key]} onChange={(event) => setValue({ ...value, [key]: Number(event.target.value) })} required />
-        </label>
+        <TextField key={key} variant="box" label={ratingLabel[key]} type="number" min="1" max="5" value={value[key]} onChange={(event) => setValue({ ...value, [key]: Number(event.target.value) })} required />
       ))}
       <label>
         재방문
@@ -63,10 +54,7 @@ export function VisitForm({
           <option value="false">아니오</option>
         </select>
       </label>
-      <label className="full">
-        메모
-        <textarea value={value.memo ?? ""} onChange={(event) => setValue({ ...value, memo: event.target.value })} rows={4} />
-      </label>
+      <TextArea className="full" variant="box" label="메모" value={value.memo ?? ""} onChange={(event) => setValue({ ...value, memo: event.target.value })} minHeight={120} />
       <Button type="submit" display="full" disabled={!value.shopId}>{submitLabel}</Button>
     </form>
   );

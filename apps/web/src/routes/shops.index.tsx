@@ -1,23 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { TextField } from "@toss/tds-mobile";
 import { useState } from "react";
 import { ShopCard } from "../features/shops/ShopCard";
-import { ShopForm } from "../features/shops/ShopForm";
 import { api } from "../lib/api";
 
 export function ShopsPage() {
-  const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [tag, setTag] = useState("");
   const [visited, setVisited] = useState<string>("");
   const params = { name, tag, visited: visited === "" ? undefined : visited === "true" };
   const shops = useQuery({ queryKey: ["shops", params], queryFn: () => api.listShops(params) });
-  const createShop = useMutation({
-    mutationFn: api.createShop,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["shops"] }),
-  });
 
   return (
-    <div className="two-column">
+    <div className="stack">
       <section className="stack">
         <div className="section-header">
           <div>
@@ -26,8 +21,8 @@ export function ShopsPage() {
           </div>
         </div>
         <div className="toolbar">
-          <input value={name} onChange={(event) => setName(event.target.value)} placeholder="이름 검색" />
-          <input value={tag} onChange={(event) => setTag(event.target.value)} placeholder="태그" />
+          <TextField variant="box" label="이름 검색" value={name} onChange={(event) => setName(event.target.value)} />
+          <TextField variant="box" label="태그" value={tag} onChange={(event) => setTag(event.target.value)} />
           <select value={visited} onChange={(event) => setVisited(event.target.value)}>
             <option value="">전체</option>
             <option value="true">방문함</option>
@@ -40,11 +35,6 @@ export function ShopsPage() {
           {shops.isError ? <div className="empty error">목록을 불러오지 못했습니다.</div> : null}
         </div>
       </section>
-      <aside className="panel">
-        <h2>라멘집 등록</h2>
-        <ShopForm submitLabel={createShop.isPending ? "저장 중" : "등록"} onSubmit={(request) => createShop.mutate(request)} />
-      </aside>
     </div>
   );
 }
-

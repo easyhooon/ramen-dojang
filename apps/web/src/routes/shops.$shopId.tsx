@@ -1,30 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import { Button } from "@toss/tds-mobile";
-import { ShopForm } from "../features/shops/ShopForm";
 import { VisitCard } from "../features/visits/VisitCard";
 import { VisitForm } from "../features/visits/VisitForm";
 import { api } from "../lib/api";
 
 export function ShopDetailPage() {
   const { shopId } = useParams({ from: "/shops/$shopId" });
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const shop = useQuery({ queryKey: ["shops", shopId], queryFn: () => api.getShop(shopId) });
   const shops = useQuery({ queryKey: ["shops"], queryFn: () => api.listShops() });
   const visits = useQuery({ queryKey: ["shops", shopId, "visits"], queryFn: () => api.listShopVisits(shopId) });
-  const updateShop = useMutation({
-    mutationFn: (request: Parameters<typeof api.updateShop>[1]) => api.updateShop(shopId, request),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["shops"] }),
-  });
-  const deleteShop = useMutation({
-    mutationFn: () => api.deleteShop(shopId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["shops"] });
-      queryClient.invalidateQueries({ queryKey: ["visits"] });
-      navigate({ to: "/shops" });
-    },
-  });
   const createVisit = useMutation({
     mutationFn: api.createVisit,
     onSuccess: () => {
@@ -57,20 +43,13 @@ export function ShopDetailPage() {
           <Button variant="weak" onClick={() => shop.data?.wishlisted ? removeWishlist.mutate() : addWishlist.mutate()}>
             {shop.data.wishlisted ? "가고싶음 해제" : "가고싶음"}
           </Button>
-          <Button color="danger" onClick={() => deleteShop.mutate()}>삭제</Button>
         </div>
       </div>
 
-      <div className="two-column">
-        <section className="panel">
-          <h2>라멘집 수정</h2>
-          <ShopForm initial={shop.data} submitLabel="수정" onSubmit={(request) => updateShop.mutate(request)} />
-        </section>
-        <section className="panel">
-          <h2>방문 기록 추가</h2>
-          <VisitForm shops={shops.data ?? [shop.data]} shopId={shopId} submitLabel="기록" onSubmit={(request) => createVisit.mutate(request)} />
-        </section>
-      </div>
+      <section className="panel">
+        <h2>방문 기록 추가</h2>
+        <VisitForm shops={shops.data ?? [shop.data]} shopId={shopId} submitLabel="기록" onSubmit={(request) => createVisit.mutate(request)} />
+      </section>
 
       <section className="stack">
         <h2>방문 기록</h2>

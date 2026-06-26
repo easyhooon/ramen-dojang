@@ -1,26 +1,21 @@
 import type {
-  CreateShopRequest,
   CreateVisitRequest,
   CreateWishlistRequest,
   ShopListParams,
   ShopResponse,
-  UpdateShopRequest,
   UpdateVisitRequest,
   UUID,
   VisitResponse,
   WishlistResponse,
 } from "@ramen-dojang/api-client";
+import { createRamenApiClient } from "@ramen-dojang/api-client";
 
 const storageKey = "ramen-dojang:v1";
+const catalogApi = createRamenApiClient(import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080");
 
 interface LocalData {
-  shops: LocalShop[];
   visits: LocalVisit[];
   wishlist: LocalWishlist[];
-}
-
-interface LocalShop extends CreateShopRequest {
-  id: UUID;
 }
 
 interface LocalVisit extends CreateVisitRequest {
@@ -32,33 +27,26 @@ interface LocalWishlist extends CreateWishlistRequest {
 }
 
 export const api = {
-  health: async () => ({ status: "ok" }),
-  listShops: async (params: ShopListParams = {}) => toShopResponses(readData()).filter((shop) => matchesShop(shop, params)),
-  getShop: async (shopId: UUID) => requireShop(readData(), shopId),
-  createShop: async (body: CreateShopRequest) => {
-    const data = readData();
-    const shop: LocalShop = { ...body, id: createId(), tagNames: body.tagNames ?? [] };
-    writeData({ ...data, shops: [...data.shops, shop] });
-    return toShopResponse(readData(), shop);
-  },
-  updateShop: async (shopId: UUID, body: UpdateShopRequest) => {
-    const data = readData();
-    const shops = data.shops.map((shop) => (shop.id === shopId ? { ...body, id: shopId, tagNames: body.tagNames ?? [] } : shop));
-    writeData({ ...data, shops });
-    return requireShop(readData(), shopId);
-  },
+  health: catalogApi.health,
+  listShops: async (params: ShopListParams = {}) =>
+    (await catalogApi.listShops({ name: params.name, tag: params.tag }))
+      .map((shop) => withLocalShopState(shop, readData()))
+      .filter((shop) => params.visited === undefined || shop.visited === params.visited),
+  getShop: async (shopId: UUID) => withLocalShopState(await catalogApi.getShop(shopId), readData()),
+  createShop: catalogApi.createShop,
+  updateShop: catalogApi.updateShop,
   deleteShop: async (shopId: UUID) => {
     const data = readData();
+    await catalogApi.deleteShop(shopId);
     writeData({
-      shops: data.shops.filter((shop) => shop.id !== shopId),
       visits: data.visits.filter((visit) => visit.shopId !== shopId),
       wishlist: data.wishlist.filter((item) => item.shopId !== shopId),
     });
   },
-  listVisits: async () => toVisitResponses(readData()),
-  listShopVisits: async (shopId: UUID) => toVisitResponses(readData()).filter((visit) => visit.shopId === shopId),
+  listVisits: async () => toVisitResponses(readData(), await listCatalogShops()),
+  listShopVisits: async (shopId: UUID) => (await toVisitResponses(readData(), await listCatalogShops())).filter((visit) => visit.shopId === shopId),
   getVisit: async (visitId: UUID) => {
-    const visit = toVisitResponses(readData()).find((item) => item.id === visitId);
+    const visit = (await toVisitResponses(readData(), await listCatalogShops())).find((item) => item.id === visitId);
     if (!visit) throw new Error("Visit not found.");
     return visit;
   },
@@ -66,7 +54,7 @@ export const api = {
     const data = readData();
     const visit: LocalVisit = { ...body, id: createId() };
     writeData({ ...data, visits: [...data.visits, visit] });
-    return toVisitResponse(readData(), visit);
+    return toVisitResponse(visit, await listCatalogShops());
   },
   updateVisit: async (visitId: UUID, body: UpdateVisitRequest) => {
     const data = readData();
@@ -74,7 +62,7 @@ export const api = {
     writeData({ ...data, visits });
     const visit = readData().visits.find((item) => item.id === visitId);
     if (!visit) throw new Error("Visit not found.");
-    return toVisitResponse(readData(), visit);
+    return toVisitResponse(visit, await listCatalogShops());
   },
   deleteVisit: async (visitId: UUID) => {
     const data = readData();
@@ -82,9 +70,10 @@ export const api = {
   },
   listWishlist: async () => {
     const data = readData();
+    const shops = await listCatalogShops();
     return data.wishlist.map((item): WishlistResponse => ({
       shopId: item.shopId,
-      shopName: data.shops.find((shop) => shop.id === item.shopId)?.name ?? "삭제된 라멘집",
+      shopName: shops.find((shop) => shop.id === item.shopId)?.name ?? "삭제된 라멘집",
       note: item.note ?? null,
       createdAt: item.createdAt,
     }));
@@ -112,7 +101,6 @@ const readData = (): LocalData => {
   try {
     const parsed = JSON.parse(raw) as Partial<LocalData>;
     return {
-      shops: parsed.shops ?? [],
       visits: parsed.visits ?? [],
       wishlist: parsed.wishlist ?? [],
     };
@@ -125,7 +113,7 @@ const writeData = (data: LocalData) => {
   getStorage()?.setItem(storageKey, JSON.stringify(data));
 };
 
-const emptyData = (): LocalData => ({ shops: [], visits: [], wishlist: [] });
+const emptyData = (): LocalData => ({ visits: [], wishlist: [] });
 
 const getStorage = (): Storage | null => {
   try {
@@ -137,48 +125,29 @@ const getStorage = (): Storage | null => {
 
 const createId = (): UUID => globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-const requireShop = (data: LocalData, shopId: UUID): ShopResponse => {
-  const shop = data.shops.find((item) => item.id === shopId);
-  if (!shop) throw new Error("Shop not found.");
-  return toShopResponse(data, shop);
-};
-
-const toShopResponses = (data: LocalData): ShopResponse[] =>
-  data.shops.map((shop) => toShopResponse(data, shop)).sort((left, right) => left.name.localeCompare(right.name, "ko"));
-
-const toShopResponse = (data: LocalData, shop: LocalShop): ShopResponse => {
+const withLocalShopState = (shop: ShopResponse, data: LocalData): ShopResponse => {
   const visits = data.visits.filter((visit) => visit.shopId === shop.id);
   const averageRating = visits.length === 0 ? null : visits.reduce((sum, visit) => sum + visit.overallRating, 0) / visits.length;
 
   return {
-    id: shop.id,
-    name: shop.name,
-    address: shop.address,
-    latitude: shop.latitude,
-    longitude: shop.longitude,
-    phone: shop.phone ?? null,
-    placeUrl: shop.placeUrl ?? null,
-    tags: shop.tagNames ?? [],
+    ...shop,
     visited: visits.length > 0,
     wishlisted: data.wishlist.some((item) => item.shopId === shop.id),
     averageRating,
   };
 };
 
-const matchesShop = (shop: ShopResponse, params: ShopListParams): boolean =>
-  (!params.name || shop.name.toLowerCase().includes(params.name.toLowerCase())) &&
-  (!params.tag || shop.tags.some((tag) => tag.toLowerCase().includes(params.tag!.toLowerCase()))) &&
-  (params.visited === undefined || shop.visited === params.visited);
+const listCatalogShops = () => catalogApi.listShops();
 
-const toVisitResponses = (data: LocalData): VisitResponse[] =>
+const toVisitResponses = (data: LocalData, shops: ShopResponse[]): VisitResponse[] =>
   data.visits
-    .map((visit) => toVisitResponse(data, visit))
+    .map((visit) => toVisitResponse(visit, shops))
     .sort((left, right) => right.visitedAt.localeCompare(left.visitedAt));
 
-const toVisitResponse = (data: LocalData, visit: LocalVisit): VisitResponse => ({
+const toVisitResponse = (visit: LocalVisit, shops: ShopResponse[]): VisitResponse => ({
   id: visit.id,
   shopId: visit.shopId,
-  shopName: data.shops.find((shop) => shop.id === visit.shopId)?.name ?? "삭제된 라멘집",
+  shopName: shops.find((shop) => shop.id === visit.shopId)?.name ?? "삭제된 라멘집",
   visitedAt: visit.visitedAt,
   menuName: visit.menuName,
   brothRating: visit.brothRating,

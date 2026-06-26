@@ -1,5 +1,6 @@
 import type { ShopResponse } from "@ramen-dojang/api-client";
 import { Link } from "@tanstack/react-router";
+import { Badge } from "@toss/tds-mobile";
 
 export function ShopCard({ shop }: { shop: ShopResponse }) {
   return (
@@ -7,11 +8,23 @@ export function ShopCard({ shop }: { shop: ShopResponse }) {
       <div>
         <div className="item-title-row">
           <h3>{shop.name}</h3>
-          <span className={shop.visited ? "pill success" : "pill"}>{shop.visited ? "방문함" : "미방문"}</span>
+          <Badge size="small" variant="weak" color={shop.visited ? "green" : "elephant"}>
+            {shop.visited ? "방문함" : "미방문"}
+          </Badge>
         </div>
         <p className="muted">{shop.address}</p>
         <div className="tag-row">
-          {shop.tags.length === 0 ? <span className="tag">태그 없음</span> : shop.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}
+          {shop.tags.length === 0 ? (
+            <Badge size="small" variant="weak" color="elephant">
+              태그 없음
+            </Badge>
+          ) : (
+            shop.tags.map((tag) => (
+              <Badge size="small" variant="weak" color="blue" key={tag}>
+                {tag}
+              </Badge>
+            ))
+          )}
         </div>
       </div>
       <div className="item-meta">
@@ -24,4 +37,3 @@ export function ShopCard({ shop }: { shop: ShopResponse }) {
     </article>
   );
 }
-
