@@ -10,8 +10,8 @@ data class ShopRecord(
     val longitude: Double,
     val phone: String?,
     val placeUrl: String?,
+    val thumbnailUrl: String,
     val visited: Boolean,
     val wishlisted: Boolean,
     val averageRating: Double?,
 )
-

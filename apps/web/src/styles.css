@@ -195,6 +195,19 @@ p {
   padding: 20px;
 }
 
+.shop-card {
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+}
+
+.shop-thumbnail {
+  aspect-ratio: 1;
+  background: #f2f4f6;
+  border-radius: 8px;
+  height: 96px;
+  object-fit: cover;
+  width: 96px;
+}
+
 .select-card {
   background: white;
   border: 1px solid #e5e8eb;
@@ -434,5 +447,19 @@ textarea {
 
   .item-card {
     align-items: start;
+  }
+
+  .shop-card {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .shop-card .item-meta {
+    grid-column: 2;
+    justify-items: start;
+  }
+
+  .shop-thumbnail {
+    height: 72px;
+    width: 72px;
   }
 }

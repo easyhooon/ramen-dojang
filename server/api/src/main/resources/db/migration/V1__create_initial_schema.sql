@@ -9,6 +9,7 @@ CREATE TABLE shops (
   location GEOGRAPHY(Point, 4326) NOT NULL,
   phone TEXT,
   place_url TEXT,
+  thumbnail_url TEXT NOT NULL DEFAULT '/assets/default-ramen.svg',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -50,4 +51,3 @@ CREATE TABLE wishlist (
   note TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-

@@ -17,8 +17,8 @@ class ShopRepository(
 
         jdbcClient.sql(
             """
-            INSERT INTO shops (id, name, address, latitude, longitude, location, phone, place_url)
-            VALUES (:id, :name, :address, :latitude, :longitude, ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, :phone, :placeUrl)
+            INSERT INTO shops (id, name, address, latitude, longitude, location, phone, place_url, thumbnail_url)
+            VALUES (:id, :name, :address, :latitude, :longitude, ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, :phone, :placeUrl, :thumbnailUrl)
             """.trimIndent(),
         )
             .param("id", id)
@@ -28,6 +28,7 @@ class ShopRepository(
             .param("longitude", request.longitude)
             .param("phone", request.phone)
             .param("placeUrl", request.placeUrl)
+            .param("thumbnailUrl", thumbnailUrlOrDefault(request.thumbnailUrl))
             .update()
 
         replaceTags(id, request.tagNames)
@@ -88,6 +89,7 @@ class ShopRepository(
                 location = ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography,
                 phone = :phone,
                 place_url = :placeUrl,
+                thumbnail_url = :thumbnailUrl,
                 updated_at = now()
             WHERE id = :id
             """.trimIndent(),
@@ -99,6 +101,7 @@ class ShopRepository(
             .param("longitude", request.longitude)
             .param("phone", request.phone)
             .param("placeUrl", request.placeUrl)
+            .param("thumbnailUrl", thumbnailUrlOrDefault(request.thumbnailUrl))
             .update()
 
         if (updated == 0) return null
@@ -163,6 +166,7 @@ class ShopRepository(
             longitude = record.longitude,
             phone = record.phone,
             placeUrl = record.placeUrl,
+            thumbnailUrl = record.thumbnailUrl,
             tags = loadTags(record.id),
             visited = record.visited,
             wishlisted = record.wishlisted,
@@ -194,9 +198,17 @@ class ShopRepository(
             longitude = rs.getDouble("longitude"),
             phone = rs.getString("phone"),
             placeUrl = rs.getString("place_url"),
+            thumbnailUrl = rs.getString("thumbnail_url"),
             visited = rs.getBoolean("visited"),
             wishlisted = rs.getBoolean("wishlisted"),
             averageRating = if (rs.wasNull()) null else averageRating,
         )
+    }
+
+    private fun thumbnailUrlOrDefault(thumbnailUrl: String?): String =
+        thumbnailUrl?.takeIf(String::isNotBlank) ?: DEFAULT_THUMBNAIL_URL
+
+    companion object {
+        const val DEFAULT_THUMBNAIL_URL = "/assets/default-ramen.svg"
     }
 }

@@ -37,6 +37,7 @@ erDiagram
     geography location
     text phone
     text place_url
+    text thumbnail_url
     timestamptz created_at
     timestamptz updated_at
   }
@@ -106,6 +107,7 @@ erDiagram
     geography location
     text phone
     text place_url
+    text thumbnail_url
     timestamptz created_at
     timestamptz updated_at
   }

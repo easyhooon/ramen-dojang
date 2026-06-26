@@ -56,6 +56,12 @@ export interface UpdateShopRequest {
      */
     placeUrl?: string;
     /**
+     * 대표 썸네일 URL
+     * @type {string}
+     * @memberof UpdateShopRequest
+     */
+    thumbnailUrl?: string;
+    /**
      * 라멘 스타일 태그 이름 목록
      * @type {Array<string>}
      * @memberof UpdateShopRequest
@@ -91,6 +97,7 @@ export function UpdateShopRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         'longitude': json['longitude'],
         'phone': json['phone'] == null ? undefined : json['phone'],
         'placeUrl': json['placeUrl'] == null ? undefined : json['placeUrl'],
+        'thumbnailUrl': json['thumbnailUrl'] == null ? undefined : json['thumbnailUrl'],
         'tagNames': json['tagNames'],
     };
 }
@@ -112,7 +119,7 @@ export function UpdateShopRequestToJSONTyped(value?: UpdateShopRequest | null, i
         'longitude': value['longitude'],
         'phone': value['phone'],
         'placeUrl': value['placeUrl'],
+        'thumbnailUrl': value['thumbnailUrl'],
         'tagNames': value['tagNames'],
     };
 }
-

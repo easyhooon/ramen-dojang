@@ -62,6 +62,12 @@ export interface ShopResponse {
      */
     placeUrl?: string;
     /**
+     * 대표 썸네일 URL
+     * @type {string}
+     * @memberof ShopResponse
+     */
+    thumbnailUrl: string;
+    /**
      * 라멘 스타일 태그 이름 목록
      * @type {Array<string>}
      * @memberof ShopResponse
@@ -96,6 +102,7 @@ export function instanceOfShopResponse(value: object): value is ShopResponse {
     if (!('address' in value) || value['address'] === undefined) return false;
     if (!('latitude' in value) || value['latitude'] === undefined) return false;
     if (!('longitude' in value) || value['longitude'] === undefined) return false;
+    if (!('thumbnailUrl' in value) || value['thumbnailUrl'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
     if (!('visited' in value) || value['visited'] === undefined) return false;
     if (!('wishlisted' in value) || value['wishlisted'] === undefined) return false;
@@ -119,6 +126,7 @@ export function ShopResponseFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'longitude': json['longitude'],
         'phone': json['phone'] == null ? undefined : json['phone'],
         'placeUrl': json['placeUrl'] == null ? undefined : json['placeUrl'],
+        'thumbnailUrl': json['thumbnailUrl'],
         'tags': json['tags'],
         'visited': json['visited'],
         'wishlisted': json['wishlisted'],
@@ -144,10 +152,10 @@ export function ShopResponseToJSONTyped(value?: ShopResponse | null, ignoreDiscr
         'longitude': value['longitude'],
         'phone': value['phone'],
         'placeUrl': value['placeUrl'],
+        'thumbnailUrl': value['thumbnailUrl'],
         'tags': value['tags'],
         'visited': value['visited'],
         'wishlisted': value['wishlisted'],
         'averageRating': value['averageRating'],
     };
 }
-

@@ -30,6 +30,7 @@ export interface ShopResponse {
   longitude: number;
   phone: string | null;
   placeUrl: string | null;
+  thumbnailUrl: string;
   tags: string[];
   visited: boolean;
   wishlisted: boolean;
@@ -43,6 +44,7 @@ export interface CreateShopRequest {
   longitude: number;
   phone?: string | null;
   placeUrl?: string | null;
+  thumbnailUrl?: string | null;
   tagNames?: string[];
 }
 
@@ -161,6 +163,7 @@ const toGeneratedShopRequest = (request: CreateShopRequest): GeneratedCreateShop
   longitude: request.longitude,
   phone: request.phone || undefined,
   placeUrl: request.placeUrl || undefined,
+  thumbnailUrl: request.thumbnailUrl || undefined,
   tagNames: request.tagNames ?? [],
 });
 
@@ -189,6 +192,7 @@ const fromGeneratedShop = (shop: GeneratedShopResponse): ShopResponse => ({
   longitude: shop.longitude,
   phone: shop.phone ?? null,
   placeUrl: shop.placeUrl ?? null,
+  thumbnailUrl: shop.thumbnailUrl ?? "/assets/default-ramen.svg",
   tags: shop.tags,
   visited: shop.visited,
   wishlisted: shop.wishlisted,

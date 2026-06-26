@@ -4,7 +4,15 @@ import { Badge } from "@toss/tds-mobile";
 
 export function ShopCard({ shop }: { shop: ShopResponse }) {
   return (
-    <article className="card item-card">
+    <article className="card item-card shop-card">
+      <img
+        className="shop-thumbnail"
+        src={shop.thumbnailUrl}
+        alt=""
+        onError={(event) => {
+          event.currentTarget.src = defaultThumbnailUrl;
+        }}
+      />
       <div>
         <div className="item-title-row">
           <h3>{shop.name}</h3>
@@ -37,3 +45,5 @@ export function ShopCard({ shop }: { shop: ShopResponse }) {
     </article>
   );
 }
+
+const defaultThumbnailUrl = "/assets/default-ramen.svg";
