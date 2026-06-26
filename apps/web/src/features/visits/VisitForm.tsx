@@ -48,10 +48,10 @@ export function VisitForm({
         <StarRating key={key} label={ratingLabel[key]} value={value[key]} onChange={(rating) => setValue({ ...value, [key]: rating })} />
       ))}
       <label>
-        재방문
+        재방문 의사
         <select value={String(value.revisitIntention)} onChange={(event) => setValue({ ...value, revisitIntention: event.target.value === "true" })}>
-          <option value="true">예</option>
-          <option value="false">아니오</option>
+          <option value="true">있음</option>
+          <option value="false">없음</option>
         </select>
       </label>
       <TextArea className="full" variant="box" label="메모" value={value.memo ?? ""} onChange={(event) => setValue({ ...value, memo: event.target.value })} minHeight={120} />
