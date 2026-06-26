@@ -5,6 +5,23 @@
 ## 확인 필요
 
 - [x] `프론트 서버 분리`의 의미 확정: TODO/작업 범위를 Frontend와 Server로 분리하고, 실행도 `dev:web`과 `dev:api`로 분리한다.
+- [x] 웹사이트 hosting, 도메인, 배포 방식 후보 결정: Vercel 사용
+- [ ] Vercel 프로젝트 생성: Root Directory `apps/web`, Framework Preset `Vite`, Output Directory `dist`
+- [ ] 웹사이트 도메인 결정 및 Vercel 연결
+- [x] 앱인토스 콘솔 앱 만들기 완료
+- [x] 1차 MVP 방향 결정: 로그인/서버 없이 로컬 저장 기반 토스 미니앱으로 먼저 출시 시도
+- [ ] 앱인토스 앱 정보 등록하기
+- [ ] 앱인토스 약관 등록하기
+- [ ] 앱인토스 `.ait` 업로드 후 샌드박스 실행 확인
+- [ ] 토스 미니앱 등록 요건과 공식 개발 문서 확인
+- [ ] Toss Mini App SDK 적용 방식 확인
+- [ ] Toss Design System 사용 가능 범위와 설치 방식 확인
+- [ ] 앱인토스 인앱 광고 적용 시 콘솔 광고 그룹 ID 발급과 배너/전면형/리워드 중 MVP에 맞는 형식 확인
+- [ ] MVP 사용자 식별은 앱인토스 `getAnonymousKey`로 가능한지 확인
+- [ ] 토스 로그인 테스트 앱 개발 가능 범위와 운영 배포 전 사업자 인증, 앱인토스 서버 API용 mTLS 인증서/방화벽/secret 관리 필요사항 확인
+- [ ] Sentry 프로젝트/DSN/API key 발급 후 앱인토스 WebView JS 오류 추적 설정
+- [ ] 기존 Expo/Nitro WebView wrapper 유지/삭제 판단
+- [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
 
 ## 공통 / 모노레포
 
@@ -30,22 +47,27 @@
 - [x] TDD 작업 기준을 `AGENTS.md`에 명시
 - [x] 루트 검증 하네스 `pnpm verify`, `pnpm test` 추가
 - [x] `.githooks/pre-commit`으로 `pnpm verify` 실행
+- [x] ponytail 기준 dependency 추가 문서화 gate를 `pnpm verify`에 연결
 - [ ] lint 정책 결정: oxlint 단독 vs ESLint 병행
 - [ ] oxlint trial: TS/TSX, React hooks, generated client 제외, mobile 파일 false positive 확인
 - [ ] 기존 scaffold/API/frontend 작업의 테스트 부채 정리
+- [ ] Gemini review bot 또는 GitHub Actions 기반 PR review 자동화 추가
 
 ## Server
+
+1차 앱인토스 MVP에서는 서버를 출시 필수 경로에서 제외한다. 아래 항목은 동기화, 공개 라멘집 DB, 외부 후보 수집이 필요해질 때 재개한다.
 
 - [x] DB ERD 문서 작성
 - [ ] 로그인/사용자 소유권 반영 ERD 확정
 - [ ] `users` 테이블 및 `visits.user_id`, `wishlist.user_id` migration 작성
-- [ ] 인증 방식 결정: Google/Kakao/Naver/OAuth 우선순위
+- [ ] 인증 방식 결정: MVP는 `getAnonymousKey` 우선, 토스 로그인은 테스트 앱으로 연동 확인 후 개인정보/결제 상태 조회가 필요할 때 재검토
 - [ ] 인증/사용자 소유권 behavior 목록 작성 후 TDD 첫 세로 slice 선택
 - [ ] Spring Security/OAuth 로그인 최소 세로 slice 구현
+- [ ] 토스 로그인 도입 시 테스트 앱 연동 후 운영 배포 전 사업자 인증과 mTLS 기반 token exchange/login-me 연동 설계
 - [ ] 현재 사용자 기준 shops visited/wishlisted/averageRating 계산으로 변경
 - [ ] 외부 검색 결과를 `shop_candidates`로 저장하는 ERD 확정
 - [x] Naver/Kakao/Google 장소 API 제공 필드와 한계 조사 문서 작성
-- [ ] `shop_candidates` Flyway migration 작성
+- [x] `shop_candidates` Flyway migration 작성
 - [ ] 네이버 지역 검색 API 기반 후보 sync spike 작성
 - [ ] 라멘집 후보 scoring/중복 제거 기준 정의
 - [ ] 후보 검수 후 `shops`로 승격하는 admin flow 설계
@@ -63,19 +85,19 @@
 - [x] Swagger request/response schema 확인
 - [x] Swagger 공통 error response 문서화
 - [x] OpenAPI Generator용 operationId 고정
-- [x] OpenAPI license identifier 및 JSON media type 설정
+- [x] OpenAPI metadata 및 JSON media type 설정
 - [x] PostGIS 기반 초기 Flyway migration 작성
 - [x] `shops` CRUD API 구현
 - [x] `visits` CRUD API 구현
 - [x] `GET /shops/{shopId}/visits` 구현
 - [x] `wishlist` 등록/목록/삭제 API 구현
 - [x] 서버 컴파일 검증
-- [ ] Flyway migration 검증
+- [x] Flyway migration 검증
 - [x] Swagger/OpenAPI 응답 검증
-- [ ] Swagger UI에서 shops CRUD 수동 검증
-- [ ] Swagger UI에서 visits CRUD 수동 검증
-- [ ] Swagger UI에서 wishlist API 수동 검증
-- [ ] API smoke test 작성 또는 수동 검증 기록
+- [ ] Swagger UI에서 shops CRUD 수동 검증, 서버 모드 재개 시
+- [ ] Swagger UI에서 visits CRUD 수동 검증, 서버 모드 재개 시
+- [ ] Swagger UI에서 wishlist API 수동 검증, 서버 모드 재개 시
+- [ ] API smoke test 작성 또는 수동 검증 기록, 서버 모드 재개 시
 - [ ] shops/visits/wishlist API behavior test 보강
 
 ## Frontend
@@ -94,10 +116,19 @@
 - [x] 프론트 타입체크 검증
 - [x] 프론트 빌드 검증
 - [ ] 브라우저 화면 검증
+- [ ] 웹사이트 + 토스 미니앱 공통 UX로 프론트 IA/화면 범위 재정리
+- [x] 1차 MVP를 API 의존 없는 `localStorage` 저장 모드로 전환
+- [x] 라멘집/방문 기록/위시리스트 local repository 작성
+- [ ] 앱인토스 샌드박스에서 서버 없이 핵심 CRUD 수동 테스트
+- [x] TDS Provider 연결 및 핵심 액션 버튼 1차 치환
+- [ ] TDS 컴포넌트 기준으로 기존 UI 치환 범위 산정
+- [ ] TDS ListRow/TextField/TextArea/Dialog 적용 범위 산정
+- [x] `pnpm --filter web build:ait`로 앱인토스 Granite 산출물 생성 확인
+- [ ] Sentry 초기화 시 `enableNative: false` 적용 및 sourcemap upload 절차 확인
 - [ ] 주요 화면 query/mutation behavior test 전략 결정
 - [x] 모바일 Expo SDK 패키지 조합 `expo-doctor` 검증
-- [ ] 모바일 웹뷰 래퍼 development build 검증
-- [ ] `nitro-webview` iOS/Android native setup 검증
+- [ ] 모바일 웹뷰 래퍼 development build 검증, 스토어 앱 목표 재개 시
+- [ ] `nitro-webview` iOS/Android native setup 검증, 스토어 앱 목표 재개 시
 
 ## API Client / Contract
 
@@ -121,11 +152,16 @@
 - [x] Swagger annotation 추가 후 `server/api ./gradlew test` 통과
 - [x] `pnpm dev:api:docs` 실행 후 `http://127.0.0.1:8080/health` HTTP 200 확인
 - [x] `http://127.0.0.1:8080/openapi` HTTP 200 확인
-- [x] OpenAPI JSON에서 `license.identifier=MIT`, `operationId=listShops`, `application/json` response content 확인
+- [x] OpenAPI JSON에서 `operationId=listShops`, `application/json` response content 확인
 - [x] `pnpm api:generate` 통과
 - [x] `pnpm --filter mobile typecheck` 통과
 - [x] `cd apps/mobile && pnpm dlx expo-doctor@latest` 통과
 - [x] `pnpm --filter mobile exec expo config --type public` 통과
 - [x] Expo SDK 56 기준 React Native/React/TypeScript 버전 정렬
 - [x] `pnpm verify` 전체 하네스 통과
-- [ ] Docker/Postgres 미설치로 `pnpm dev:api`는 `localhost:5432 refused`에서 실패, Flyway migration 검증 대기
+- [x] `pnpm dev:api:docs` 실행 후 `http://127.0.0.1:8080/swagger-ui/index.html` HTTP 200 확인
+- [x] `http://127.0.0.1:8080/openapi` HTTP 200 확인
+- [x] `http://127.0.0.1:8080/health` 응답 `{"status":"ok"}` 확인
+- [x] Homebrew PostgreSQL 17/PostGIS 설치 후 `pnpm dev:api` 실제 DB 모드 실행 확인
+- [x] Flyway V1/V2 migration 적용 확인
+- [ ] Swagger UI API별 수동 smoke 확인, 서버 모드 재개 시

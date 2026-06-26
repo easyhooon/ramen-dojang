@@ -27,7 +27,7 @@
 ## 구현된 것
 
 - Vite React web app: `apps/web`
-- Expo React Native WebView wrapper: `apps/mobile`
+- Expo React Native WebView wrapper: `apps/mobile`, 웹사이트 + 토스 미니앱 출시 전환으로 현재 보류
 - Kotlin Spring Boot API: `server/api`
 - TypeScript API client package: `packages/api-client`
 - PostgreSQL/PostGIS local infra: `infra/docker-compose.yml`
@@ -51,14 +51,16 @@
 
 우선순위가 높은 작업:
 
-1. 로그인/사용자 소유권 반영 ERD 확정
-2. `users` 테이블, `visits.user_id`, `wishlist.user_id` Flyway migration 추가
-3. 인증 방식 결정: Google/Kakao/Naver/OAuth 우선순위
-4. 인증/사용자 소유권 behavior 목록 작성 후 TDD 첫 세로 slice 선택
-5. Spring Security/OAuth 최소 세로 slice 구현
-6. Swagger UI에서 shops, visits, wishlist CRUD 수동 검증
-7. 브라우저 화면 검증
-8. Vercel 배포 설정 정리
+1. Vercel 프로젝트 생성: Root Directory `apps/web`, Framework Preset `Vite`, Output Directory `dist`
+2. 토스 미니앱 등록 요건과 공식 개발 문서 확인
+3. Toss Mini App SDK/TDS 적용 방식 확인
+4. 기존 프론트 화면을 웹사이트 + 토스 미니앱 UX와 TDS 기준으로 재정리
+5. 로그인/사용자 소유권 반영 ERD 확정
+6. `users` 테이블, `visits.user_id`, `wishlist.user_id` Flyway migration 추가
+7. 인증 방식 결정: 웹사이트와 토스 미니앱 환경 기준으로 검토
+8. 인증/사용자 소유권 behavior 목록 작성 후 TDD 첫 세로 slice 선택
+9. Spring Security/OAuth 최소 세로 slice 구현
+10. 브라우저 화면 검증
 
 현재 대기 중인 검증:
 
@@ -107,7 +109,7 @@ pnpm verify
 - `pnpm dev:api:docs`는 OpenAPI 생성용이다. DB 없이 `/openapi`를 뽑을 수 있지만, CRUD API를 직접 호출하면 DB 연결 오류가 날 수 있다.
 - 실제 API 서버 검증은 `pnpm infra:up`으로 Postgres/PostGIS를 띄운 뒤 `pnpm dev:api`로 해야 한다.
 - OpenAPI Generator는 첫 실행 때 Maven Central에서 generator jar를 내려받는다.
-- Vercel 배포 시 web app은 Next.js가 아니라 Vite React다. monorepo root와 build command를 명확히 설정해야 한다.
+- 웹사이트 + 토스 미니앱 출시 전환으로 스토어 앱 배포는 후순위다. 공개 웹사이트는 Vercel로 배포하고, `apps/web/vercel.json`은 Vite SPA deep link rewrite를 담당한다.
 - `apps/mobile`은 Expo Go가 아니라 development build/prebuild 검증이 필요할 수 있다. Nitro native module을 쓰기 때문이다.
 - 오늘까지의 초기 scaffold는 typecheck/build/compile 중심으로 검증했지만, TDD red-green-refactor 흔적은 부족하다. 다음 behavior 구현부터는 테스트를 먼저 추가한다.
 - `pnpm verify`는 현재 가능한 검증 하네스다. 프론트 behavior test runner와 API smoke/integration test는 아직 보강 TODO로 남아 있다.

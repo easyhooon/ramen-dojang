@@ -87,7 +87,7 @@
 - 브라우저에서 `http://localhost:5173/` 열기 확인
 - `pnpm dev:api:docs` 실행 후 `http://127.0.0.1:8080/health` HTTP 200 확인
 - `http://127.0.0.1:8080/openapi` HTTP 200 확인
-- OpenAPI JSON에서 `license.identifier=MIT`, `operationId=listShops`, `application/json` response content 확인
+- OpenAPI JSON에서 `operationId=listShops`, `application/json` response content 확인
 - `pnpm api:generate`
 - `pnpm --filter mobile typecheck`
 - `cd apps/mobile && pnpm dlx expo-doctor@latest`

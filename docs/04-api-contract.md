@@ -67,7 +67,7 @@ pnpm api:generate
 
 - 서버 DTO와 controller annotation이 OpenAPI의 원본이다.
 - 모든 operation은 `operationId`를 명시해서 generated method 이름을 고정한다.
-- OpenAPI info에는 license `identifier`를 넣어 generator validation을 통과시킨다.
+- OpenAPI info에는 확정되지 않은 license를 넣지 않는다.
 - springdoc 기본 consumes/produces media type은 `application/json`으로 둔다.
 - generated 파일은 직접 수정하지 않는다. 필요한 변환은 `packages/api-client/src/index.ts` wrapper에서 한다.
 

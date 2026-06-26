@@ -213,7 +213,7 @@ pnpm dev:api:docs
 
 ### OpenAPI Generator는 스펙을 엄격하게 본다
 
-처음 `pnpm api:generate`를 실행했을 때 `info.license.identifier is missing` 오류가 났다. `license.name = "MIT"`만으로는 부족했고, OpenAPI 3.1 기준으로 `identifier = "MIT"`까지 넣어야 generator validation을 통과했다.
+OpenAPI에 license를 명시한다면 OpenAPI 3.1 기준에 맞게 완성된 license object를 써야 한다. 프로젝트 license가 확정되지 않았다면 license 필드를 아예 생략하는 편이 낫다.
 
 또 `operationId`를 명시하지 않으면 generated method 이름이 프레임워크 추론에 의존한다. API client를 프론트에서 오래 쓸 생각이라면 controller마다 `operationId`를 직접 고정하는 편이 낫다.
 
@@ -390,3 +390,79 @@ pnpm add -D -w oxlint
 - [Oxlint JavaScript Plugins](https://oxc.rs/docs/guide/usage/linter/js-plugins.html)
 - [ESLint Getting Started](https://eslint.org/docs/latest/use/getting-started)
 - [ESLint Configuration Files](https://eslint.org/docs/latest/use/configure/configuration-files)
+
+### Homebrew PostGIS는 PostgreSQL major version을 맞춰야 한다
+
+증상:
+
+- `postgresql@16`과 `postgis`를 설치한 뒤 `CREATE EXTENSION postgis`가 실패했다.
+- 에러는 `postgresql@16` extension 디렉터리에서 `postgis.control`을 찾을 수 없다는 내용이었다.
+
+원인:
+
+- 설치된 Homebrew `postgis 3.6.4`는 `postgresql@17`, `postgresql@18`용 extension 파일을 제공했고, `postgresql@16` 경로에는 파일이 없었다.
+
+해결:
+
+- `postgresql@17`을 추가 설치하고 17 클러스터에서 `ramen_dojang` DB와 PostGIS extension을 만들었다.
+- 그 뒤 `pnpm dev:api`가 Flyway V1/V2 migration을 실제 DB에 적용했다.
+
+다음 예방책:
+
+- Docker가 없는 환경에서 Homebrew로 PostGIS를 쓸 때는 `find /opt/homebrew -name postgis.control`로 지원되는 PostgreSQL major version을 먼저 확인한다.
+- PATH에 여러 PostgreSQL 버전이 섞이면 절대 경로(`/opt/homebrew/opt/postgresql@17/bin/...`)를 쓴다.
+
+### PostgreSQL은 null query parameter 타입을 추론하지 못할 수 있다
+
+증상:
+
+- `POST /shops`는 성공했지만 `GET /shops`는 500을 냈다.
+- 서버 로그에는 `could not determine data type of parameter`가 남았다.
+
+원인:
+
+- `WHERE (:name IS NULL OR ...)`처럼 nullable named parameter를 SQL에서 바로 검사했고, PostgreSQL이 null parameter의 타입을 결정하지 못했다.
+
+해결:
+
+- `CAST(:name AS text)`, `CAST(:visited AS boolean)`, `CAST(:tag AS text)`처럼 SQL에서 parameter 타입을 명시했다.
+
+다음 예방책:
+
+- nullable filter parameter를 SQL에 넣을 때는 타입 cast를 명시하거나, filter가 있을 때만 WHERE 절을 붙인다.
+
+### 앱인토스에서 Vite와 Granite는 양자택일이 아니다
+
+앱인토스 미니앱을 만든다고 해서 기존 Vite 앱을 버릴 필요는 없다. Vite는 웹 개발 서버와 번들러 역할을 계속 맡고, Granite는 앱인토스용 설정, 빌드, 패키징 레이어로 얹는다.
+
+공식 예시도 `granite.config.ts`의 `web.commands`에서 `vite dev`, `vite build`를 호출하는 구조다. 따라서 현재 `apps/web`은 유지하고, 앱인토스 spike는 Granite 설정을 얇게 추가해 기존 Vite 빌드를 감싸는 방식으로 시작한다.
+
+출시 타겟이 앱인토스 WebView에 가까워지면 프론트 판단 기준도 바뀐다. 데스크톱 웹을 먼저 만들고 모바일을 맞추는 게 아니라, 모바일 앱 화면을 1순위로 두고 데스크톱 웹은 깨지지 않게 확장한다.
+
+### `.ait`는 앱인토스 콘솔 업로드용 미니앱 패키지다
+
+`.ait` 파일은 웹사이트 배포 산출물이 아니라 앱인토스 콘솔의 `앱 출시` 메뉴에 올리는 미니앱 패키지다. 공식 가이드도 앱 빌드 후 생성된 `ait` 파일을 콘솔에 업로드해 테스트한다고 설명한다.
+
+이 프로젝트에서는 `pnpm --filter web build:ait`로 `apps/web/ramen-dojang.ait`를 만들고, Vercel 배포는 별도로 `apps/web/dist`를 사용한다. 즉 같은 Vite 앱을 쓰더라도 `dist`는 웹 호스팅용, `.ait`는 앱인토스 제출/샌드박스 확인용으로 역할이 다르다.
+
+### 토스 로그인은 테스트와 운영 조건을 나눠 본다
+
+앱인토스 토스 로그인은 테스트 앱에서는 사업자 인증 없이 개발과 연동 테스트를 진행할 수 있다. 다만 운영 배포에서 실제 사용자가 로그인을 쓰려면 개발자 센터 콘솔의 사업자 인증 또는 파트너 정보 등록이 필요하다.
+
+이번 프로젝트에서는 방문 기록 소유권을 먼저 만들되, 단순 사용자 구분만 필요하면 앱인토스 `getAnonymousKey`를 먼저 검토한다. 토스 로그인은 테스트 앱으로 연동 가능성을 확인하고, 운영 배포 전 사업자 인증과 mTLS 서버 연동 요건을 따로 처리한다.
+
+### 앱인토스 경험담은 로그인과 광고 범위를 줄이는 힌트로 쓴다
+
+개발자 경험담 기준으로도 토스 로그인은 클라이언트 인가 코드만으로 끝나지 않고, 서버의 토큰 교환과 사용자 조회, mTLS 인증서, 콜백 처리가 붙는다. 그래서 로그인은 “있으면 좋음”이 아니라 방문 기록 소유권이나 개인화에 꼭 필요할 때만 세로 slice로 붙인다.
+
+수익화는 앱인토스 콘솔에서 인앱 광고 그룹 ID를 만든 뒤 배너, 전면형, 리워드 중 맞는 형식을 붙이는 흐름으로 보인다. 라멘 도장깨기 MVP는 보상 재화가 없으므로 리워드 광고보다 배너나 전면형부터 검토한다.
+
+비게임 미니앱은 TDS 사용을 우선한다. 자체 디자인 시스템을 새로 키우지 않고, TDS로 안 되는 라멘 기록 도메인 표현만 작게 직접 만든다.
+
+참고: [앱인토스 찍먹해보기](https://velog.io/@dbwls/%EC%95%B1%EC%9D%B8%ED%86%A0%EC%8A%A4-%EC%B0%8D%EB%A8%B9%ED%95%B4%EB%B3%B4%EA%B8%B0)
+
+### 첫 앱인토스 MVP는 서버 없이도 배울 수 있다
+
+개인 기록 앱의 첫 검증 목표가 “사용감이 괜찮은가”라면 서버, 로그인, DB, PostGIS는 필수가 아니다. 로컬 저장만으로도 라멘집 등록, 방문 기록, 위시리스트, 앱인토스 샌드박스 실행, 모바일 반응형 문제를 먼저 확인할 수 있다.
+
+서버는 이미 만들어 둔 자산으로 보관한다. 기기 간 동기화, 공개 라멘집 DB, 외부 장소 후보 수집, 토스 로그인처럼 서버가 없으면 풀 수 없는 요구가 실제로 생길 때 다시 연결한다.
