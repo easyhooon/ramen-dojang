@@ -127,6 +127,7 @@
 - [x] TDS Provider 연결 및 핵심 액션 버튼 1차 치환
 - [x] TDS 컴포넌트 기준으로 기존 UI 치환 범위 산정
 - [x] TDS TextField/TextArea/Badge 1차 치환
+- [x] TDS primary color와 앱 CSS를 Toss neutral/blue 톤으로 정리
 - [ ] TDS ListRow/Dialog/Selector 적용 범위 산정
 - [x] `pnpm --filter web build:ait`로 앱인토스 Granite 산출물 생성 확인
 - [ ] Sentry 초기화 시 `enableNative: false` 적용 및 sourcemap upload 절차 확인

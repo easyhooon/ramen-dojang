@@ -46,7 +46,7 @@ declare module "@tanstack/react-router" {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <TDSMobileAITProvider brandPrimaryColor="#b86225">
+    <TDSMobileAITProvider brandPrimaryColor="#3182f6">
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
