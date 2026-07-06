@@ -125,7 +125,7 @@
 - [x] 브라우저 화면 검증
 - [x] Stitch 디자인 생성을 위한 화면별 요구사항 brief 작성
 - [ ] Stitch 시안을 `docs/05-frontend-design-direction.md`에 화면별로 옮기기
-- [ ] Stitch 시안 기준으로 홈/라멘집 목록/방문 추가 IA와 카피 재정리
+- [x] Stitch 시안 기준으로 홈/라멘집 목록/방문 추가 IA와 카피 재정리
 - [ ] 웹사이트 + 토스 미니앱 공통 UX로 프론트 IA/화면 범위 재정리
 - [x] 1차 MVP를 서버 catalog + 로컬 개인 기록 모드로 전환
 - [x] 방문 기록/위시리스트 local repository 작성
@@ -136,6 +136,7 @@
 - [x] TDS TextField/TextArea/Badge 1차 치환
 - [x] TDS primary color와 앱 CSS를 Toss neutral/shoyu amber 톤으로 정리
 - [x] Stitch Shoyu Amber 시안 기준으로 홈/목록/폼 공통 화면 톤 1차 반영
+- [x] Stitch Shoyu Amber 시안 기준으로 주요 화면 레이아웃 반영
 - [ ] TDS ListRow/Dialog/Selector 적용 범위 산정
 - [x] `pnpm --filter web build:ait`로 앱인토스 Granite 산출물 생성 확인
 - [ ] Sentry 초기화 시 `enableNative: false` 적용 및 sourcemap upload 절차 확인

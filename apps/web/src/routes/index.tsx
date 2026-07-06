@@ -9,11 +9,16 @@ export function HomePage() {
   const visits = useQuery({ queryKey: ["visits"], queryFn: () => api.listVisits() });
   const visitedCount = shops.data?.filter((shop) => shop.visited).length ?? 0;
   const tasteStats = getTasteStats(visits.data ?? [], shops.data ?? []);
+  const nextShop = shops.data?.find((shop) => !shop.visited) ?? shops.data?.[0] ?? null;
 
   return (
     <div className="stack">
+      <div className="mobile-title">
+        <h1>라멘 도장깨기</h1>
+      </div>
+
       <section className="summary-band">
-        <div>
+        <div className="summary-copy">
           <p className="eyebrow">라멘 기록장</p>
           <h1>다녀온 맛을 쌓고, 다음 한 그릇을 고릅니다.</h1>
         </div>
@@ -24,10 +29,22 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section-header">
+      <section className="section-label">
+        <h2>내 라멘 프로필</h2>
+      </section>
+
+      <section className="profile-card">
+        <div className="profile-avatar">🍜</div>
         <div>
-          <h2>내 취향 요약</h2>
-          <p className="muted">쌓인 방문 기록으로 보이는 라멘 취향입니다.</p>
+          <div className="item-title-row">
+            <h3>나의 취향 기록</h3>
+            <span className="pill success">LEVEL {Math.max(1, Math.min(9, visitedCount))}</span>
+          </div>
+          <p>
+            {tasteStats
+              ? `${tasteStats.favoriteTag} 중심으로 ${visitedCount}곳을 기록했어요.`
+              : "첫 방문 기록을 남기면 취향 프로필이 채워집니다."}
+          </p>
         </div>
       </section>
 
@@ -54,14 +71,15 @@ export function HomePage() {
         <div className="empty">방문 기록을 남기면 내 취향 요약이 생깁니다.</div>
       )}
 
+      <Link className="hero-action" to="/visits/new">＋ 방문 기록하기</Link>
+
       <section className="section-header">
         <div>
-          <h2>방문한 라멘집</h2>
+          <h2>최근 방문한 곳</h2>
           <p className="muted">최근 등록한 방문 기록입니다.</p>
         </div>
         <div className="actions">
-          <Link className="primary" to="/visits/new">방문 추가</Link>
-          <Link className="button" to="/shops">라멘집 보기</Link>
+          <Link className="button" to="/shops">전체보기</Link>
         </div>
       </section>
 
@@ -70,6 +88,15 @@ export function HomePage() {
         {visits.data?.length === 0 ? <div className="empty">아직 방문 기록이 없습니다.</div> : null}
         {visits.isError ? <div className="empty error">API 서버 연결을 확인해주세요.</div> : null}
       </div>
+
+      {nextShop ? (
+        <Link className="recommend-card" to="/shops/$shopId" params={{ shopId: nextShop.id }}>
+          <img src={nextShop.thumbnailUrl} alt="" />
+          <span>다음 후보</span>
+          <strong>{nextShop.name}</strong>
+          <small>{nextShop.address}</small>
+        </Link>
+      ) : null}
     </div>
   );
 }

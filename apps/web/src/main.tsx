@@ -28,6 +28,12 @@ function RootLayout() {
       <main>
         <Outlet />
       </main>
+      <nav className="bottom-nav" aria-label="주요 화면">
+        <Link to="/"><span>⌂</span>홈</Link>
+        <Link to="/shops"><span>⌕</span>탐색</Link>
+        <Link to="/visits/new"><span>＋</span>추가</Link>
+        <Link to="/about"><span>⚙</span>설정</Link>
+      </nav>
     </div>
   );
 }

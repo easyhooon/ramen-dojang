@@ -21,6 +21,7 @@ export function ShopCard({ shop }: { shop: ShopResponse }) {
           </Badge>
         </div>
         <p className="muted">{shop.address}</p>
+        <p className="rating-line">★ {shop.averageRating ? shop.averageRating.toFixed(1) : "-"} <span>평균</span></p>
         <div className="tag-row">
           {shop.tags.length === 0 ? (
             <Badge size="small" variant="weak" color="elephant">
@@ -36,8 +37,7 @@ export function ShopCard({ shop }: { shop: ShopResponse }) {
         </div>
       </div>
       <div className="item-meta">
-        <strong>{shop.averageRating ? shop.averageRating.toFixed(1) : "-"}</strong>
-        <span>평균</span>
+        <span className="bookmark">{shop.wishlisted ? "★" : "☆"}</span>
         <Link className="icon-link" to="/shops/$shopId" params={{ shopId: shop.id }} aria-label={`${shop.name} 상세`}>
           →
         </Link>

@@ -47,13 +47,16 @@ export function VisitForm({
       {(["brothRating", "noodleRating", "toppingRating", "overallRating"] as const).map((key) => (
         <StarRating key={key} label={ratingLabel[key]} value={value[key]} onChange={(rating) => setValue({ ...value, [key]: rating })} />
       ))}
-      <label>
-        재방문 의사
-        <select value={String(value.revisitIntention)} onChange={(event) => setValue({ ...value, revisitIntention: event.target.value === "true" })}>
-          <option value="true">있음</option>
-          <option value="false">없음</option>
-        </select>
-      </label>
+      <div className="revisit-card full">
+        <div>
+          <strong>다시 올 거예요?</strong>
+          <p>이 가게에 대한 재방문 의사를 기록합니다.</p>
+        </div>
+        <div className="segmented-control" role="group" aria-label="재방문 의사">
+          <button className={!value.revisitIntention ? "active" : ""} type="button" onClick={() => setValue({ ...value, revisitIntention: false })}>없음</button>
+          <button className={value.revisitIntention ? "active" : ""} type="button" onClick={() => setValue({ ...value, revisitIntention: true })}>있음</button>
+        </div>
+      </div>
       <TextArea className="full" variant="box" label="메모" value={value.memo ?? ""} onChange={(event) => setValue({ ...value, memo: event.target.value })} minHeight={120} />
       <Button type="submit" display="full" disabled={!value.shopId}>{submitLabel}</Button>
     </form>

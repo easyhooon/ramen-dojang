@@ -30,15 +30,24 @@ export function NewVisitPage() {
 
   return (
     <div className="stack">
-      <Link className="back-link" to="/">← 홈</Link>
-      <div className="section-header">
+      <div className="mobile-title title-row">
+        <Link className="close-link" to="/">×</Link>
         <div>
           <h1>방문 추가</h1>
           <p className="muted">저장된 라멘집을 검색해서 고른 뒤, 이번 방문의 맛을 남깁니다.</p>
         </div>
       </div>
 
-      <section className="panel">
+      <section className="photo-strip">
+        <div className="photo-slot">
+          <span>선택</span>
+          <small>{selectedShop ? "1/1" : "0/1"}</small>
+        </div>
+        <img src={selectedShop?.thumbnailUrl ?? "/assets/default-ramen.svg"} alt="" />
+      </section>
+
+      <section className="panel step-panel">
+        <p className="form-section-title">라멘집 선택</p>
         <div className="stack">
           <TextField
             variant="box"
@@ -69,7 +78,7 @@ export function NewVisitPage() {
       </section>
 
       {selectedShop ? (
-        <section className="panel narrow">
+        <section className="panel narrow step-panel">
           <h2>리뷰 작성</h2>
           <VisitForm
             key={selectedShop.id}

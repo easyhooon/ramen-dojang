@@ -31,18 +31,56 @@ export function VisitDetailPage() {
 
   return (
     <div className="stack">
-      <div className="section-header">
+      <section className="visit-hero">
+        <Link className="back-link" to="/shops/$shopId" params={{ shopId: visit.data.shopId }}>← 라멘집</Link>
+        <img src="/assets/default-ramen.svg" alt="" />
         <div>
-          <Link className="back-link" to="/shops/$shopId" params={{ shopId: visit.data.shopId }}>← 라멘집</Link>
+          <span className="pill success">{visit.data.revisitIntention ? "다시 올 거예요" : "재방문 없음"}</span>
           <h1>{visit.data.menuName}</h1>
-          <p className="muted">{visit.data.shopName} · {visit.data.visitedAt}</p>
+          <p>{visit.data.shopName}</p>
         </div>
+      </section>
+
+      <section className="panel rating-summary">
+        <div className="summary-row">
+          <span>VISIT DATE</span>
+          <strong>{visit.data.visitedAt}</strong>
+        </div>
+        <div className="summary-row">
+          <span>REVISIT</span>
+          <strong>{visit.data.revisitIntention ? "있음" : "없음"}</strong>
+        </div>
+        <div className="rating-rows">
+          <RatingRow label="국물" value={visit.data.brothRating} />
+          <RatingRow label="면" value={visit.data.noodleRating} />
+          <RatingRow label="토핑" value={visit.data.toppingRating} />
+          <RatingRow label="종합" value={visit.data.overallRating} />
+        </div>
+      </section>
+
+      {visit.data.memo ? (
+        <section className="panel memo-card">
+          <p className="eyebrow">Review memo</p>
+          <p>{visit.data.memo}</p>
+        </section>
+      ) : null}
+
+      <div className="section-header">
+        <h2>방문 기록 수정</h2>
         <Button color="danger" onClick={() => deleteVisit.mutate()}>삭제</Button>
       </div>
       <section className="panel narrow">
-        <h2>방문 기록 수정</h2>
         <VisitForm shops={shops.data ?? []} initial={visit.data} submitLabel="수정" onSubmit={(request) => updateVisit.mutate(request)} />
       </section>
+    </div>
+  );
+}
+
+function RatingRow({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rating-row">
+      <span>{label}</span>
+      <strong>{"★".repeat(value)}{"☆".repeat(5 - value)}</strong>
     </div>
   );
 }
