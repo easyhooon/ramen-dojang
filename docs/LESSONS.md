@@ -514,3 +514,21 @@ Smoke test는 배포나 로컬 실행 직후 “불이 붙었는지” 빠르게
 | 예시 | `/health`, `GET /shops`, 기본 썸네일 렌더링 확인 | 라멘집 검색 → 방문 리뷰 작성 → 홈 기록 반영 확인 |
 
 이번 프로젝트에서는 개발 중 빠른 확인은 smoke test로 충분하다. 출시 전 핵심 플로우가 고정되면 Playwright 같은 도구로 E2E test를 붙인다.
+
+### `.d.ts`는 TypeScript용 API 계약서다
+
+`.d.ts` 파일은 실행되는 코드가 아니라 TypeScript가 라이브러리의 함수, 컴포넌트, props 타입을 이해하기 위한 선언 파일이다. 실제 런타임 동작은 `.js`가 담당하고, `.d.ts`는 컴파일 타임에 “이 prop을 받을 수 있는가”를 확인하는 계약서 역할을 한다.
+
+라이브러리 컴포넌트의 허용 props를 빠르게 확인할 때는 설치된 패키지의 `.d.ts`를 보는 것이 가장 싸다. 이번에는 `@toss/tds-mobile`의 `ButtonProps`, `BadgeProps`, `TDSMobileProvider` 타입을 확인해 색상 설정 범위를 판단했다.
+
+### TDS는 blue만 강제하지 않는다
+
+현재 앱은 Toss blue `#3182f6`를 primary로 쓰지만, TDS가 blue만 허용하는 구조는 아니다. 설치된 `@toss/tds-mobile@2.5.0` 기준으로 Button의 `color` prop은 `primary`, `danger`, `light`, `dark` semantic color를 받고, Badge는 `blue`, `teal`, `green`, `red`, `yellow`, `elephant`를 받는다.
+
+앱 전체 primary는 앱인토스 환경에서는 `TDSMobileAITProvider`의 `brandPrimaryColor`, 웹 환경에서는 `TDSMobileProvider`의 `token.color.primary`로 바꿀 수 있다. 따라서 라멘 도메인과 Toss blue가 어색하면 TDS 구조와 토스다운 neutral surface는 유지하고, shoyu/amber 계열 primary를 CTA와 선택 상태 같은 작은 강조에만 제한적으로 쓰는 방향이 가능하다.
+
+### 모바일 시안은 390px 대표, 360px 최소 검수로 본다
+
+390px은 최근 iPhone 기본급 계열을 떠올리기 쉬운 대표 시안 폭이고, 360px은 Android와 작은 모바일에서 여전히 중요한 최소 검수 폭이다. 디자인 요청서에는 390px만 쓰면 기준이 바뀐 것처럼 보이므로, “390px 대표 시안, 360px 최소 검수”를 같이 적는다.
+
+라멘 도장깨기처럼 토스 미니앱을 우선하는 앱은 모바일 1순위로 보되, 360px에서도 버튼 텍스트, 별점 입력, 라멘집 카드 정보가 줄바꿈으로 깨지지 않는지 확인한다.

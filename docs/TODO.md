@@ -123,6 +123,7 @@
 - [x] 프론트 타입체크 검증
 - [x] 프론트 빌드 검증
 - [x] 브라우저 화면 검증
+- [x] Stitch 디자인 생성을 위한 화면별 요구사항 brief 작성
 - [ ] Stitch 시안을 `docs/05-frontend-design-direction.md`에 화면별로 옮기기
 - [ ] Stitch 시안 기준으로 홈/라멘집 목록/방문 추가 IA와 카피 재정리
 - [ ] 웹사이트 + 토스 미니앱 공통 UX로 프론트 IA/화면 범위 재정리
@@ -133,7 +134,8 @@
 - [x] TDS Provider 연결 및 핵심 액션 버튼 1차 치환
 - [x] TDS 컴포넌트 기준으로 기존 UI 치환 범위 산정
 - [x] TDS TextField/TextArea/Badge 1차 치환
-- [x] TDS primary color와 앱 CSS를 Toss neutral/blue 톤으로 정리
+- [x] TDS primary color와 앱 CSS를 Toss neutral/shoyu amber 톤으로 정리
+- [x] Stitch Shoyu Amber 시안 기준으로 홈/목록/폼 공통 화면 톤 1차 반영
 - [ ] TDS ListRow/Dialog/Selector 적용 범위 산정
 - [x] `pnpm --filter web build:ait`로 앱인토스 Granite 산출물 생성 확인
 - [ ] Sentry 초기화 시 `enableNative: false` 적용 및 sourcemap upload 절차 확인
@@ -157,6 +159,8 @@
 - [x] `pnpm --filter @ramen-dojang/api-client build` 통과
 - [x] `pnpm --filter web build` 통과
 - [x] `pnpm dev:web` 실행 및 `http://localhost:5173/` HTTP 200 확인
+- [x] Stitch Shoyu Amber 1차 반영 후 `tsc -p apps/web/tsconfig.json --noEmit` 통과
+- [x] Stitch Shoyu Amber 1차 반영 후 `http://localhost:5173/` HTTP 200 확인
 - [x] `http://localhost:5173/` 브라우저 열기 확인
 - [x] `server/api ./gradlew compileKotlin` 통과
 - [x] `server/api ./gradlew test` 통과
