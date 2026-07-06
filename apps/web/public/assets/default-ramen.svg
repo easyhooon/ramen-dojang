@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title desc">
   <title id="title">기본 라멘 이미지</title>
   <desc id="desc">김이 오르는 라멘 그릇 일러스트</desc>
-  <rect width="320" height="240" rx="24" fill="#f2f4f6"/>
-  <circle cx="160" cy="118" r="78" fill="#fff" stroke="#d1d6db" stroke-width="6"/>
-  <path d="M88 124c18 52 126 52 144 0" fill="#3182f6"/>
+  <rect width="320" height="240" rx="24" fill="#f8f9fa"/>
+  <circle cx="160" cy="118" r="78" fill="#fff" stroke="#ddc1b3" stroke-width="6"/>
+  <path d="M88 124c18 52 126 52 144 0" fill="#b45309"/>
   <path d="M103 108c18-24 96-24 114 0" fill="#f6d365"/>
-  <path d="M112 106c18 12 40 12 58 0s35-11 50 1" fill="none" stroke="#d9913d" stroke-width="7" stroke-linecap="round"/>
+  <path d="M112 106c18 12 40 12 58 0s35-11 50 1" fill="none" stroke="#903f00" stroke-width="7" stroke-linecap="round"/>
   <circle cx="130" cy="94" r="16" fill="#f7f0d5"/>
   <circle cx="130" cy="94" r="7" fill="#f6c343"/>
   <circle cx="193" cy="97" r="15" fill="#f04452"/>

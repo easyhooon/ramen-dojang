@@ -60,14 +60,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 
 function TDSProvider({ children }: { children: React.ReactNode }) {
-  const props = { brandPrimaryColor: "#3182f6" };
+  const brandPrimaryColor = "#b45309";
 
   if ("ReactNativeWebView" in globalThis) {
-    return <TDSMobileAITProvider {...props}>{children}</TDSMobileAITProvider>;
+    return <TDSMobileAITProvider brandPrimaryColor={brandPrimaryColor}>{children}</TDSMobileAITProvider>;
   }
 
   return (
-    <TDSMobileProvider userAgent={webUserAgent} {...props}>
+    <TDSMobileProvider userAgent={webUserAgent} token={{ color: { primary: brandPrimaryColor } }}>
       {children}
     </TDSMobileProvider>
   );

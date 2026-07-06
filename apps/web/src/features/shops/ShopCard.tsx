@@ -28,7 +28,7 @@ export function ShopCard({ shop }: { shop: ShopResponse }) {
             </Badge>
           ) : (
             shop.tags.map((tag) => (
-              <Badge size="small" variant="weak" color="blue" key={tag}>
+              <Badge size="small" variant="weak" color="yellow" key={tag}>
                 {tag}
               </Badge>
             ))

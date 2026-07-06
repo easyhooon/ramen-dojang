@@ -14,7 +14,7 @@ export default defineConfig({
   brand: {
     displayName: "라멘 도장깨기",
     icon: "https://static.toss.im/appsintoss/73/10550764-5ac1-44e2-9ff3-ad78d8d2e71a.png",
-    primaryColor: "#b86225",
+    primaryColor: "#b45309",
     bridgeColorMode: "basic",
   },
   webViewProps: {
