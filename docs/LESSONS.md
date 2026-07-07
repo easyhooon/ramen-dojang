@@ -584,3 +584,11 @@ Vercel preview deployment는 production 도메인에 올리기 전, 커밋이나
 이 프로젝트처럼 API 서버를 아직 로컬에서 띄우는 단계라면 Vercel preview는 웹 정적 파일만 먼저 올려보는 용도다. `VITE_API_BASE_URL`을 `http://192.168.x.x:8080`처럼 로컬 LAN API로 잡으면 같은 Wi-Fi의 내 폰에서는 붙을 수 있지만, 외부 사람이 preview URL을 열면 그 사람의 네트워크에서 `192.168.x.x`를 찾게 되어 API가 붙지 않는다.
 
 또한 Vercel preview는 HTTPS이고 로컬 API는 HTTP라서 브라우저 mixed content나 CORS에 막힐 수 있다. 막히면 Vercel을 억지로 고치기보다 HTTPS 터널이나 API 서버 배포로 넘어간다. 지금 단계에서는 “폰에서 실제 화면이 보이는지” 확인하는 가벼운 smoke test 용도로만 쓴다.
+
+### 앱인토스 출시는 Vercel 호스팅이 필수가 아니다
+
+앱인토스 미니앱은 일반 웹 URL을 등록해 열어두는 흐름보다, Granite 빌드로 만든 `.ait` 번들을 콘솔에 업로드하고 샌드박스/QR 테스트를 거쳐 출시하는 흐름에 가깝다. 기존 Vite 웹 프로젝트도 Granite 설정에서 `vite dev`, `vite build`를 호출해 이 흐름에 태울 수 있다.
+
+실제 서비스 CORS origin은 `https://<appName>.apps.tossmini.com`, QR 테스트 origin은 `https://<appName>.private-apps.tossmini.com` 형태를 허용해야 한다. 따라서 앱인토스 안에서만 쓰는 프론트라면 별도 브랜드 도메인 구매는 보류해도 된다.
+
+Vercel 연동은 그래도 버릴 필요는 없다. 공개 웹사이트를 같이 운영하거나, 브라우저/모바일 QA용 preview URL을 만들거나, 큰 정적 리소스를 웹/CDN 쪽으로 분리할 때 쓸 수 있다. 이 프로젝트에서는 앱인토스는 `.ait`, 일반 웹은 Vercel, API/DB는 Render/Railway/AWS 같은 서버 배포 후보로 나눈다.

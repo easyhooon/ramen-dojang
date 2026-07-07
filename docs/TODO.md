@@ -5,9 +5,9 @@
 ## 확인 필요
 
 - [x] `프론트 서버 분리`의 의미 확정: TODO/작업 범위를 Frontend와 Server로 분리하고, 실행도 `dev:web`과 `dev:api`로 분리한다.
-- [x] 웹사이트 hosting, 도메인, 배포 방식 후보 결정: Vercel 사용
-- [ ] Vercel 프로젝트 생성: Root Directory `apps/web`, Framework Preset `Vite`, Output Directory `dist`
-- [ ] 웹사이트 도메인 결정 및 Vercel 연결
+- [x] 웹사이트 hosting, 배포 방식 후보 결정: Vercel은 일반 웹사이트/브라우저 QA용으로 유지
+- [x] Vercel 프로젝트 생성: Root Directory `apps/web`, Framework Preset `Vite`, Output Directory `dist`
+- [x] 프론트용 별도 브랜드 도메인 구매 보류: 앱인토스는 `.ait` 업로드 후 tossmini 도메인에서 실행, 일반 웹은 Vercel 도메인 우선
 - [x] 앱인토스 콘솔 앱 만들기 완료
 - [x] 1차 MVP 방향 결정: 로그인 없이 서버 catalog + 로컬 개인 기록 기반 토스 미니앱으로 먼저 출시 시도
 - [ ] 앱인토스 앱 정보 등록하기
@@ -23,7 +23,7 @@
 - [ ] 운영 전 최소 모니터링 기준 결정: 현재는 별도 모니터링 툴 없이 터미널 로그, `/health`, Sentry 예정만 사용
 - [x] 기존 Expo/~~Nitro~~ WebView wrapper는 스토어 출시용 보류 자산으로 유지
 - [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
-- [ ] 운영 배포 전 CORS 허용 origin을 Vercel 도메인과 앱인토스 도메인으로 제한
+- [ ] 운영 배포 전 CORS 허용 origin을 Vercel 도메인, `https://<appName>.apps.tossmini.com`, `https://<appName>.private-apps.tossmini.com`으로 제한
 - [ ] API 서버 운영 배포 시 HTTPS/TLS 적용 방식 확인: Vercel 프론트는 자동 HTTPS, 별도 API 도메인은 Let's Encrypt/클라우드 로드밸런서/배포 플랫폼 제공 무료 인증서 중 선택
 
 ## 공통 / 모노레포

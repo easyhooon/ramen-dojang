@@ -165,16 +165,19 @@
 
 현재 배포 방향:
 
-- web: 공개 웹사이트는 Vercel, 토스 미니앱은 앱인토스 `.ait` 업로드와 샌드박스 테스트
+- 앱인토스 미니앱: Granite로 만든 `.ait` 번들을 앱인토스 콘솔에 업로드하고 샌드박스/QR 테스트 후 출시한다.
+- 일반 웹사이트: Vercel을 유지하되, 앱인토스 출시의 필수 경로가 아니라 브라우저 QA와 공개 웹사이트용으로 본다.
 - API: 공용 라멘집 catalog 서버로 배포 필요
 - DB: 공용 라멘집 catalog 저장소로 배포 필요
 - mobile: Expo/EAS/native build는 스토어 배포가 다시 필요해질 때 검토
+
+앱인토스 안에서는 `https://<appName>.apps.tossmini.com` 또는 `https://<appName>.private-apps.tossmini.com` origin으로 실행되므로, 프론트용 브랜드 도메인 구매는 보류한다. API CORS는 운영에서 앱인토스 실제/QR 테스트 origin, Vercel 도메인만 허용한다.
 
 아직 확정하지 않은 것:
 
 - 토스 미니앱 등록 요건과 심사 기준
 - Toss Mini App SDK/TDS 적용 방식
-- 웹사이트 도메인
+- 일반 웹사이트를 어느 정도 공개 운영할지
 - 사용자 식별 방식: 1차 MVP는 로그인 없음, `getAnonymousKey`와 토스 로그인은 동기화가 필요해질 때 재검토
 - API/DB production hosting
 - mobile store 배포 여부
