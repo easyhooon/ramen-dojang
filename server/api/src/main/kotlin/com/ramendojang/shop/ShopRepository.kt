@@ -189,7 +189,7 @@ class ShopRepository(
 
     @Suppress("UNUSED_PARAMETER")
     private fun mapRecord(rs: ResultSet, rowNumber: Int): ShopRecord {
-        val averageRating = rs.getDouble("average_rating")
+        val averageRating = rs.getNullableDouble("average_rating")
         return ShopRecord(
             id = rs.getObject("id", UUID::class.java),
             name = rs.getString("name"),
@@ -201,8 +201,13 @@ class ShopRepository(
             thumbnailUrl = rs.getString("thumbnail_url"),
             visited = rs.getBoolean("visited"),
             wishlisted = rs.getBoolean("wishlisted"),
-            averageRating = if (rs.wasNull()) null else averageRating,
+            averageRating = averageRating,
         )
+    }
+
+    private fun ResultSet.getNullableDouble(column: String): Double? {
+        val value = getDouble(column)
+        return if (wasNull()) null else value
     }
 
     private fun thumbnailUrlOrDefault(thumbnailUrl: String?): String =

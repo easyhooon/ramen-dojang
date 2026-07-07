@@ -11,6 +11,34 @@ class ShopCandidateRepository(
     private val jdbcClient: JdbcClient,
     private val objectMapper: ObjectMapper,
 ) {
+    fun list(status: String?): List<ShopCandidateResponse> =
+        jdbcClient.sql(
+            """
+            SELECT id, promoted_shop_id, source, source_place_id, raw_name, normalized_name, category, address,
+              latitude, longitude, confidence_score, status
+            FROM shop_candidates
+            WHERE (CAST(:status AS text) IS NULL OR status = CAST(:status AS text))
+            ORDER BY confidence_score DESC NULLS LAST, updated_at DESC
+            """.trimIndent(),
+        )
+            .param("status", status)
+            .query(::map)
+            .list()
+
+    fun findById(id: UUID): ShopCandidateResponse? =
+        jdbcClient.sql(
+            """
+            SELECT id, promoted_shop_id, source, source_place_id, raw_name, normalized_name, category, address,
+              latitude, longitude, confidence_score, status
+            FROM shop_candidates
+            WHERE id = :id
+            """.trimIndent(),
+        )
+            .param("id", id)
+            .query(::map)
+            .optional()
+            .orElse(null)
+
     fun upsert(candidate: UpsertShopCandidate): ShopCandidateResponse {
         val id = UUID.randomUUID()
 
@@ -36,7 +64,7 @@ class ShopCandidateRepository(
               raw_payload = EXCLUDED.raw_payload,
               last_seen_at = now(),
               updated_at = now()
-            RETURNING id, source, source_place_id, raw_name, normalized_name, category, address,
+            RETURNING id, promoted_shop_id, source, source_place_id, raw_name, normalized_name, category, address,
               latitude, longitude, confidence_score, status
             """.trimIndent(),
         )
@@ -55,10 +83,29 @@ class ShopCandidateRepository(
             .single()
     }
 
+    fun markPromoted(candidateId: UUID, shopId: UUID): ShopCandidateResponse =
+        jdbcClient.sql(
+            """
+            UPDATE shop_candidates
+            SET status = 'promoted',
+                promoted_shop_id = :shopId,
+                reviewed_at = now(),
+                updated_at = now()
+            WHERE id = :candidateId
+            RETURNING id, promoted_shop_id, source, source_place_id, raw_name, normalized_name, category, address,
+              latitude, longitude, confidence_score, status
+            """.trimIndent(),
+        )
+            .param("candidateId", candidateId)
+            .param("shopId", shopId)
+            .query(::map)
+            .single()
+
     @Suppress("UNUSED_PARAMETER")
     private fun map(rs: ResultSet, rowNumber: Int): ShopCandidateResponse {
         return ShopCandidateResponse(
             id = rs.getObject("id", UUID::class.java),
+            promotedShopId = rs.getObject("promoted_shop_id", UUID::class.java),
             source = rs.getString("source"),
             sourcePlaceId = rs.getString("source_place_id"),
             rawName = rs.getString("raw_name"),

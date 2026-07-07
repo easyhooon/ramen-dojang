@@ -20,6 +20,7 @@ data class SyncShopCandidatesResponse(
 
 data class ShopCandidateResponse(
     val id: UUID,
+    val promotedShopId: UUID?,
     val source: String,
     val sourcePlaceId: String?,
     val rawName: String,
