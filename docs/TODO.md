@@ -61,6 +61,9 @@
 
 1차 앱인토스 MVP에서도 서버는 공용 라멘집 catalog 용도로 필요하다. 아래 개인 기록 동기화/로그인 항목은 필요해질 때 재개한다.
 
+- [ ] API 서버 1차 배포 후보 결정: MVP/개인 개발 단계는 Render Web Service + Render Postgres(PostGIS)를 우선 검토하고, Railway는 PostGIS 템플릿/백업/운영 책임을 확인한 뒤 대안으로 둔다.
+- [ ] AWS 전환 기준 정리: 장기 운영이나 트래픽/권한/네트워크 요구가 커지면 Elastic Beanstalk + RDS PostgreSQL 또는 ECS Fargate + RDS PostgreSQL로 이전을 검토한다. 신규 고객 대상 App Runner는 제외한다.
+- [ ] API 서버 배포 전 체크리스트 작성: 실행 방식(JAR 또는 container), 환경변수, seed import, Flyway 적용, CORS origin, HTTPS/TLS, `/health`, 로그 확인, DB 백업 기준.
 - [x] DB ERD 문서 작성
 - [ ] 로그인/사용자 소유권 반영 ERD 확정
 - [ ] `users` 테이블 및 `visits.user_id`, `wishlist.user_id` migration 작성
