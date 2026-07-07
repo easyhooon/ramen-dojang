@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { TextField } from "@toss/tds-mobile";
 import { useState } from "react";
+import { FormField } from "../components/FormField";
 import { ShopCard } from "../features/shops/ShopCard";
 import { api } from "../lib/api";
 
@@ -19,7 +20,9 @@ export function ShopsPage() {
           <p className="muted">다녀온 곳과 가볼 곳을 한 목록에서 관리합니다.</p>
         </div>
         <div className="search-panel">
-          <TextField variant="box" label="이름 검색" value={name} onChange={(event) => setName(event.target.value)} />
+          <FormField label="라멘집 이름">
+            <TextField variant="box" label="라멘집 이름" value={name} onChange={(event) => setName(event.target.value)} />
+          </FormField>
           <div className="filter-chips" role="group" aria-label="라멘집 필터">
             <button className={visited === "" ? "active" : ""} type="button" onClick={() => setVisited("")}>전체</button>
             <button className={visited === "true" ? "active" : ""} type="button" onClick={() => setVisited("true")}>방문한 곳</button>

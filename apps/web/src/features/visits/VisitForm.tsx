@@ -1,6 +1,7 @@
 import type { CreateVisitRequest, ShopResponse, VisitResponse } from "@ramen-dojang/api-client";
 import { Button, TextArea, TextField } from "@toss/tds-mobile";
 import { useState } from "react";
+import { FormField } from "../../components/FormField";
 
 export function VisitForm({
   shops,
@@ -43,10 +44,9 @@ export function VisitForm({
         </select>
       </label>
       <TextField variant="box" label="방문일" type="date" value={value.visitedAt} onChange={(event) => setValue({ ...value, visitedAt: event.target.value })} required />
-      <div className="form-field full">
-        <span className="field-label">메뉴</span>
+      <FormField className="full" label="메뉴">
         <TextField variant="box" label="메뉴" value={value.menuName} onChange={(event) => setValue({ ...value, menuName: event.target.value })} required />
-      </div>
+      </FormField>
       {(["brothRating", "noodleRating", "toppingRating", "overallRating"] as const).map((key) => (
         <StarRating key={key} label={ratingLabel[key]} value={value[key]} onChange={(rating) => setValue({ ...value, [key]: rating })} />
       ))}
