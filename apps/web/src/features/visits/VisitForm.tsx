@@ -43,7 +43,10 @@ export function VisitForm({
         </select>
       </label>
       <TextField variant="box" label="방문일" type="date" value={value.visitedAt} onChange={(event) => setValue({ ...value, visitedAt: event.target.value })} required />
-      <TextField className="full" variant="box" label="메뉴" value={value.menuName} onChange={(event) => setValue({ ...value, menuName: event.target.value })} required />
+      <div className="form-field full">
+        <span className="field-label">메뉴</span>
+        <TextField variant="box" label="메뉴" value={value.menuName} onChange={(event) => setValue({ ...value, menuName: event.target.value })} required />
+      </div>
       {(["brothRating", "noodleRating", "toppingRating", "overallRating"] as const).map((key) => (
         <StarRating key={key} label={ratingLabel[key]} value={value[key]} onChange={(rating) => setValue({ ...value, [key]: rating })} />
       ))}
