@@ -170,7 +170,7 @@ Android 비유:
 
 역할:
 
-- `nitro-webview`로 `apps/web` 배포 URL 또는 로컬 개발 URL을 렌더링한다.
+- `react-native-webview`로 `apps/web` 배포 URL 또는 로컬 개발 URL을 렌더링한다. ~~`nitro-webview`~~는 스토어 앱 출시 목표가 다시 생길 때 재검토한다.
 - reload, loading, error fallback 같은 wrapper-level UX를 제공한다.
 - 나중에 push notification, native auth callback, app store 배포 설정을 붙일 수 있는 자리를 만든다.
 

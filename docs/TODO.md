@@ -21,7 +21,7 @@
 - [ ] 토스 로그인 테스트 앱 개발 가능 범위와 운영 배포 전 사업자 인증, 앱인토스 서버 API용 mTLS 인증서/방화벽/secret 관리 필요사항 확인
 - [ ] Sentry 프로젝트/DSN/API key 발급 후 앱인토스 WebView JS 오류 추적 설정
 - [ ] 운영 전 최소 모니터링 기준 결정: 현재는 별도 모니터링 툴 없이 터미널 로그, `/health`, Sentry 예정만 사용
-- [x] 기존 Expo/Nitro WebView wrapper는 스토어 출시용 보류 자산으로 유지
+- [x] 기존 Expo/~~Nitro~~ WebView wrapper는 스토어 출시용 보류 자산으로 유지
 - [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
 - [ ] 운영 배포 전 CORS 허용 origin을 Vercel 도메인과 앱인토스 도메인으로 제한
 - [ ] API 서버 운영 배포 시 HTTPS/TLS 적용 방식 확인: Vercel 프론트는 자동 HTTPS, 별도 API 도메인은 Let's Encrypt/클라우드 로드밸런서/배포 플랫폼 제공 무료 인증서 중 선택
@@ -151,7 +151,7 @@
 - [ ] 주요 화면 query/mutation behavior test 전략 결정
 - [x] 모바일 Expo SDK 패키지 조합 `expo-doctor` 검증
 - [ ] 스토어 앱 출시 목표 재개 시 모바일 웹뷰 래퍼 development build 검증
-- [ ] 스토어 앱 출시 목표 재개 시 `nitro-webview` iOS/Android native setup 검증
+- [ ] 스토어 앱 출시 목표 재개 시 ~~`nitro-webview`~~ iOS/Android native setup 재검토
 
 ## API Client / Contract
 

@@ -152,7 +152,9 @@ EXPO_PUBLIC_WEB_URL=http://localhost:5173
 EXPO_PUBLIC_WEB_URL=http://192.168.x.x:5173
 ```
 
-`nitro-webview`는 native module을 사용하므로 Expo Go만으로는 부족할 수 있다. iOS/Android 검증은 development build 또는 prebuild 기반으로 진행한다.
+폰과 개발 컴퓨터는 같은 Wi-Fi/LAN에 있어야 한다. 셀룰러, VPN, 게스트 Wi-Fi에서는 `192.168.x.x` 주소가 열리지 않을 수 있다. 먼저 폰 브라우저에서 `EXPO_PUBLIC_WEB_URL`과 `http://192.168.x.x:8080/health`를 직접 열어본다.
+
+Expo Go는 로컬 UX smoke test 용도다. iOS/Android store build 검증은 development build 또는 prebuild 기반으로 진행한다.
 
 ```bash
 pnpm --filter mobile ios

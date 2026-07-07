@@ -35,7 +35,7 @@
 - Swagger UI `/swagger`, OpenAPI JSON `/openapi`
 - OpenAPI Generator `typescript-fetch` client: `packages/api-client/src/generated`
 - Generated client를 감싼 앱용 wrapper: `packages/api-client/src/index.ts`
-- Mobile WebView implementation: `nitro-webview` + `react-native-nitro-modules`
+- Mobile WebView implementation: `react-native-webview`, ~~`nitro-webview` + `react-native-nitro-modules`~~
 
 ## 중요한 규칙
 

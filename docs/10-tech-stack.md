@@ -60,25 +60,23 @@
 
 ## Mobile, Deferred
 
-현재 `apps/mobile`은 이미 만들어 둔 Expo/Nitro WebView wrapper 실험 산출물이다. 제품 1차 목표가 웹사이트 + 토스 미니앱 출시로 바뀌었으므로, 스토어 앱 배포 요구가 다시 생기기 전까지 확장하지 않는다.
+현재 `apps/mobile`은 Expo Go로 웹앱을 실기기에서 빠르게 확인하기 위한 WebView wrapper다. 제품 1차 목표는 웹사이트 + 토스 미니앱 출시이므로, 스토어 앱 배포 요구가 다시 생기기 전까지는 smoke test 용도로만 유지한다.
 
 | 기술 | 사용 위치 | 목적 |
 | --- | --- | --- |
-| Expo | `apps/mobile`, deferred | React Native 앱 실행, prebuild, development build 흐름을 단순화한다. |
-| expo-dev-client | `apps/mobile` | Expo Go에 없는 custom native module을 포함한 development build를 실행한다. |
+| Expo | `apps/mobile`, deferred | React Native 앱 실행과 Expo Go smoke test 흐름을 단순화한다. |
 | React Native | `apps/mobile` | 모바일 앱 shell과 native WebView wrapper 화면을 만든다. |
-| nitro-webview | `apps/mobile` | 웹 앱을 띄우는 WebView 구현체다. Nitro Modules 기반으로 event/method bridge 비용을 줄이는 방향이다. |
-| react-native-nitro-modules | `apps/mobile` | `nitro-webview`가 사용하는 Nitro runtime/JSI native module 기반이다. |
+| react-native-webview | `apps/mobile` | Expo Go에서 웹 앱을 띄우는 WebView 구현체다. |
 
 선택 이유:
 
 - 모바일 앱은 같은 웹 경험을 앱으로 배포하는 shell 성격이므로 Expo로 시작 비용을 줄일 수 있다.
-- WebView는 loading, navigation, message, error, download처럼 event가 많아 Nitro 기반 접근을 실험할 가치가 있다.
-- `nitro-webview`는 `window.ReactNativeWebView.postMessage(...)` 같은 익숙한 WebView 계약을 유지하면서 Nitro 방식의 `callback(...)`, `hybridRef`를 사용한다.
+- 지금 단계의 목적은 앱 배포가 아니라 폰에서 웹앱 UX를 빠르게 보는 것이다.
+- `react-native-webview`는 Expo Go에서 확인할 수 있어 development build 없이 가장 빨리 검증할 수 있다.
 
 주의점:
 
-- `nitro-webview`는 Expo Go로 검증하는 대상이 아니다. `expo-dev-client`가 포함된 development build 또는 prebuild 이후 native build로 확인한다.
+- 폰과 개발 컴퓨터가 같은 Wi-Fi/LAN에 있어야 로컬 `192.168.x.x` 주소가 열린다.
 - `expo-doctor` 통과는 SDK 조합과 app config 검증이지, iOS/Android native build 성공을 보장하지 않는다.
 - file upload/download이 필요해지면 iOS permission string, Android media permission, Android Maven repository 설정을 실제 build에서 확인한다.
 

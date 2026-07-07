@@ -19,7 +19,7 @@ docs                 Product, frontend, backend, API docs
 | -------- | ---------------------------------------------------- | --------------------------------------- |
 | Web      | React, Vite, TanStack Router, TanStack Query, localStorage | 웹사이트/미니앱 화면, 서버 카탈로그 조회와 로컬 개인 기록 저장 |
 | Mini App | Toss Mini App SDK, Toss Design System                | 토스 미니앱 등록과 토스 앱 안의 UI      |
-| Mobile   | Expo, React Native, nitro-webview                    | 보류된 모바일 WebView 래퍼              |
+| Mobile   | Expo, React Native, react-native-webview, ~~nitro-webview~~ | Expo Go smoke용 모바일 WebView 래퍼 |
 | API      | Kotlin, Spring Boot, JDBC, Flyway, springdoc-openapi | 공용 라멘집 카탈로그와 Swagger/OpenAPI  |
 | DB/Infra | PostgreSQL, PostGIS, Docker Compose                  | 공용 라멘집 DB와 지도 확장 대비         |
 | Contract | OpenAPI Generator, TypeScript API client             | 서버 스펙 기반 프론트 client 생성       |
@@ -110,7 +110,7 @@ pnpm --filter web build:ait
 pnpm dev:mobile
 ```
 
-`apps/mobile`은 Expo 기반 React Native 앱이며 WebView 구현은 `nitro-webview`를 사용합니다. Nitro native module을 쓰므로 Expo Go가 아니라 `expo-dev-client`가 포함된 development build 또는 prebuild 기반으로 확인합니다.
+`apps/mobile`은 Expo 기반 React Native 앱이며, 지금은 Expo Go smoke test를 위해 `react-native-webview`를 사용합니다. 실기기에서 로컬 웹을 볼 때는 폰과 개발 컴퓨터가 같은 Wi-Fi/LAN에 있어야 하며, `apps/mobile/.env.local`의 `EXPO_PUBLIC_WEB_URL`은 `localhost`가 아니라 개발 컴퓨터의 LAN 주소를 사용합니다.
 
 편의상 한 터미널에서 둘을 같이 띄울 수도 있습니다.
 
@@ -134,7 +134,7 @@ cd server/api && ./gradlew bootRun
 ## URL
 
 - Web: `http://localhost:5173`
-- Mobile wrapper: Expo development build
+- Mobile wrapper: Expo Go 또는 Expo development build
 - API health: `http://localhost:8080/health`
 - Swagger UI: `http://localhost:8080/swagger`
 - OpenAPI JSON: `http://localhost:8080/openapi`
@@ -199,7 +199,7 @@ pnpm dlx expo-doctor@latest
 pnpm --filter mobile typecheck
 ```
 
-`expo-doctor`가 통과해도 iOS/Android native build 성공을 보장하는 것은 아닙니다. `nitro-webview`는 native module이므로 실제 development build에서 WebView load, file upload/download, Android Maven repository 설정을 별도로 검증합니다.
+`expo-doctor`가 통과해도 iOS/Android native build 성공을 보장하는 것은 아닙니다. 현재는 Expo Go smoke test용 `react-native-webview`를 쓰고, ~~`nitro-webview`~~ 같은 custom native module은 스토어 앱 출시 목표가 다시 생길 때 development build에서 검증합니다.
 
 서버는 Gradle wrapper로 따로 검증합니다.
 
