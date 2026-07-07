@@ -467,17 +467,9 @@ p {
 }
 
 .icon-svg {
-  fill: none;
+  flex-shrink: 0;
   height: 1.2em;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
   width: 1.2em;
-}
-
-.icon-svg .filled {
-  fill: currentColor;
 }
 
 .icon-link {
