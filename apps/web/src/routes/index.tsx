@@ -8,6 +8,7 @@ export function HomePage() {
   const shops = useQuery({ queryKey: ["shops"], queryFn: () => api.listShops() });
   const visits = useQuery({ queryKey: ["visits"], queryFn: () => api.listVisits() });
   const visitedCount = shops.data?.filter((shop) => shop.visited).length ?? 0;
+  const ramenLevel = Math.max(1, Math.min(9, visitedCount));
   const tasteStats = getTasteStats(visits.data ?? [], shops.data ?? []);
   const nextShop = shops.data?.find((shop) => !shop.visited) ?? shops.data?.[0] ?? null;
 
@@ -38,7 +39,13 @@ export function HomePage() {
         <div>
           <div className="item-title-row">
             <h3>나의 취향 기록</h3>
-            <span className="pill success">LEVEL {Math.max(1, Math.min(9, visitedCount))}</span>
+            <div className="level-help">
+              <span className="pill success">LEVEL {ramenLevel}</span>
+              <details>
+                <summary aria-label="레벨 설명">?</summary>
+                <p>방문한 라멘집 수로 올라가요. 1곳부터 LEVEL 1이고, 9곳 이상은 LEVEL 9로 표시합니다.</p>
+              </details>
+            </div>
           </div>
           <p>
             {tasteStats
@@ -95,6 +102,7 @@ export function HomePage() {
           <span>다음 후보</span>
           <strong>{nextShop.name}</strong>
           <small>{nextShop.address}</small>
+          <small className="recommend-rule">기준: 미방문 라멘집 중 목록 첫 번째</small>
         </Link>
       ) : null}
     </div>
