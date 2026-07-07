@@ -19,7 +19,7 @@ data class ShopResponse(
     val phone: String?,
     @field:Schema(description = "지도 또는 장소 상세 URL", example = "https://map.naver.com", nullable = true)
     val placeUrl: String?,
-    @field:Schema(description = "대표 썸네일 URL", example = "/assets/default-ramen.svg")
+    @field:Schema(description = "대표 썸네일 URL", example = "/assets/default-ramen.png")
     val thumbnailUrl: String,
     @field:Schema(description = "라멘집 분류 태그 이름 목록", example = "[\"라멘\", \"일본식라면\"]")
     val tags: List<String>,

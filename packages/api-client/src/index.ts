@@ -191,7 +191,7 @@ const fromGeneratedShop = (shop: GeneratedShopResponse): ShopResponse => ({
   longitude: shop.longitude,
   phone: shop.phone ?? null,
   placeUrl: shop.placeUrl ?? null,
-  thumbnailUrl: shop.thumbnailUrl ?? "/assets/default-ramen.svg",
+  thumbnailUrl: shop.thumbnailUrl ?? "/assets/default-ramen.png",
   tags: shop.tags,
   visited: shop.visited,
   wishlisted: shop.wishlisted,

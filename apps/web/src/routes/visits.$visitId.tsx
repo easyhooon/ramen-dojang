@@ -33,7 +33,7 @@ export function VisitDetailPage() {
     <div className="stack">
       <section className="visit-hero">
         <Link className="back-link" to="/shops/$shopId" params={{ shopId: visit.data.shopId }}>← 라멘집</Link>
-        <img src="/assets/default-ramen.svg" alt="" />
+        <img src="/assets/default-ramen.png" alt="" />
         <div>
           <span className="pill success">{visit.data.revisitIntention ? "다시 올 거예요" : "재방문 없음"}</span>
           <h1>{visit.data.menuName}</h1>

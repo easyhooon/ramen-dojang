@@ -9,7 +9,7 @@ const defaultValue: CreateShopRequest = {
   longitude: 126.978,
   phone: "",
   placeUrl: "",
-  thumbnailUrl: "/assets/default-ramen.svg",
+  thumbnailUrl: "/assets/default-ramen.png",
   tagNames: [],
 };
 

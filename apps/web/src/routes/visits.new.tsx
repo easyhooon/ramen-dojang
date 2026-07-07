@@ -69,7 +69,7 @@ export function NewVisitPage() {
               <span>선택</span>
               <small>0/1</small>
             </div>
-            <img src="/assets/default-ramen.svg" alt="" />
+            <img src="/assets/default-ramen.png" alt="" />
           </section>
 
           <section className="panel step-panel">

@@ -49,4 +49,4 @@ export function ShopCard({ shop }: { shop: ShopResponse }) {
   );
 }
 
-const defaultThumbnailUrl = "/assets/default-ramen.svg";
+const defaultThumbnailUrl = "/assets/default-ramen.png";

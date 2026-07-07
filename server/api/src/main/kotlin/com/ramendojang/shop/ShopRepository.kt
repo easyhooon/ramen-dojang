@@ -207,6 +207,6 @@ class ShopRepository(
         thumbnailUrl?.takeIf(String::isNotBlank) ?: DEFAULT_THUMBNAIL_URL
 
     companion object {
-        const val DEFAULT_THUMBNAIL_URL = "/assets/default-ramen.svg"
+        const val DEFAULT_THUMBNAIL_URL = "/assets/default-ramen.png"
     }
 }
