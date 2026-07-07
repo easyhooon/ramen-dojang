@@ -78,8 +78,11 @@
 - [x] 후보 검수 후 `shops`로 승격하는 admin API 초안 구현
 - [ ] 후보 검수 UI 또는 Swagger 수동 운영 흐름 정리
 - [ ] 메뉴 데이터 축적 방식 설계: 방문 기록 기반 후보화, 메뉴판 사진, 관리자 검수
-- [ ] 수동 sync가 안정된 뒤 cron/scheduled job 도입 판단
-- [ ] 앱 출시 전 초기 라멘집 seed 데이터 투입 방식 결정: Naver 후보 sync + admin 승격, SQL seed, admin script, Swagger 수동 등록 중 택일
+- [ ] Naver sync 429 속도 제한 대응: 지역 query queue, delay, retry/backoff, 마지막 성공 query 저장 방식 결정
+- [ ] 미수집 전국 query 재개 작업: 순천/여수/목포/제주 등 429 이후 남은 지역 후보 sync
+- [ ] 수동 sync가 안정된 뒤 cron/scheduled job 도입 판단: 주기적 후보 수집은 `shop_candidates`까지만, 검수 없는 `shops` 자동 변경은 금지
+- [x] 앱 출시 전 초기 라멘집 seed 데이터 투입 방식 결정: Naver 후보 sync + admin 승격으로 166건 seed JSON 보관
+- [ ] `server/api/src/main/resources/seed/shops.seed.json` import script 또는 admin endpoint 작성
 - [x] Spring Boot Kotlin 프로젝트 생성
 - [x] Gradle wrapper 포함 프로젝트 구성
 - [x] Spring Web/JDBC/Flyway/PostgreSQL/Validation 의존성 구성
