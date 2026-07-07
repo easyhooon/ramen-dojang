@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "expo start --lan",
     "prebuild": "expo prebuild",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -12,11 +12,9 @@
   },
   "dependencies": {
     "expo": "~56.0.0",
-    "expo-dev-client": "~56.0.20",
-    "nitro-webview": "^0.1.0",
     "react": "19.2.3",
     "react-native": "0.85.3",
-    "react-native-nitro-modules": "^0.35.10"
+    "react-native-webview": "13.16.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",

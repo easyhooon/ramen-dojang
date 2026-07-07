@@ -7,14 +7,15 @@ import {
   Text,
   View,
 } from "react-native";
-import { NitroWebView, callback, type NitroWebViewType } from "nitro-webview";
+import { WebView, type WebView as WebViewType } from "react-native-webview";
 
 import { webUrl } from "./config";
 
 export default function App() {
-  const webViewRef = useRef<NitroWebViewType | null>(null);
+  const webViewRef = useRef<WebViewType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,6 +30,7 @@ export default function App() {
           accessibilityRole="button"
           onPress={() => {
             setHasError(false);
+            setErrorMessage(null);
             void webViewRef.current?.reload();
           }}
           style={styles.reloadButton}
@@ -44,23 +46,27 @@ export default function App() {
             <Text style={styles.emptyText}>
               web 서버가 켜져 있는지, `EXPO_PUBLIC_WEB_URL`이 현재 기기에서 접근 가능한 주소인지 확인하세요.
             </Text>
+            {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
           </View>
         ) : null}
 
-        <NitroWebView
-          hybridRef={callback((ref) => {
-            webViewRef.current = ref;
-          })}
+        <WebView
+          ref={webViewRef}
+          originWhitelist={["*"]}
           source={{ uri: webUrl }}
-          onShouldStartLoadWithRequest={callback((event) =>
-            event.url.startsWith("http://") || event.url.startsWith("https://"),
-          )}
-          onLoadStart={callback(() => setIsLoading(true))}
-          onLoadEnd={callback(() => setIsLoading(false))}
-          onError={callback(() => {
+          onLoadStart={() => setIsLoading(true)}
+          onLoad={() => setIsLoading(false)}
+          onLoadEnd={() => setIsLoading(false)}
+          onError={(event) => {
             setIsLoading(false);
             setHasError(true);
-          })}
+            setErrorMessage(event.nativeEvent.description);
+          }}
+          onHttpError={(event) => {
+            setIsLoading(false);
+            setHasError(true);
+            setErrorMessage(`HTTP ${event.nativeEvent.statusCode}`);
+          }}
           style={[styles.webView, hasError ? styles.hidden : undefined]}
         />
 
@@ -146,6 +152,13 @@ const styles = StyleSheet.create({
     color: "#4b5563",
     fontSize: 14,
     lineHeight: 20,
+    textAlign: "center",
+  },
+  errorText: {
+    color: "#9a3412",
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 12,
     textAlign: "center",
   },
 });
