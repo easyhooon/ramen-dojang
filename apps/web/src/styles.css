@@ -375,7 +375,7 @@ p {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding-bottom: 2px;
+  padding: 2px 2px 4px;
 }
 
 .filter-chips button {
@@ -392,6 +392,11 @@ p {
 .filter-chips button.active {
   background: var(--color-primary);
   color: white;
+}
+
+.filter-chips button:focus-visible {
+  outline: 2px solid var(--color-primary-strong);
+  outline-offset: 2px;
 }
 
 .select-card span {
