@@ -1,6 +1,7 @@
 import type { VisitResponse } from "@ramen-dojang/api-client";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@toss/tds-mobile";
+import { Icon } from "../../components/Icon";
 
 export function VisitCard({ visit }: { visit: VisitResponse }) {
   return (
@@ -14,7 +15,7 @@ export function VisitCard({ visit }: { visit: VisitResponse }) {
         {visit.memo ? <p>{visit.memo}</p> : null}
       </div>
       <Link className="icon-link" to="/visits/$visitId" params={{ visitId: visit.id }} aria-label={`${visit.menuName} 방문 상세`}>
-        →
+        <Icon name="arrowRight" />
       </Link>
     </article>
   );

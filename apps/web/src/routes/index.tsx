@@ -35,7 +35,7 @@ export function HomePage() {
       </section>
 
       <section className="profile-card">
-        <div className="profile-avatar">🍜</div>
+        <img className="profile-avatar" src="/assets/default-ramen.svg" alt="" />
         <div>
           <div className="item-title-row">
             <h3>나의 취향 기록</h3>

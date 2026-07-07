@@ -5,6 +5,7 @@ import { TDSMobileAITProvider } from "@toss/tds-mobile-ait";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import type { ComponentProps } from "react";
+import { Icon } from "./components/Icon";
 import { queryClient } from "./lib/queryClient";
 import { AboutPage } from "./routes/about";
 import { HomePage } from "./routes";
@@ -31,10 +32,10 @@ function RootLayout() {
         <Outlet />
       </main>
       <nav className="bottom-nav" aria-label="주요 화면">
-        <Link to="/"><span>⌂</span>홈</Link>
-        <Link to="/shops"><span>⌕</span>탐색</Link>
-        <Link to="/visits/new"><span>＋</span>추가</Link>
-        <Link to="/about"><span>⚙</span>설정</Link>
+        <Link to="/"><Icon name="home" />홈</Link>
+        <Link to="/shops"><Icon name="search" />탐색</Link>
+        <Link to="/visits/new"><Icon name="plus" />추가</Link>
+        <Link to="/about"><Icon name="settings" />설정</Link>
       </nav>
     </div>
   );

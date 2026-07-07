@@ -5,7 +5,7 @@ export function AboutPage() {
   return (
     <div className="stack about-page">
       <section className="about-hero">
-        <div className="app-icon">🍜</div>
+        <img className="app-icon" src="/assets/default-ramen.svg" alt="" />
         <h1>라멘 도장깨기</h1>
         <p>나만의 라멘 지도를 만들어가는 서비스입니다. 방문 기록을 남기고 취향을 발견해보세요.</p>
       </section>

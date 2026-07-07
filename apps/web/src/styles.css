@@ -204,13 +204,10 @@ p {
 }
 
 .profile-avatar {
-  align-items: center;
   background: var(--color-surface-low);
   border-radius: 999px;
-  display: flex;
-  font-size: 1.8rem;
   height: 64px;
-  justify-content: center;
+  object-fit: cover;
   width: 64px;
 }
 
@@ -466,8 +463,21 @@ p {
 
 .bookmark {
   color: var(--color-primary);
-  font-size: 1.8rem;
   line-height: 1;
+}
+
+.icon-svg {
+  fill: none;
+  height: 1.2em;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  width: 1.2em;
+}
+
+.icon-svg .filled {
+  fill: currentColor;
 }
 
 .icon-link {
@@ -871,15 +881,10 @@ textarea {
 }
 
 .app-icon {
-  align-items: center;
-  background: var(--color-primary);
   border-radius: 22px;
-  color: white;
-  display: inline-flex;
-  font-size: 2.4rem;
   height: 96px;
-  justify-content: center;
   margin-bottom: 22px;
+  object-fit: cover;
   width: 96px;
 }
 
@@ -989,9 +994,8 @@ textarea {
   min-height: 56px;
 }
 
-.bottom-nav span {
+.bottom-nav .icon-svg {
   font-size: 1.25rem;
-  line-height: 1;
 }
 
 input:focus,

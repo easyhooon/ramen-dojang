@@ -1,6 +1,7 @@
 import type { ShopResponse } from "@ramen-dojang/api-client";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@toss/tds-mobile";
+import { Icon } from "../../components/Icon";
 
 export function ShopCard({ shop }: { shop: ShopResponse }) {
   return (
@@ -37,9 +38,11 @@ export function ShopCard({ shop }: { shop: ShopResponse }) {
         </div>
       </div>
       <div className="item-meta">
-        <span className="bookmark">{shop.wishlisted ? "★" : "☆"}</span>
+        <span className="bookmark" aria-label={shop.wishlisted ? "가고 싶은 곳" : "가고 싶은 곳 아님"}>
+          <Icon name={shop.wishlisted ? "starFilled" : "star"} />
+        </span>
         <Link className="icon-link" to="/shops/$shopId" params={{ shopId: shop.id }} aria-label={`${shop.name} 상세`}>
-          →
+          <Icon name="arrowRight" />
         </Link>
       </div>
     </article>
