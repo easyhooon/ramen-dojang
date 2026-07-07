@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Link, Outlet, RouterProvider, createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
+import { Link, Outlet, RouterProvider, createRootRoute, createRoute, createRouter, useRouterState } from "@tanstack/react-router";
 import { TDSMobileProvider } from "@toss/tds-mobile";
 import { TDSMobileAITProvider } from "@toss/tds-mobile-ait";
 import React from "react";
@@ -18,25 +18,33 @@ import { NewVisitPage } from "./routes/visits.new";
 import "./styles.css";
 
 function RootLayout() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isNewVisitPage = pathname === "/visits/new";
+
   return (
-    <div className="app-shell">
+    <div className={["app-shell", isNewVisitPage ? "app-shell--focused" : ""].filter(Boolean).join(" ")}>
       <header className="topbar">
         <Link className="brand" to="/">라멘 도장깨기</Link>
         <nav>
           <Link to="/shops">라멘집</Link>
-          <Link to="/visits/new">방문 추가</Link>
           <Link to="/about">About</Link>
         </nav>
       </header>
       <main>
         <Outlet />
       </main>
-      <nav className="bottom-nav" aria-label="주요 화면">
-        <Link to="/"><Icon name="home" />홈</Link>
-        <Link to="/shops"><Icon name="search" />탐색</Link>
-        <Link to="/visits/new"><Icon name="plus" />추가</Link>
-        <Link to="/about"><Icon name="settings" />설정</Link>
-      </nav>
+      {isNewVisitPage ? null : (
+        <>
+          <Link className="visit-fab" to="/visits/new" aria-label="방문 기록 추가">
+            <Icon name="plus" />
+          </Link>
+          <nav className="bottom-nav" aria-label="주요 화면">
+            <Link to="/"><Icon name="home" />홈</Link>
+            <Link to="/shops"><Icon name="search" />탐색</Link>
+            <Link to="/about"><Icon name="settings" />설정</Link>
+          </nav>
+        </>
+      )}
     </div>
   );
 }
