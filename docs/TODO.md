@@ -13,14 +13,15 @@
 - [ ] 앱인토스 앱 정보 등록하기
 - [ ] 앱인토스 약관 등록하기
 - [ ] 앱인토스 `.ait` 업로드 후 샌드박스 실행 확인
-- [ ] 토스 미니앱 등록 요건과 공식 개발 문서 확인
-- [ ] Toss Mini App SDK 적용 방식 확인
-- [ ] Toss Design System 사용 가능 범위와 설치 방식 확인
-- [ ] 앱인토스 인앱 광고 적용 시 콘솔 광고 그룹 ID 발급과 배너/전면형/리워드 중 MVP에 맞는 형식 확인
+- [x] 토스 미니앱 등록 요건과 공식 개발 문서 확인
+- [x] Toss Mini App SDK 적용 방식 확인
+- [x] Toss Design System 사용 가능 범위와 설치 방식 확인
+- [ ] 앱인토스 인앱 광고 적용 시 콘솔 광고 그룹 ID 발급, 배너/전면형/리워드 중 MVP에 맞는 형식, 광고 수익 수령을 위한 사업자/정산 정보 등록 필요사항 확인
 - [ ] MVP 사용자 식별은 앱인토스 `getAnonymousKey`로 가능한지 확인
 - [ ] 토스 로그인 테스트 앱 개발 가능 범위와 운영 배포 전 사업자 인증, 앱인토스 서버 API용 mTLS 인증서/방화벽/secret 관리 필요사항 확인
 - [ ] Sentry 프로젝트/DSN/API key 발급 후 앱인토스 WebView JS 오류 추적 설정
 - [ ] 운영 전 최소 모니터링 기준 결정: 현재는 별도 모니터링 툴 없이 터미널 로그, `/health`, Sentry 예정만 사용
+- [ ] 앱인토스 미니앱 정식 배포 전 보안 체크 절차 확인: OMC처럼 별도 보안 점검/체크리스트/제출 항목이 있는지 공식 문서와 콘솔에서 확인
 - [x] 기존 Expo/~~Nitro~~ WebView wrapper는 스토어 출시용 보류 자산으로 유지
 - [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
 - [ ] 운영 배포 전 CORS 허용 origin을 Vercel 도메인, `https://<appName>.apps.tossmini.com`, `https://<appName>.private-apps.tossmini.com`으로 제한
