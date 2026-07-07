@@ -1,6 +1,7 @@
 # Place Open API Data Research
 
 조사일: 2026-06-26
+추가 확인: 2026-07-07
 
 이 문서는 라멘집 후보를 보강할 때 Naver, Kakao, Google 계열 공개 장소 API에서 가져올 수 있는 정보의 최대치를 정리한다. 결론은 단순하다. 장소 발견에는 쓸 수 있지만, 메뉴/가격/라멘 스타일을 자동으로 채우는 용도로는 부족하다.
 
@@ -41,6 +42,26 @@ MVP 자동 수집 범위에서 빼야 할 데이터:
 | Naver | Search Local API | 업체명, 상세 URL, 카테고리, 설명, 지번 주소, 도로명 주소, 좌표 | `telephone`은 하위 호환용으로 값을 반환하지 않는다고 문서화되어 있음. 지역 검색 레퍼런스 표 기준 `display` 최대 5, `start` 최대 1이라 대량 수집에 부적합 | 썸네일, 메뉴, 가격, 평점, 영업시간 |
 | Kakao | Local Keyword Search API | 장소 ID, 장소명, 카테고리, 전화번호, 지번 주소, 도로명 주소, 좌표, 장소 URL, 거리 | 음식점 카테고리 `FD6`로 후보를 좁힐 수 있지만 라멘집만 보장하지는 않음. 페이지는 최대 45, 페이지 크기는 최대 15 | 썸네일, 메뉴, 가격, 평점, 영업시간 |
 | Google | Places Details + Photos | 장소 ID, 주소, 좌표, 타입, 장소명, Google Maps URL, 영업 상태, 전화번호, 영업시간, 가격대, 평점, 리뷰 수, 웹사이트, 사진 참조 | FieldMask에 따라 과금 SKU가 달라진다. 사진은 최대 10개까지 참조 가능하지만 attribution과 캐싱 제한을 지켜야 한다 | 라멘집 메뉴 목록, 메뉴 가격, 대표 메뉴 |
+| 공공데이터포털 | 소상공인 상가정보, 행안부 일반음식점 | 전국 업소명, 업종, 주소, 좌표, 영업상태 같은 기초 데이터 | 검색 API라기보다 대량 seed/검증용 데이터다. 좌표계 변환과 라멘집 필터링이 필요하다 | 장소 상세 URL, 썸네일, 리뷰, 영업시간, 라멘 특화 정보 |
+
+## 후보 수집 provider 선택 비교
+
+초기 라멘집 후보 sync는 Kakao Local API를 우선한다. Naver는 이미 spike가 있으므로 유지하되, 단독 seed source로 고정하지 않는다.
+
+| 항목 | Naver Search Local API | Kakao Local API | 판단 |
+| --- | --- | --- | --- |
+| 1차 용도 | 키워드 기반 지역 검색 | 키워드/카테고리/반경 기반 장소 검색 | 라멘집 후보 수집은 Kakao가 더 적합 |
+| 한도 | 검색 API 하루 25,000회 | 로컬 키워드/카테고리 장소 검색 각각 하루 100,000회, 전체 API 월 3,000,000건 무료 제공 | Kakao가 seed 작업에 여유롭다 |
+| 페이지/결과 수 | `display` 최대 5, `start` 최대 1 | `page` 1~45, `size` 1~15 | Kakao가 후보를 더 넓게 긁기 쉽다 |
+| 음식점 필터 | 검색어와 카테고리 문자열에 의존 | 카테고리 그룹 `FD6` 음식점 필터 사용 가능 | Kakao가 false positive를 줄이기 쉽다 |
+| 장소 ID | 명시적 place ID 없음 | `id` 제공 | Kakao가 dedupe에 유리 |
+| 장소 URL | `link` 제공 | `place_url` 제공 | 둘 다 가능 |
+| 좌표 | `mapx`, `mapy` 제공 | `x`, `y` 제공 | 둘 다 가능 |
+| 전화번호 | `telephone`은 값을 반환하지 않는 요소 | `phone` 제공 | Kakao 우세 |
+| 썸네일/사진 | 없음 | 없음 | 둘 다 placeholder 필요 |
+| 메뉴/가격/라멘 스타일 | 없음 | 없음 | 둘 다 사용자 기록/검수로 축적 |
+| 비용/운영 | 비로그인 OpenAPI, 앱 키 기반 | 무료 쿼터 초과 시 카카오맵 로컬 검색 추가 호출 2원/건 안내 | MVP는 둘 다 비용 부담 낮음 |
+| 구현 우선순위 | 이미 spike 있음 | 다음 spike로 추가 | Kakao 추가 후 두 provider를 후보 source로 병행 |
 
 ## Naver Search Local API
 
@@ -103,6 +124,7 @@ MVP 자동 수집 범위에서 빼야 할 데이터:
 
 - Naver보다 candidate dedupe에 유리하다. `id`를 `source_place_id`로 쓸 수 있기 때문이다.
 - 음식점 카테고리로 좁힌 뒤 query를 `라멘`, `라멘집`, `라멘 <지역명>`처럼 조합할 수 있다.
+- 일간 무료 쿼터와 페이지 범위가 Naver보다 넉넉해 seed 후보 수집에 유리하다.
 - 하지만 음식점 카테고리는 라멘집 보장이 아니므로 `category_name`, `place_name`, 주소, 검색어 match score를 함께 써야 한다.
 - 썸네일, 메뉴, 가격, 영업시간은 기대하지 않는다.
 
@@ -153,6 +175,49 @@ Google Places Details는 `placeId`로 장소 상세 정보를 요청하고, `Fie
 
 - [Google Place Details](https://developers.google.com/maps/documentation/places/web-service/place-details)
 - [Google Place Photos](https://developers.google.com/maps/documentation/places/web-service/place-photos)
+
+## 공공데이터포털 음식점 데이터
+
+공공데이터포털에는 실시간 장소 검색 API와는 성격이 다른 대량 seed 후보가 있다.
+
+### 소상공인시장진흥공단 상가정보
+
+영업 중인 전국 상가업소 데이터를 CSV로 제공한다. 공식 설명 기준 상호명, 업종코드, 업종명, 지번주소, 도로명주소, 경도, 위도 등을 포함하고 분기 단위로 갱신된다.
+
+이 프로젝트에서의 의미:
+
+- 전국 라멘집 후보를 넓게 긁어오는 seed source로 쓸 수 있다.
+- `상호명 LIKE '%라멘%'`, 업종명 음식점 계열, 주소 지역 필터를 조합해 1차 후보를 만들 수 있다.
+- 네이버/카카오처럼 장소 상세 URL이나 플랫폼 place ID가 없으므로, 이후 Kakao/Naver로 matching해서 `source_place_id`, `place_url`을 보강하는 흐름이 좋다.
+
+출처: [소상공인시장진흥공단_상가(상권)정보](https://www.data.go.kr/data/15083033/fileData.do)
+
+### 행정안전부 일반음식점
+
+전국 자치단체가 관리하는 일반음식점 인허가 정보를 제공한다. 공식 설명 기준 인허가일자, 영업상태, 사업장명, 소재지주소 등을 포함하고, 일반음식점 표준데이터는 수시 갱신 및 2일 전 기준 현행화로 안내된다.
+
+이 프로젝트에서의 의미:
+
+- “영업/정상 상태인 음식점인가”를 보조 검증하는 데 쓸 수 있다.
+- 전체 행 수가 크고 좌표계가 중부원점TM(EPSG:5174)로 안내되므로 바로 앱 검색 API로 쓰기보다는 import job에서 정제한다.
+- 라멘집 여부는 업소명/주소/카테고리만으로 확정하기 어렵다. `shop_candidates`로 넣고 검수한다.
+
+출처:
+
+- [전국일반음식점표준데이터](https://www.data.go.kr/data/15096283/standard.do)
+- [행정안전부_식품_일반음식점 조회서비스](https://www.data.go.kr/data/15154916/openapi.do)
+
+## 기타 글로벌 POI API
+
+Foursquare Places API와 Yelp Places API도 음식점 검색은 가능하지만, 한국 라멘집 catalog의 1차 seed provider로는 우선순위를 낮춘다.
+
+- Foursquare: 전세계 POI와 사진/팁을 제공하지만, 무료/유료 tier와 premium field 비용을 봐야 한다.
+- Yelp: Business Search가 가능하지만 리뷰 없는 업체는 반환하지 않는다고 안내되어 있어 한국 소규모 라멘집 coverage가 약할 수 있다.
+
+출처:
+
+- [Foursquare Places API](https://foursquare.com/products/places-api/)
+- [Yelp Business Search](https://docs.developer.yelp.com/reference/v3_business_search)
 
 ## DB 필드 권장안
 
@@ -227,12 +292,14 @@ flowchart TD
 
 ## 구현 우선순위
 
-1. `shop_candidates` migration에서 최소 장소 필드를 먼저 둔다.
-2. Kakao 또는 Naver 중 하나로 sync spike를 만든다.
+1. `shop_candidates` schema에 최소 장소 필드를 둔다.
+2. Kakao Local API를 후보 sync provider로 추가한다. `id`가 있어 dedupe가 쉽고, 음식점 카테고리 `FD6`와 위치 반경 검색을 같이 쓸 수 있다.
 3. candidate dedupe와 confidence score를 문서화한다.
 4. 후보 검수/승격 admin flow를 만든다.
-5. Google Places/Photos는 썸네일과 운영비가 진짜 필요해진 뒤 검토한다.
-6. 메뉴 데이터는 방문 기록 기반 후보화부터 시작한다.
+5. Naver Search Local API는 보조 provider로 유지한다. 검색 결과 다양성과 네이버 장소 URL 확보에 쓴다.
+6. 공공데이터포털 CSV/API는 대량 seed가 필요할 때 별도 import job으로 검토한다.
+7. Google Places/Photos는 썸네일과 운영비가 진짜 필요해진 뒤 검토한다.
+8. 메뉴 데이터는 방문 기록 기반 후보화부터 시작한다.
 
 ## References
 
@@ -240,3 +307,8 @@ flowchart TD
 - [Kakao Local API - 키워드로 장소 검색](https://developers.kakao.com/docs/latest/ko/local/dev-guide#search-by-keyword)
 - [Google Places API - Place Details](https://developers.google.com/maps/documentation/places/web-service/place-details)
 - [Google Places API - Place Photos](https://developers.google.com/maps/documentation/places/web-service/place-photos)
+- [소상공인시장진흥공단_상가(상권)정보](https://www.data.go.kr/data/15083033/fileData.do)
+- [전국일반음식점표준데이터](https://www.data.go.kr/data/15096283/standard.do)
+- [행정안전부_식품_일반음식점 조회서비스](https://www.data.go.kr/data/15154916/openapi.do)
+- [Foursquare Places API](https://foursquare.com/products/places-api/)
+- [Yelp Business Search](https://docs.developer.yelp.com/reference/v3_business_search)

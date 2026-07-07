@@ -131,7 +131,8 @@
 | Provider/API | 사용 후보 | 목적 |
 | --- | --- | --- |
 | Naver Search Local API | `shop_candidates` sync | 라멘집 후보의 상호명, 주소, 좌표, 카테고리, 상세 URL을 수집한다. |
-| Kakao Local API | `shop_candidates` sync | 장소 ID 기반 중복 제거와 음식점 카테고리 검색 후보를 수집한다. |
+| Kakao Local API | `shop_candidates` sync | 장소 ID 기반 중복 제거와 음식점 카테고리 `FD6` 기반 후보를 수집한다. 초기 후보 sync provider로 우선 검토한다. |
+| 공공데이터포털 음식점/상가 데이터 | future import job | 대량 seed가 필요할 때 업소명, 업종, 주소, 좌표, 영업상태 후보를 가져온다. |
 | Google Places / Photos | future | 비용과 정책을 검토한 뒤 썸네일, 영업시간, 평점 같은 보조 데이터를 보강할 때 검토한다. |
 
 선택 기준:

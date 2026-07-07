@@ -532,3 +532,27 @@ Smoke test는 배포나 로컬 실행 직후 “불이 붙었는지” 빠르게
 390px은 최근 iPhone 기본급 계열을 떠올리기 쉬운 대표 시안 폭이고, 360px은 Android와 작은 모바일에서 여전히 중요한 최소 검수 폭이다. 디자인 요청서에는 390px만 쓰면 기준이 바뀐 것처럼 보이므로, “390px 대표 시안, 360px 최소 검수”를 같이 적는다.
 
 라멘 도장깨기처럼 토스 미니앱을 우선하는 앱은 모바일 1순위로 보되, 360px에서도 버튼 텍스트, 별점 입력, 라멘집 카드 정보가 줄바꿈으로 깨지지 않는지 확인한다.
+
+### 배포 전 DB schema는 reset 중심이 더 싸다
+
+아직 운영 배포 전이고 혼자 개발하는 단계라면 작은 migration을 계속 누적하기보다 V1 초기 schema에 합치고 로컬 DB를 reset하는 편이 더 단순하다. 이 프로젝트에서는 `shop_candidates`를 별도 V2로 두지 않고 V1에 합쳤다.
+
+다만 Flyway 자체를 버리는 것은 아니다. Flyway는 깨끗한 DB에 schema가 재현되는지 확인하는 기준으로 계속 쓴다. 운영 배포 이후에는 기존 migration을 수정하지 않고 새 migration을 추가한다.
+
+### Homebrew PostgreSQL과 PostGIS는 major version을 맞춘다
+
+Homebrew로 PostgreSQL과 PostGIS를 설치하면 PostGIS extension 파일이 특정 PostgreSQL major version 경로에만 생길 수 있다. 이번 환경에서는 `postgresql@16` 서비스가 켜져 있었지만 `postgis.control`은 `postgresql@17` 경로에 있어 `CREATE EXTENSION postgis`가 실패했다.
+
+해결은 실행 중인 PostgreSQL 서비스를 PostGIS가 설치된 major version으로 맞추는 것이다. 그 다음 앱 계정에 extension 생성 권한이 없으면 로컬 DB 생성 직후 superuser로 `CREATE EXTENSION IF NOT EXISTS postgis;`를 먼저 실행하고, 앱은 일반 계정으로 Flyway를 실행한다.
+
+### 외부 장소 API seed는 후보 저장과 승격으로 나눈다
+
+네이버 지역 검색 API 같은 외부 장소 검색은 초기 라멘집 데이터를 모으는 데 쓸 수 있지만, 결과를 곧바로 `shops`에 넣으면 라멘집이 아닌 장소나 품질 낮은 데이터가 섞인다. 그래서 API 결과는 `shop_candidates`에 저장하고, 검수 후 `shops`로 승격한다.
+
+오늘 확인한 최소 흐름은 다음과 같다. Naver credentials가 있으면 `POST /admin/shop-candidates/sync`로 후보를 저장하고, `GET /admin/shop-candidates`로 확인한 뒤, 적합한 후보를 `POST /admin/shop-candidates/{candidateId}/promote`로 승격한다. credentials가 없을 때는 `NAVER_SEARCH_NOT_CONFIGURED` 503이 정상 실패다.
+
+### 라멘집 후보 수집은 Kakao도 꽤 좋은 1차 선택지다
+
+네이버 지역 검색 API만 고집할 필요는 없다. Kakao Local API는 장소 `id`, 음식점 카테고리 `FD6`, 위치 반경 검색, 카카오맵 place URL을 제공해서 `shop_candidates.source_place_id` 중복 제거가 네이버보다 쉽다.
+
+공공데이터포털의 소상공인 상가정보와 행정안전부 일반음식점 데이터는 검색 API라기보다 대량 seed 원천이다. 앱에서 바로 검색할 데이터로 쓰지 말고, import job으로 후보를 만들고 Kakao/Naver로 place ID와 URL을 보강하는 흐름이 맞다.

@@ -301,6 +301,10 @@ cd server/api
 
 DB 스키마 변경을 코드와 함께 추적한다. 특히 PostGIS extension 생성과 `shops.location` 인덱스 생성을 명시적으로 관리한다.
 
+다만 아직 배포 전 로컬 개발 단계에서는 migration 파일을 작게 누적하기보다 V1에 합치고 개발 DB를 reset해서 다시 적용하는 방식을 우선한다. 운영 배포 이후에는 기존 migration을 수정하지 않고 새 migration을 추가한다.
+
+Homebrew PostgreSQL을 쓸 때는 PostGIS extension이 설치된 PostgreSQL major version과 실행 중인 서비스 버전이 같아야 한다. 로컬에서 앱 계정이 `CREATE EXTENSION postgis` 권한을 갖지 못하면 DB 생성 직후 superuser로 `CREATE EXTENSION IF NOT EXISTS postgis;`를 먼저 실행한 뒤 앱을 띄운다.
+
 ### PostGIS를 사용한다
 
 위도/경도 컬럼만으로는 주변 검색과 거리 정렬을 직접 처리해야 한다. PostGIS를 쓰면 거리 검색과 지도 bounds 조회를 DB 레벨에서 안정적으로 처리할 수 있다. 다만 1차 앱인토스 MVP에서는 기본 catalog 조회만 쓰고, 거리 검색과 지도 bounds 쿼리는 지도 기능을 붙일 때 구현한다.

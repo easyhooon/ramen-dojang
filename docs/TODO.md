@@ -68,15 +68,18 @@
 - [ ] Spring Security/OAuth 로그인 최소 세로 slice 구현
 - [ ] 토스 로그인 도입 시 테스트 앱 연동 후 운영 배포 전 사업자 인증과 mTLS 기반 token exchange/login-me 연동 설계
 - [ ] 현재 사용자 기준 shops visited/wishlisted/averageRating 계산으로 변경
-- [ ] 외부 검색 결과를 `shop_candidates`로 저장하는 ERD 확정
+- [x] 외부 검색 결과를 `shop_candidates`로 저장하는 ERD 확정
 - [x] Naver/Kakao/Google 장소 API 제공 필드와 한계 조사 문서 작성
-- [x] `shop_candidates` Flyway migration 작성
+- [x] `shop_candidates`를 V1 초기 schema에 포함
 - [x] 네이버 지역 검색 API 기반 후보 sync spike 작성
+- [ ] Kakao Local API 기반 후보 sync spike 작성
+- [ ] 공공데이터포털 상가/일반음식점 데이터 import 가능성 spike 작성
 - [ ] 라멘집 후보 scoring/중복 제거 기준 정의
-- [ ] 후보 검수 후 `shops`로 승격하는 admin flow 설계
+- [x] 후보 검수 후 `shops`로 승격하는 admin API 초안 구현
+- [ ] 후보 검수 UI 또는 Swagger 수동 운영 흐름 정리
 - [ ] 메뉴 데이터 축적 방식 설계: 방문 기록 기반 후보화, 메뉴판 사진, 관리자 검수
 - [ ] 수동 sync가 안정된 뒤 cron/scheduled job 도입 판단
-- [ ] 앱 출시 전 초기 라멘집 seed 데이터 투입 방식 결정: SQL seed, admin script, Swagger 수동 등록 중 택일
+- [ ] 앱 출시 전 초기 라멘집 seed 데이터 투입 방식 결정: Naver 후보 sync + admin 승격, SQL seed, admin script, Swagger 수동 등록 중 택일
 - [x] Spring Boot Kotlin 프로젝트 생성
 - [x] Gradle wrapper 포함 프로젝트 구성
 - [x] Spring Web/JDBC/Flyway/PostgreSQL/Validation 의존성 구성
@@ -180,7 +183,10 @@
 - [x] `http://127.0.0.1:8080/openapi` HTTP 200 확인
 - [x] `http://127.0.0.1:8080/health` 응답 `{"status":"ok"}` 확인
 - [x] Homebrew PostgreSQL 17/PostGIS 설치 후 `pnpm dev:api` 실제 DB 모드 실행 확인
-- [x] Flyway V1/V2 migration 적용 확인
+- [x] Flyway V1 단일 migration 적용 확인
 - [x] 로컬 DB reset 후 `POST /shops` 기본 썸네일 저장과 `GET /shops` 응답 확인
+- [x] PostgreSQL 17/PostGIS 로컬 DB reset 후 Flyway V1 단일 migration 적용 확인
+- [x] API `POST /shops`로 테스트 라멘집 등록 후 DB `shops`, `tags`, `shop_tags` 저장 확인
+- [x] 네이버 후보 sync API가 credentials 미설정 시 `NAVER_SEARCH_NOT_CONFIGURED` 503을 반환하는 것 확인
 - [x] 인앱 브라우저에서 `/shops` 라멘집 카드 기본 썸네일 렌더링 확인
 - [ ] Swagger UI API별 수동 smoke 확인
