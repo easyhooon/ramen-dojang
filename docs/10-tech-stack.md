@@ -7,7 +7,7 @@
 - 웹사이트와 토스 미니앱을 제품의 1차 배포 경로로 본다.
 - 웹 기술 기반 구현을 유지하고, `apps/web`을 웹사이트와 토스 미니앱의 공통 코어로 둔다.
 - native 기능은 웹사이트와 토스 미니앱 환경이 제공하지 못하는 요구가 생길 때만 별도 앱 shell로 확장한다.
-- 1차 MVP는 로그인 없이 공용 라멘집 catalog는 서버에서 받고, 개인 방문 기록과 위시리스트는 localStorage에 저장한다.
+- 1차 샌드박스 확인은 공용 라멘집 catalog는 서버에서 받고, 개인 방문 기록과 위시리스트는 localStorage에 저장한다. 유저별 서버 저장으로 넘어갈 때는 앱인토스 `getAnonymousKey` 기반 익명 식별을 먼저 붙인다.
 - API 계약은 OpenAPI를 기준으로 하고, 프론트 client는 생성한다.
 - DB schema 변경은 migration으로 남긴다.
 - 지도 기반 확장을 고려해 서버 쪽에는 PostGIS를 둔다.
@@ -51,6 +51,7 @@
 - 이 프로젝트는 기록형 서비스라 목록, 상세, 수정 화면이 URL로 표현되는 것이 중요하다.
 - 1차 앱인토스 MVP에서도 라멘집 catalog는 서버에서 받아 앱 업데이트 없이 갱신한다.
 - 개인 방문 기록과 위시리스트는 로그인 전까지 localStorage가 서버 동기화보다 싸고 빠르다.
+- 개인 기록을 서버에 저장하는 단계에서는 토스 로그인보다 가벼운 `getAnonymousKey`를 사용자 소유권의 최소 식별자로 우선 검토한다.
 - 서버 상태를 화면 local state와 분리하는 편이 낫기 때문에 TanStack Query를 둔다.
 - 프론트가 서버 DTO를 손으로 맞추지 않도록 generated API client를 사용한다.
 - Granite는 Vite 대체가 아니라 앱인토스용 wrapper다. 기존 `vite dev`, `vite build`를 `granite.config.ts`에서 호출한다.
@@ -178,7 +179,7 @@
 - 토스 미니앱 등록 요건과 심사 기준
 - Toss Mini App SDK/TDS 적용 방식
 - 일반 웹사이트를 어느 정도 공개 운영할지
-- 사용자 식별 방식: 1차 MVP는 로그인 없음, `getAnonymousKey`와 토스 로그인은 동기화가 필요해질 때 재검토
+- 사용자 식별 방식: 샌드박스 확인은 로컬 저장, 서버 개인 기록 저장은 `getAnonymousKey`, 토스 로그인은 개인정보/결제 상태 조회가 필요할 때 재검토
 - API/DB production hosting
 - mobile store 배포 여부
 

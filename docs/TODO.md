@@ -17,7 +17,7 @@
 - [x] Toss Mini App SDK 적용 방식 확인
 - [x] Toss Design System 사용 가능 범위와 설치 방식 확인
 - [ ] 앱인토스 인앱 광고 적용 시 콘솔 광고 그룹 ID 발급, 배너/전면형/리워드 중 MVP에 맞는 형식, 광고 수익 수령을 위한 사업자/정산 정보 등록 필요사항 확인
-- [ ] MVP 사용자 식별은 앱인토스 `getAnonymousKey`로 가능한지 확인
+- [x] MVP 사용자 식별은 앱인토스 `getAnonymousKey`로 가능한지 확인
 - [ ] 토스 로그인 테스트 앱 개발 가능 범위와 운영 배포 전 사업자 인증, 앱인토스 서버 API용 mTLS 인증서/방화벽/secret 관리 필요사항 확인
 - [ ] Sentry 프로젝트/DSN/API key 발급 후 앱인토스 WebView JS 오류 추적 설정
 - [ ] 운영 전 최소 모니터링 기준 결정: 현재는 별도 모니터링 툴 없이 터미널 로그, `/health`, Sentry 예정만 사용
@@ -66,9 +66,10 @@
 - [ ] AWS 전환 기준 정리: 장기 운영이나 트래픽/권한/네트워크 요구가 커지면 Elastic Beanstalk + RDS PostgreSQL 또는 ECS Fargate + RDS PostgreSQL로 이전을 검토한다. 신규 고객 대상 App Runner는 제외한다.
 - [ ] API 서버 배포 전 체크리스트 작성: 실행 방식(JAR 또는 container), 환경변수, seed import, Flyway 적용, CORS origin, HTTPS/TLS, `/health`, 로그 확인, DB 백업 기준.
 - [x] DB ERD 문서 작성
-- [ ] 로그인/사용자 소유권 반영 ERD 확정
+- [ ] `getAnonymousKey` 기반 익명 사용자 소유권 ERD 확정
 - [ ] `users` 테이블 및 `visits.user_id`, `wishlist.user_id` migration 작성
-- [ ] 인증 방식 결정: MVP는 `getAnonymousKey` 우선, 토스 로그인은 테스트 앱으로 연동 확인 후 개인정보/결제 상태 조회가 필요할 때 재검토
+- [x] 인증 방식 결정: 유저별 서버 저장은 `getAnonymousKey` 기반 익명 식별을 우선하고, 토스 로그인은 개인정보/결제 상태 조회가 필요할 때 재검토
+- [ ] 익명 사용자 세로 slice 구현: 앱인토스 `getAnonymousKey` 조회, 서버 `users` 매핑, visits/wishlist 사용자별 저장
 - [ ] 인증/사용자 소유권 behavior 목록 작성 후 TDD 첫 세로 slice 선택
 - [ ] Spring Security/OAuth 로그인 최소 세로 slice 구현
 - [ ] 토스 로그인 도입 시 테스트 앱 연동 후 운영 배포 전 사업자 인증과 mTLS 기반 token exchange/login-me 연동 설계
