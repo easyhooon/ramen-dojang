@@ -191,12 +191,14 @@ const fromGeneratedShop = (shop: GeneratedShopResponse): ShopResponse => ({
   longitude: shop.longitude,
   phone: shop.phone ?? null,
   placeUrl: shop.placeUrl ?? null,
-  thumbnailUrl: shop.thumbnailUrl ?? "/assets/default-ramen.png",
+  thumbnailUrl: normalizeThumbnailUrl(shop.thumbnailUrl),
   tags: shop.tags,
   visited: shop.visited,
   wishlisted: shop.wishlisted,
   averageRating: shop.averageRating ?? null,
 });
+
+const normalizeThumbnailUrl = (thumbnailUrl?: string | null) => (thumbnailUrl && thumbnailUrl !== "/assets/default-ramen.svg" ? thumbnailUrl : "/assets/default-ramen.png");
 
 const fromGeneratedVisit = (visit: GeneratedVisitResponse): VisitResponse => ({
   id: visit.id,
