@@ -8,8 +8,10 @@ import type { ComponentProps } from "react";
 import { queryClient } from "./lib/queryClient";
 import { AboutPage } from "./routes/about";
 import { HomePage } from "./routes";
+import { PrivacyPage } from "./routes/privacy";
 import { ShopDetailPage } from "./routes/shops.$shopId";
 import { ShopsPage } from "./routes/shops.index";
+import { TermsPage } from "./routes/terms";
 import { VisitDetailPage } from "./routes/visits.$visitId";
 import { NewVisitPage } from "./routes/visits.new";
 import "./styles.css";
@@ -45,8 +47,10 @@ const shopDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: "/s
 const newVisitRoute = createRoute({ getParentRoute: () => rootRoute, path: "/visits/new", component: NewVisitPage });
 const visitDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: "/visits/$visitId", component: VisitDetailPage });
 const aboutRoute = createRoute({ getParentRoute: () => rootRoute, path: "/about", component: AboutPage });
+const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: "/terms", component: TermsPage });
+const privacyRoute = createRoute({ getParentRoute: () => rootRoute, path: "/privacy", component: PrivacyPage });
 
-const routeTree = rootRoute.addChildren([indexRoute, shopsRoute, shopDetailRoute, newVisitRoute, visitDetailRoute, aboutRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, shopsRoute, shopDetailRoute, newVisitRoute, visitDetailRoute, aboutRoute, termsRoute, privacyRoute]);
 const router = createRouter({ routeTree });
 
 declare module "@tanstack/react-router" {

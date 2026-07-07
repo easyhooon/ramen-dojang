@@ -1,3 +1,6 @@
+import { Link } from "@tanstack/react-router";
+import { feedbackUrl } from "../lib/support";
+
 export function AboutPage() {
   return (
     <div className="stack about-page">
@@ -24,11 +27,11 @@ export function AboutPage() {
 
       <section className="panel info-list">
         <div><span>버전 정보</span><strong>0.1.0</strong></div>
-        <div><span>서비스 이용약관</span><strong>›</strong></div>
-        <div><span>개인정보 처리방침</span><strong>›</strong></div>
+        <Link to="/terms"><span>서비스 이용약관</span><strong>›</strong></Link>
+        <Link to="/privacy"><span>개인정보 처리방침</span><strong>›</strong></Link>
       </section>
 
-      <a className="hero-action" href="mailto:hello@example.com">문의 및 피드백 보내기</a>
+      <a className="hero-action" href={feedbackUrl}>문의 및 피드백 보내기</a>
     </div>
   );
 }

@@ -138,7 +138,9 @@
 - [x] 방문 기록/위시리스트 local repository 작성
 - [x] 라멘집 목록/상세를 서버 catalog API로 재연결
 - [ ] 앱인토스 샌드박스에서 서버 catalog 조회와 로컬 방문 기록/위시리스트 수동 테스트
-- [ ] 설정 화면에 사용자 의견 보내기 추가: MVP는 Google Form 링크로 기능 제안/버그 제보를 수집하고, 관리자페이지/DB 저장은 제보량이 생긴 뒤 검토
+- [x] 설정 화면에 이용약관, 개인정보 처리방침, 문의/피드백 링크 추가
+- [x] 실제 피드백 수집 URL 결정: MVP는 Google Form `https://forms.gle/Mz3Ght8TUQuwdPYi9`을 사용하고, 관리자페이지/DB 저장은 제보량이 생긴 뒤 검토
+- [ ] 앱인토스 제출 전 개인정보 처리방침의 운영자/CPO/문의처와 실제 수집 항목을 최종 확정하고 법률 검토
 - [x] TDS Provider 연결 및 핵심 액션 버튼 1차 치환
 - [x] TDS 컴포넌트 기준으로 기존 UI 치환 범위 산정
 - [x] TDS TextField/TextArea/Badge 1차 치환
