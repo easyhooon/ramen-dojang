@@ -398,6 +398,11 @@ p {
   border-color: var(--color-primary);
 }
 
+.selected-shop-summary {
+  cursor: default;
+  margin-bottom: 14px;
+}
+
 .item-title-row,
 .actions,
 .tag-row,
@@ -522,14 +527,16 @@ p {
 }
 
 .star-rating {
-  border: 0;
   align-items: center;
+  border: 0;
   display: grid;
   gap: 6px;
   grid-column: 1 / -1;
-  grid-template-columns: 72px minmax(0, 1fr);
+  justify-items: center;
   margin: 0;
+  min-inline-size: 0;
   padding: 0;
+  width: 100%;
 }
 
 .star-rating legend {
@@ -537,12 +544,14 @@ p {
   font-size: 0.9rem;
   font-weight: 700;
   padding: 0;
+  text-align: center;
+  width: 100%;
 }
 
 .star-rating-options {
   display: flex;
   gap: 4px;
-  justify-content: end;
+  justify-content: center;
 }
 
 .star-rating-options label {
