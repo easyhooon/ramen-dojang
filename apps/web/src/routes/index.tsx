@@ -41,6 +41,7 @@ export function HomePage() {
   return (
     <div className="stack">
       <section className="summary-band">
+        <p className="home-tagline">다녀온 맛을 쌓고, 다음 한 그릇을 고릅니다.</p>
         <div className="metrics">
           <div><strong>{shops.data?.length ?? 0}</strong><span>라멘집</span></div>
           <div><strong>{visitedCount}</strong><span>방문</span></div>

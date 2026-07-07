@@ -135,6 +135,14 @@ p {
   max-width: 560px;
 }
 
+.home-tagline {
+  color: var(--color-text);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 0;
+}
+
 .eyebrow {
   color: var(--color-primary);
   font-size: 0.78rem;
