@@ -24,6 +24,7 @@
 - [x] 기존 Expo/Nitro WebView wrapper는 스토어 출시용 보류 자산으로 유지
 - [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
 - [ ] 운영 배포 전 CORS 허용 origin을 Vercel 도메인과 앱인토스 도메인으로 제한
+- [ ] API 서버 운영 배포 시 HTTPS/TLS 적용 방식 확인: Vercel 프론트는 자동 HTTPS, 별도 API 도메인은 Let's Encrypt/클라우드 로드밸런서/배포 플랫폼 제공 무료 인증서 중 선택
 
 ## 공통 / 모노레포
 
@@ -79,9 +80,9 @@
 - [ ] 후보 검수 UI 또는 Swagger 수동 운영 흐름 정리
 - [ ] 메뉴 데이터 축적 방식 설계: 방문 기록 기반 후보화, 메뉴판 사진, 관리자 검수
 - [ ] Naver sync 429 속도 제한 대응: 지역 query queue, delay, retry/backoff, 마지막 성공 query 저장 방식 결정
-- [ ] 미수집 전국 query 재개 작업: 순천/여수/목포/제주 등 429 이후 남은 지역 후보 sync
+- [ ] 미수집 전국 query 재개 작업: 아직 안 태운 국내 지역/상권 후보 sync
 - [ ] 수동 sync가 안정된 뒤 cron/scheduled job 도입 판단: 주기적 후보 수집은 `shop_candidates`까지만, 검수 없는 `shops` 자동 변경은 금지
-- [x] 앱 출시 전 초기 라멘집 seed 데이터 투입 방식 결정: Naver 후보 sync + admin 승격으로 166건 seed JSON 보관
+- [x] 앱 출시 전 초기 라멘집 seed 데이터 투입 방식 결정: Naver 후보 sync + admin 승격으로 214건 seed JSON 보관
 - [ ] `server/api/src/main/resources/seed/shops.seed.json` import script 또는 admin endpoint 작성
 - [x] Spring Boot Kotlin 프로젝트 생성
 - [x] Gradle wrapper 포함 프로젝트 구성
@@ -137,6 +138,7 @@
 - [x] 방문 기록/위시리스트 local repository 작성
 - [x] 라멘집 목록/상세를 서버 catalog API로 재연결
 - [ ] 앱인토스 샌드박스에서 서버 catalog 조회와 로컬 방문 기록/위시리스트 수동 테스트
+- [ ] 설정 화면에 사용자 의견 보내기 추가: MVP는 Google Form 링크로 기능 제안/버그 제보를 수집하고, 관리자페이지/DB 저장은 제보량이 생긴 뒤 검토
 - [x] TDS Provider 연결 및 핵심 액션 버튼 1차 치환
 - [x] TDS 컴포넌트 기준으로 기존 UI 치환 범위 산정
 - [x] TDS TextField/TextArea/Badge 1차 치환
@@ -192,4 +194,5 @@
 - [x] API `POST /shops`로 테스트 라멘집 등록 후 DB `shops`, `tags`, `shop_tags` 저장 확인
 - [x] 네이버 후보 sync API가 credentials 미설정 시 `NAVER_SEARCH_NOT_CONFIGURED` 503을 반환하는 것 확인
 - [x] 인앱 브라우저에서 `/shops` 라멘집 카드 기본 썸네일 렌더링 확인
+- [x] 인앱 브라우저에서 홈/목록/검색/상세 화면이 서버 catalog API 데이터로 렌더링되는 것 확인
 - [ ] Swagger UI API별 수동 smoke 확인
