@@ -6,9 +6,8 @@ import { api } from "../lib/api";
 
 export function ShopsPage() {
   const [name, setName] = useState("");
-  const [tag, setTag] = useState("");
   const [visited, setVisited] = useState<string>("");
-  const params = { name, tag, visited: visited === "" || visited === "wishlisted" ? undefined : visited === "true" };
+  const params = { name, visited: visited === "" || visited === "wishlisted" ? undefined : visited === "true" };
   const shops = useQuery({ queryKey: ["shops", params], queryFn: () => api.listShops(params) });
   const visibleShops = visited === "wishlisted" ? shops.data?.filter((shop) => shop.wishlisted) : shops.data;
 
@@ -27,7 +26,6 @@ export function ShopsPage() {
             <button className={visited === "false" ? "active" : ""} type="button" onClick={() => setVisited("false")}>미방문</button>
             <button className={visited === "wishlisted" ? "active" : ""} type="button" onClick={() => setVisited("wishlisted")}>가보고 싶은 곳</button>
           </div>
-          <TextField variant="box" label="태그 필터" value={tag} onChange={(event) => setTag(event.target.value)} />
         </div>
         <div className="list">
           {visibleShops?.map((shop) => <ShopCard key={shop.id} shop={shop} />)}

@@ -24,6 +24,6 @@ data class CreateShopRequest(
     val placeUrl: String? = null,
     @field:Schema(description = "대표 썸네일 URL", example = "/assets/default-ramen.svg")
     val thumbnailUrl: String? = null,
-    @field:Schema(description = "라멘 스타일 태그 이름 목록", example = "[\"쇼유\", \"이에케이\"]")
+    @field:Schema(description = "라멘집 분류 태그 이름 목록", example = "[\"라멘\", \"일본식라면\"]")
     val tagNames: List<String> = emptyList(),
 )

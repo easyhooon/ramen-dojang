@@ -48,7 +48,6 @@ export interface ShopsApiGetShopRequest {
 
 export interface ShopsApiListShopsRequest {
     name?: string;
-    tag?: string;
     visited?: boolean;
 }
 
@@ -214,10 +213,6 @@ export class ShopsApi extends runtime.BaseAPI {
             queryParameters['name'] = requestParameters['name'];
         }
 
-        if (requestParameters['tag'] != null) {
-            queryParameters['tag'] = requestParameters['tag'];
-        }
-
         if (requestParameters['visited'] != null) {
             queryParameters['visited'] = requestParameters['visited'];
         }
@@ -236,7 +231,7 @@ export class ShopsApi extends runtime.BaseAPI {
     }
 
     /**
-     * 이름, 태그, 방문 여부로 라멘집 목록을 조회합니다.
+     * 이름, 방문 여부로 라멘집 목록을 조회합니다.
      * 라멘집 목록 조회
      */
     async listShopsRaw(requestParameters: ShopsApiListShopsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ShopResponse>>> {
@@ -247,7 +242,7 @@ export class ShopsApi extends runtime.BaseAPI {
     }
 
     /**
-     * 이름, 태그, 방문 여부로 라멘집 목록을 조회합니다.
+     * 이름, 방문 여부로 라멘집 목록을 조회합니다.
      * 라멘집 목록 조회
      */
     async listShops(requestParameters: ShopsApiListShopsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ShopResponse>> {

@@ -21,7 +21,7 @@ data class ShopResponse(
     val placeUrl: String?,
     @field:Schema(description = "대표 썸네일 URL", example = "/assets/default-ramen.svg")
     val thumbnailUrl: String,
-    @field:Schema(description = "라멘 스타일 태그 이름 목록", example = "[\"쇼유\", \"이에케이\"]")
+    @field:Schema(description = "라멘집 분류 태그 이름 목록", example = "[\"라멘\", \"일본식라면\"]")
     val tags: List<String>,
     @field:Schema(description = "현재 사용자 기준 방문 여부", example = "true")
     val visited: Boolean,

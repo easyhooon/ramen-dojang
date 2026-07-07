@@ -35,7 +35,7 @@ class ShopRepository(
         return findById(id)!!
     }
 
-    fun list(name: String?, tag: String?, visited: Boolean?): List<ShopResponse> =
+    fun list(name: String?, visited: Boolean?): List<ShopResponse> =
         jdbcClient.sql(
             """
             SELECT s.*,
@@ -45,17 +45,10 @@ class ShopRepository(
             FROM shops s
             WHERE (CAST(:name AS text) IS NULL OR lower(s.name) LIKE lower(concat('%', CAST(:name AS text), '%')))
               AND (CAST(:visited AS boolean) IS NULL OR EXISTS (SELECT 1 FROM visits v WHERE v.shop_id = s.id) = CAST(:visited AS boolean))
-              AND (CAST(:tag AS text) IS NULL OR EXISTS (
-                SELECT 1
-                FROM shop_tags st
-                JOIN tags t ON t.id = st.tag_id
-                WHERE st.shop_id = s.id AND t.name = CAST(:tag AS text)
-              ))
             ORDER BY s.created_at DESC
             """.trimIndent(),
         )
             .param("name", name)
-            .param("tag", tag)
             .param("visited", visited)
             .query(::mapRecord)
             .list()

@@ -14,8 +14,8 @@ class ShopService(
 ) {
     fun create(request: CreateShopRequest): ShopResponse = shopRepository.create(request)
 
-    fun list(name: String?, tag: String?, visited: Boolean?): List<ShopResponse> =
-        shopRepository.list(name = name, tag = tag, visited = visited)
+    fun list(name: String?, visited: Boolean?): List<ShopResponse> =
+        shopRepository.list(name = name, visited = visited)
 
     fun get(id: UUID): ShopResponse =
         shopRepository.findById(id) ?: throw notFound()
@@ -34,4 +34,3 @@ class ShopService(
     private fun notFound(): ApiException =
         ApiException("SHOP_NOT_FOUND", "Shop was not found.", HttpStatus.NOT_FOUND)
 }
-

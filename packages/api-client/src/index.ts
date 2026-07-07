@@ -92,7 +92,6 @@ export interface CreateWishlistRequest {
 
 export interface ShopListParams {
   name?: string;
-  tag?: string;
   visited?: boolean;
 }
 

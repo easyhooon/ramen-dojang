@@ -60,7 +60,7 @@ class ShopController(
     @Operation(
         operationId = "listShops",
         summary = "라멘집 목록 조회",
-        description = "이름, 태그, 방문 여부로 라멘집 목록을 조회합니다.",
+        description = "이름, 방문 여부로 라멘집 목록을 조회합니다.",
     )
     @ApiResponse(
         responseCode = "200",
@@ -71,11 +71,9 @@ class ShopController(
     fun list(
         @Parameter(description = "라멘집 이름 검색어", example = "멘야")
         @RequestParam(required = false) name: String?,
-        @Parameter(description = "태그 이름", example = "쇼유")
-        @RequestParam(required = false) tag: String?,
         @Parameter(description = "방문 여부")
         @RequestParam(required = false) visited: Boolean?,
-    ): List<ShopResponse> = shopService.list(name = name, tag = tag, visited = visited)
+    ): List<ShopResponse> = shopService.list(name = name, visited = visited)
 
     @Operation(
         operationId = "getShop",
