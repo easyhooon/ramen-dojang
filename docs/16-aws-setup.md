@@ -46,10 +46,11 @@ API 서버 환경변수:
 AWS 리소스를 만들기 전에 비용 사고를 막는 설정부터 한다.
 
 - [x] root 계정 MFA 등록
-- [ ] root 계정은 결제/계정 설정에만 사용하고, 개발 작업용 IAM 사용자를 분리
-- [ ] Billing and Cost Management에서 월 예산 알림 생성
-- [ ] 예상 예산은 처음에는 USD 10 또는 USD 20로 낮게 잡고, 알림 수신 이메일 확인
-- [ ] 리전은 우선 `ap-northeast-2` 서울로 둔다
+- [x] 개발 작업용 IAM 사용자 `ramen-dojang-deployer` 생성
+- [x] AWS CLI profile `ramen-dojang` 설정
+- [x] Billing and Cost Management에서 월 예산 알림 생성
+- [x] 월 USD 10 budget, 80% actual spend 이메일 알림 설정
+- [x] 리전은 우선 `ap-northeast-2` 서울로 둔다
 
 Free Tier 주의:
 
@@ -59,7 +60,15 @@ Free Tier 주의:
 
 ## 1. RDS PostgreSQL/PostGIS
 
-첫 DB는 운영형 고가 구성이 아니라 작은 단일 DB로 시작한다.
+첫 DB는 운영형 고가 구성이 아니라 작은 단일 DB로 시작한다. 다만 RDS는 요청이 없어도 인스턴스가 켜져 있으면 시간 요금이 발생한다. 앱인토스 샌드박스/출시 직전까지는 RDS 인스턴스를 만들지 않는다.
+
+현재 준비된 것:
+
+- [x] RDS security group `ramen-dojang-rds-sg`
+- [x] DB subnet group `ramen-dojang-db-subnet-group`
+- [x] PostgreSQL 17.10, `db.t4g.micro` 사용 가능 확인
+- [x] managed password/Secrets Manager는 최소 비용을 위해 사용하지 않기로 결정
+- [ ] RDS instance `ramen-dojang-postgres` 생성은 보류
 
 권장 설정:
 
@@ -90,6 +99,12 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 ```
 
 Flyway가 위 문장을 실행하지 못하면 RDS 관리자 권한 사용자로 한 번 실행한 뒤 API를 다시 배포한다.
+
+비밀번호:
+
+- 최소 비용 모드에서는 Secrets Manager managed password를 쓰지 않는다.
+- RDS 생성 시 master password를 직접 만들고, 채팅/문서/git에 남기지 않는다.
+- password 생성 예시: `openssl rand -hex 24`
 
 ## 2. Elastic Beanstalk API
 
@@ -163,7 +178,7 @@ AWS DB에 넣는 방식은 아직 결정해야 한다.
 2. 운영 친화 방식: 관리자용 import endpoint를 만들고 인증/권한을 붙인다
 3. 가장 게으른 MVP 방식: 서버 배포 전까지 seed JSON을 프론트에 포함해 검색만 먼저 검증한다
 
-현재 목표는 API 서버 catalog를 쓰는 방향이므로, AWS 배포 전 `shops.seed.json` import script를 먼저 만드는 것이 좋다.
+현재 목표는 API 서버 catalog를 쓰는 방향이다. RDS 상시 비용을 막기 위해 AWS 배포 전까지는 로컬 API 서버와 로컬 DB로 개발하고, RDS를 만들 때는 `shops.seed.json` import script를 먼저 만든다.
 
 ## 5. 배포 후 smoke test
 

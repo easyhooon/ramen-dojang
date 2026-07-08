@@ -70,9 +70,10 @@
 - [x] API/DB 배포 후보별 월비용 문서화: Render, Railway, Neon, Fly.io, AWS 후보 비교
 - [x] AWS 전환 기준 정리: API는 Elastic Beanstalk Java 17, DB는 RDS PostgreSQL/PostGIS로 먼저 간다. ECS/Fargate, Terraform, custom VPC는 운영 요구가 생길 때 검토한다.
 - [x] API 서버 배포 전 체크리스트 작성: 실행 방식(JAR), 환경변수, seed import, Flyway 적용, CORS origin, HTTPS/TLS, `/health`, 로그 확인, DB 백업 기준.
-- [ ] AWS Billing budget 설정
-- [ ] AWS 개발 작업용 IAM 사용자 또는 IAM Identity Center 사용자 분리
-- [ ] RDS PostgreSQL 생성 후 PostGIS extension/Flyway migration 검증
+- [x] AWS Billing budget 설정: 월 USD 10, 80% actual spend 알림
+- [x] AWS 개발 작업용 IAM 사용자 생성 및 CLI profile 설정: `ramen-dojang-deployer`, `ramen-dojang`
+- [x] AWS RDS용 security group과 DB subnet group 생성
+- [ ] RDS PostgreSQL 생성 후 PostGIS extension/Flyway migration 검증, 앱인토스 샌드박스/출시 직전까지 비용 절감을 위해 보류
 - [ ] Elastic Beanstalk Java 17 API 환경 생성 및 `/health` 확인
 - [ ] Vercel `VITE_API_BASE_URL`을 AWS API URL로 설정
 - [ ] 운영 CORS를 환경변수 기반 allow list로 변경
