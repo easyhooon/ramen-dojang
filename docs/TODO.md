@@ -29,6 +29,7 @@
 - [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
 - [ ] 운영 배포 전 CORS 허용 origin을 Vercel 도메인, `https://<appName>.apps.tossmini.com`, `https://<appName>.private-apps.tossmini.com`으로 제한
 - [ ] API 서버 운영 배포 시 HTTPS/TLS 적용 방식 확인: Vercel 프론트는 자동 HTTPS, 별도 API 도메인은 Let's Encrypt/클라우드 로드밸런서/배포 플랫폼 제공 무료 인증서 중 선택
+- [x] AWS API/DB 최소 배포 setup 문서 작성: Elastic Beanstalk + RDS PostgreSQL/PostGIS
 
 ## 공통 / 모노레포
 
@@ -65,10 +66,16 @@
 
 1차 앱인토스 MVP에서도 서버는 공용 라멘집 catalog 용도로 필요하다. 아래 개인 기록 동기화/로그인 항목은 필요해질 때 재개한다.
 
-- [ ] API 서버 1차 배포 후보 결정: MVP/개인 개발 단계는 Render Web Service + Render Postgres(PostGIS)를 우선 검토하고, Railway는 PostGIS 템플릿/백업/운영 책임을 확인한 뒤 대안으로 둔다.
+- [x] API 서버 1차 배포 후보 결정: 현재는 AWS 최소 구성(Elastic Beanstalk Java 17 + RDS PostgreSQL/PostGIS)을 우선하고, Render/Railway는 비용/속도 대안으로 보류한다.
 - [x] API/DB 배포 후보별 월비용 문서화: Render, Railway, Neon, Fly.io, AWS 후보 비교
-- [ ] AWS 전환 기준 정리: 장기 운영이나 트래픽/권한/네트워크 요구가 커지면 Elastic Beanstalk + RDS PostgreSQL 또는 ECS Fargate + RDS PostgreSQL로 이전을 검토한다. 신규 고객 대상 App Runner는 제외한다.
-- [ ] API 서버 배포 전 체크리스트 작성: 실행 방식(JAR 또는 container), 환경변수, seed import, Flyway 적용, CORS origin, HTTPS/TLS, `/health`, 로그 확인, DB 백업 기준.
+- [x] AWS 전환 기준 정리: API는 Elastic Beanstalk Java 17, DB는 RDS PostgreSQL/PostGIS로 먼저 간다. ECS/Fargate, Terraform, custom VPC는 운영 요구가 생길 때 검토한다.
+- [x] API 서버 배포 전 체크리스트 작성: 실행 방식(JAR), 환경변수, seed import, Flyway 적용, CORS origin, HTTPS/TLS, `/health`, 로그 확인, DB 백업 기준.
+- [ ] AWS Billing budget 설정
+- [ ] AWS 개발 작업용 IAM 사용자 또는 IAM Identity Center 사용자 분리
+- [ ] RDS PostgreSQL 생성 후 PostGIS extension/Flyway migration 검증
+- [ ] Elastic Beanstalk Java 17 API 환경 생성 및 `/health` 확인
+- [ ] Vercel `VITE_API_BASE_URL`을 AWS API URL로 설정
+- [ ] 운영 CORS를 환경변수 기반 allow list로 변경
 - [x] DB ERD 문서 작성
 - [ ] `getAnonymousKey` 기반 익명 사용자 소유권 ERD 확정
 - [ ] `users` 테이블 및 `visits.user_id`, `wishlist.user_id` migration 작성

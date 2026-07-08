@@ -178,7 +178,7 @@
 - DB: 공용 라멘집 catalog 저장소로 배포 필요
 - mobile: Expo/EAS/native build는 스토어 배포가 다시 필요해질 때 검토
 
-API/DB 배포 후보별 비용 감각은 [Deployment Cost Candidates](15-deployment-costs.md)를 기준으로 본다. 1차 MVP는 Render 최소 유료 구성을 우선 후보로 두고, 원화 부담이 아까우면 seed JSON을 프론트에 포함해 서버 배포를 잠시 미루는 선택지도 유지한다.
+API/DB 배포 후보별 비용 감각은 [Deployment Cost Candidates](15-deployment-costs.md)를 기준으로 본다. 현재 진행 방향은 AWS 최소 구성이다. API는 Elastic Beanstalk Java 17 환경에 올리고, DB는 RDS PostgreSQL/PostGIS를 사용한다. 구체 설정은 [AWS Setup](16-aws-setup.md)을 따른다.
 
 앱인토스 안에서는 `https://<appName>.apps.tossmini.com` 또는 `https://<appName>.private-apps.tossmini.com` origin으로 실행되므로, 프론트용 브랜드 도메인 구매는 보류한다. API CORS는 운영에서 앱인토스 실제/QR 테스트 origin, Vercel 도메인만 허용한다.
 
@@ -187,7 +187,7 @@ API/DB 배포 후보별 비용 감각은 [Deployment Cost Candidates](15-deploym
 - 앱인토스 샌드박스에서 비게임 내비게이션 바, 플로팅 탭바, 뒤로가기 동작이 심사 기준과 실제로 맞는지 최종 확인
 - 일반 웹사이트를 어느 정도 공개 운영할지
 - 사용자 식별 방식: 샌드박스 확인은 로컬 저장, 서버 개인 기록 저장은 `getAnonymousKey`, 토스 로그인은 개인정보/결제 상태 조회가 필요할 때 재검토
-- API/DB production hosting
+- API/DB production hosting 실제 생성과 seed import
 - mobile store 배포 여부
 
 앱인토스 콘솔 앱 만들기 초안:
