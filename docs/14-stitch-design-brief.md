@@ -34,7 +34,7 @@
 ## 디자인 목표
 
 - 토스 미니앱 안에서 어색하지 않은 모바일 앱 화면을 우선한다.
-- Toss Design System에 가까운 neutral surface, 명확한 primary action, 간결한 리스트 구조를 쓴다.
+- Toss 앱 안에서 어색하지 않은 neutral surface, 명확한 primary action, 간결한 리스트 구조를 쓴다.
 - 라멘 고유의 개성은 썸네일, 도장/기록 카피, 취향 요약에만 작게 넣는다.
 - 크림/브라운/오렌지 계열로만 흐르는 라멘집 감성 UI는 피한다.
 - 랜딩페이지 hero나 홍보 문구보다, 반복 사용 가능한 기록 도구의 밀도와 명확성을 우선한다.
@@ -43,16 +43,15 @@
 
 최신 구현은 이미 토스스러운 방향을 따르고 있다. Stitch 시안도 이 방향을 강화해야 한다.
 
-- TDS provider를 사용한다: `TDSMobileProvider`, `TDSMobileAITProvider`.
-- 현재 primary color는 Toss blue 계열 `#3182f6`를 쓴다. 다만 TDS가 blue만 지원하는 것은 아니므로, 라멘 도메인과 더 잘 맞는 brand primary color는 시안에서 검토한다.
+- 일반 웹 배포도 같이 해야 하므로 `@toss/tds-mobile` 런타임 package는 사용하지 않는다.
+- 현재 primary color는 shoyu/amber 계열이다. 화면 전체를 갈색/주황색으로 덮지 않고 CTA, 선택 상태, 작은 강조에만 제한적으로 쓴다.
 - 기본 텍스트/배경/경계 색은 Toss neutral 계열에 가깝다.
   - text: `#191f28`
   - secondary text: `#6b7684`, `#8b95a1`
   - background: `#f9fafb`, `#f2f4f6`
   - border: `#e5e8eb`, `#d1d6db`
-- Button, TextField, TextArea, Badge는 이미 TDS 컴포넌트로 일부 치환되어 있다.
-- Button은 `primary`, `danger`, `light`, `dark` semantic color를 직접 받는다. Badge는 `blue`, `teal`, `green`, `red`, `yellow`, `elephant`를 받는다.
-- 앱 전체 primary는 `TDSMobileAITProvider`의 `brandPrimaryColor` 또는 `TDSMobileProvider`의 `token.color.primary`로 바꿀 수 있다.
+- Button, TextField, TextArea, Badge는 native HTML 기반 local component를 사용한다.
+- 앱인토스에서는 자체 상단 topbar가 네이티브 내비게이션 바와 중복되지 않아야 하고, 하단 탭바는 토스 가이드의 플로팅 형태를 따라야 한다.
 - 라멘 이미지는 장식 배경이 아니라 라멘집 카드의 thumbnail/placeholder 용도로만 쓴다.
 - 시안은 현재 코드보다 더 “토스 앱 안의 기능 화면”처럼 보여야 하며, 라멘집 브랜딩 사이트처럼 보이면 안 된다.
 
@@ -69,7 +68,7 @@
 - 모바일은 360px 폭에서도 깨지지 않아야 한다. 시안 대표 폭은 390px로 잡되, 360px을 최소 검수 폭으로 본다.
 - 상단에는 앱 이름과 핵심 탭을 둔다: 홈, 라멘집, 방문 추가, About.
 - 주요 CTA는 `방문 추가`다.
-- 버튼, 입력, 배지, 리스트 행은 TDS로 옮기기 쉬운 모양을 우선한다.
+- 버튼, 입력, 배지, 리스트 행은 일반 웹에서도 깨지지 않는 native HTML 기반으로 만들되 앱인토스 UI/UX 가이드에 맞는 여백과 형태를 우선한다.
 - 카드 안에 또 카드를 넣지 않는다.
 - 별점은 라멘 전용 평가 축 4개를 명확히 보여준다: 국물, 면, 토핑, 종합.
 - 기본 썸네일이 필요한 라멘집 카드는 placeholder가 어색하지 않아야 한다.
@@ -304,9 +303,9 @@
 ```text
 라멘집 방문 기록 앱 "라멘 도장깨기"의 모바일 우선 UI 시안을 만들어줘.
 
-출시 타겟은 웹사이트와 토스 미니앱이고, 토스 앱 안에서 자연스럽게 보이는 비게임 서비스여야 해. Toss Design System에 가까운 neutral surface, 명확한 primary action, 간결한 리스트 구조를 우선해줘.
+출시 타겟은 웹사이트와 토스 미니앱이고, 토스 앱 안에서 자연스럽게 보이는 비게임 서비스여야 해. 토스다운 neutral surface, 명확한 primary action, 간결한 리스트 구조를 우선해줘.
 
-현재 코드는 Toss blue `#3182f6`를 primary로 쓰고 있지만 라멘 도메인과는 조금 덜 어울릴 수 있어. TDS 컴포넌트 구조와 토스다운 여백/타이포/리스트 감각은 유지하되, brand primary는 shoyu/amber 계열로 제안해줘. 단, 화면 전체를 갈색/주황색으로 덮지 말고 neutral UI 위에서 주요 CTA, 선택 상태, 작은 강조에만 제한적으로 써줘. 라멘 고유의 시각 요소도 썸네일, 기록/도장 카피, 취향 요약 정도에만 작게 사용해줘.
+현재 코드는 일반 웹 배포도 해야 해서 앱인토스 전용 TDS package에는 의존하지 않아. 대신 토스다운 여백/타이포/리스트 감각은 유지하고, brand primary는 shoyu/amber 계열로 제안해줘. 단, 화면 전체를 갈색/주황색으로 덮지 말고 neutral UI 위에서 주요 CTA, 선택 상태, 작은 강조에만 제한적으로 써줘. 라멘 고유의 시각 요소도 썸네일, 기록/도장 카피, 취향 요약 정도에만 작게 사용해줘.
 
 피해야 할 것: 크림/브라운/오렌지 계열로만 흐르는 과한 라멘집 감성 UI, 마케팅 랜딩페이지, 큰 hero 페이지, 음식점 브랜드 사이트처럼 보이는 화면. 만들어야 할 것은 실제 앱인토스 안에서 바로 쓸 수 있는 기록형 기능 화면이야.
 

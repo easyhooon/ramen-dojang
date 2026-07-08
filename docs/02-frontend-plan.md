@@ -6,6 +6,8 @@
 
 초기 앱은 Vite React SPA 구조를 유지하되, 공개 웹사이트 배포와 토스 미니앱 등록을 함께 고려한다. PWA와 React Native WebView wrapper 확장은 보류한다.
 
+다국어 지원은 한국어, 영어, 일본어를 1차 대상 언어로 둔다. 기본값은 브라우저/시스템 언어를 따르고, 설정 화면에서 사용자가 언어를 직접 고정할 수 있게 한다.
+
 ## 2. 기술 스택
 
 - Vite
@@ -19,6 +21,8 @@
 - Toss Mini App SDK, 공식 문서 확인 후 적용
 - Toss Design System, 공식 문서 확인 후 적용
 - Naver Maps JavaScript API
+
+i18n 라이브러리는 아직 도입하지 않는다. MVP 문구 범위가 확정된 뒤 `Intl`/간단한 dictionary로 충분한지 먼저 보고, 복수형/날짜/숫자 formatting이 복잡해질 때 전용 라이브러리를 검토한다.
 
 ## 3. 앱 구조
 
@@ -89,6 +93,9 @@ apps/web/src/
 
 /about
   도장깨기 컨셉 설명
+
+/settings
+  언어 선택, 문의/피드백, 약관/개인정보 처리방침
 ```
 
 ## 5. CRUD 우선 화면 설계

@@ -38,13 +38,11 @@
 | TanStack Query | `apps/web` | 서버 catalog 조회와 로컬 개인 기록의 loading/error 상태, cache invalidation을 관리한다. |
 | @ramen-dojang/api-client | `apps/web` | OpenAPI에서 생성한 서버 catalog client를 앱 타입으로 감싼 공용 client다. |
 | @apps-in-toss/web-framework | `apps/web` | 기존 Vite 앱을 앱인토스 Granite dev/build/packaging 흐름에 태우기 위해 사용한다. |
-| @toss/tds-mobile | `apps/web` | 앱인토스 비게임 심사와 토스 UX 일관성을 위해 Button, ListRow, TextField 같은 TDS 컴포넌트를 사용한다. |
-| @toss/tds-mobile-ait | `apps/web` | 앱인토스 환경에서 TDS가 올바르게 동작하도록 `TDSMobileAITProvider`를 제공한다. |
-| @emotion/react | `apps/web` | TDS Mobile의 peer dependency다. |
+| Local UI components | `apps/web/src/components/ui.tsx` | 일반 웹과 앱인토스 양쪽에서 동작하도록 Button, TextField, TextArea, Badge를 native HTML 기반으로 제공한다. |
 | @sentry/react-native | `apps/web`, future | 앱인토스 WebView 안의 JavaScript 오류를 Sentry로 추적할 때 사용한다. 앱인토스에서는 `enableNative: false`로 설정한다. |
 | @granite-js/plugin-sentry | `apps/web`, future | 앱인토스 배포 후 Sentry sourcemap upload 흐름을 붙일 때 사용한다. |
 | Toss Mini App SDK | `apps/web`, future | 토스 미니앱 등록과 토스 앱 안의 runtime 연동에 사용한다. 공식 문서 확인 후 적용한다. |
-| Toss Design System | `apps/web`, future | 토스 미니앱 UI를 토스 사용자 경험에 맞추고, 자체 디자인 공수를 줄인다. 공식 문서 확인 후 적용한다. |
+| Apps in Toss UI/UX guide | `apps/web`, docs | TDS 패키지 사용 여부와 별개로 비게임 내비게이션 바, 플로팅 탭바, UX writing, dark pattern 기준을 맞춘다. |
 
 선택 이유:
 
@@ -55,9 +53,17 @@
 - 서버 상태를 화면 local state와 분리하는 편이 낫기 때문에 TanStack Query를 둔다.
 - 프론트가 서버 DTO를 손으로 맞추지 않도록 generated API client를 사용한다.
 - Granite는 Vite 대체가 아니라 앱인토스용 wrapper다. 기존 `vite dev`, `vite build`를 `granite.config.ts`에서 호출한다.
-- TDS 2.5.0은 React 18까지 peer dependency로 선언되어 있어, React 19에서 실제 빌드와 런타임을 확인하며 적용한다.
+- 일반 웹에서도 같은 화면을 배포해야 하므로 `@toss/tds-mobile` 런타임 의존성은 제거한다. 일반 브라우저에서 앱인토스 전용 TDS runtime guard가 흰 화면을 만들 수 있기 때문이다.
+- 앱인토스 심사는 TDS package 자체보다 비게임 출시 가이드와 UI/UX 가이드 준수가 중요하다. 탭바가 필요하면 TDS 미사용 시에도 토스가 제공하는 플로팅 형태를 따라야 한다.
 - Sentry는 첫 샌드박스/콘솔 업로드 후 외부 테스트를 시작할 때 초기화한다. 지금은 의존성만 명시하고 DSN, source map upload, token 설정은 보류한다.
-- 토스 미니앱으로 등록할 수 있다면 TDS 컴포넌트를 우선 사용하고, 웹사이트에서도 무리 없이 재사용 가능한 화면 조립과 도메인 표현만 직접 만든다.
+- 버튼/입력/배지는 local component로 얇게 유지하고, 색/여백/탭바/문구는 앱인토스 UI/UX 가이드에 맞춘다.
+
+앱인토스 UI/UX 레퍼런스:
+
+- [비게임 출시 가이드](https://developers-apps-in-toss.toss.im/checklist/app-nongame.html)
+- [UI/UX 가이드](https://developers-apps-in-toss.toss.im/design/consumer-ux-guide.html)
+- [Tabbar](https://developers-apps-in-toss.toss.im/design/components/tabbar.html)
+- [기존 웹 프로젝트에 SDK 연동하기](https://developers-apps-in-toss.toss.im/tutorials/webview.html)
 
 ## Mobile, Deferred
 
@@ -176,8 +182,7 @@
 
 아직 확정하지 않은 것:
 
-- 토스 미니앱 등록 요건과 심사 기준
-- Toss Mini App SDK/TDS 적용 방식
+- 앱인토스 샌드박스에서 비게임 내비게이션 바, 플로팅 탭바, 뒤로가기 동작이 심사 기준과 실제로 맞는지 최종 확인
 - 일반 웹사이트를 어느 정도 공개 운영할지
 - 사용자 식별 방식: 샌드박스 확인은 로컬 저장, 서버 개인 기록 저장은 `getAnonymousKey`, 토스 로그인은 개인정보/결제 상태 조회가 필요할 때 재검토
 - API/DB production hosting

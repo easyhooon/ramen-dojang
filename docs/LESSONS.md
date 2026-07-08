@@ -598,3 +598,9 @@ Vercel preview deployment는 production 도메인에 올리기 전, 커밋이나
 실제 서비스 CORS origin은 `https://<appName>.apps.tossmini.com`, QR 테스트 origin은 `https://<appName>.private-apps.tossmini.com` 형태를 허용해야 한다. 따라서 앱인토스 안에서만 쓰는 프론트라면 별도 브랜드 도메인 구매는 보류해도 된다.
 
 Vercel 연동은 그래도 버릴 필요는 없다. 공개 웹사이트를 같이 운영하거나, 브라우저/모바일 QA용 preview URL을 만들거나, 큰 정적 리소스를 웹/CDN 쪽으로 분리할 때 쓸 수 있다. 이 프로젝트에서는 앱인토스는 `.ait`, 일반 웹은 Vercel, API/DB는 Render/Railway/AWS 같은 서버 배포 후보로 나눈다.
+
+### 앱인토스 TDS 패키지는 필수가 아니라 선택지다
+
+`@toss/tds-mobile`은 앱인토스 WebView용 TDS 컴포넌트를 쉽게 쓰게 해주는 패키지지만, 일반 브라우저에서는 앱인토스 환경이 아니라는 runtime guard 때문에 흰 화면을 만들 수 있다. 일반 웹사이트와 앱인토스를 같은 번들로 배포하려면 TDS package 의존성보다 native HTML 기반 local component가 더 단순하다.
+
+공식 가이드 기준으로 꼭 지켜야 하는 것은 TDS package 사용 여부가 아니라 비게임 출시 기준과 UI/UX 기준이다. 특히 탭바는 필수는 아니지만, 사용할 경우 TDS 미사용 시에도 토스에서 제공하는 플로팅 형태를 따라야 한다. 앱인토스 안에서는 자체 topbar가 공식 내비게이션 바와 중복되지 않게 하고, 일반 웹에서는 같은 화면을 Vercel에서 볼 수 있게 유지한다.

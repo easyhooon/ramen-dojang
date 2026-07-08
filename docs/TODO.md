@@ -16,12 +16,15 @@
 - [x] 토스 미니앱 등록 요건과 공식 개발 문서 확인
 - [x] Toss Mini App SDK 적용 방식 확인
 - [x] Toss Design System 사용 가능 범위와 설치 방식 확인
+- [x] 일반 웹 배포를 위해 `@toss/tds-mobile` 런타임 의존성 제거 결정 및 local UI component로 대체
+- [x] 앱인토스 Tabbar 가이드 확인: 탭바는 필수가 아니지만 사용할 경우 TDS 미사용 시에도 토스 플로팅 형태를 따라야 함
 - [ ] 앱인토스 인앱 광고 적용 시 콘솔 광고 그룹 ID 발급, 배너/전면형/리워드 중 MVP에 맞는 형식, 광고 수익 수령을 위한 사업자/정산 정보 등록 필요사항 확인
 - [x] MVP 사용자 식별은 앱인토스 `getAnonymousKey`로 가능한지 확인
 - [ ] 토스 로그인 테스트 앱 개발 가능 범위와 운영 배포 전 사업자 인증, 앱인토스 서버 API용 mTLS 인증서/방화벽/secret 관리 필요사항 확인
 - [ ] Sentry 프로젝트/DSN/API key 발급 후 앱인토스 WebView JS 오류 추적 설정
 - [ ] 운영 전 최소 모니터링 기준 결정: 현재는 별도 모니터링 툴 없이 터미널 로그, `/health`, Sentry 예정만 사용
 - [ ] 앱인토스 미니앱 정식 배포 전 보안 체크 절차 확인: OMC처럼 별도 보안 점검/체크리스트/제출 항목이 있는지 공식 문서와 콘솔에서 확인
+- [ ] 앱인토스 미니앱 정식 제출 전 UI/UX 체크: 비게임 내비게이션 바, 중복 뒤로가기 없음, 플로팅 탭바, 2초 이내 반응, CTA 예측 가능성, 진입 즉시 바텀시트/광고 없음, 해요체 문구 확인
 - [x] 기존 Expo/~~Nitro~~ WebView wrapper는 스토어 출시용 보류 자산으로 유지
 - [ ] PR 전환 전 Gemini review bot 공식 설치 방식과 GitHub secret 요구사항 확인
 - [ ] 운영 배포 전 CORS 허용 origin을 Vercel 도메인, `https://<appName>.apps.tossmini.com`, `https://<appName>.private-apps.tossmini.com`으로 제한
@@ -145,15 +148,19 @@
 - [ ] 앱인토스 샌드박스에서 서버 catalog 조회와 로컬 방문 기록/위시리스트 수동 테스트
 - [ ] 홈 다음 후보의 위치 기반 추천을 localhost/HTTPS/앱인토스 샌드박스에서 수동 테스트
 - [x] 설정 화면에 이용약관, 개인정보 처리방침, 문의/피드백 링크 추가
+- [ ] 다국어 지원 설계: 기본은 시스템 언어를 따르고, 설정에서 한국어/영어/일본어 중 하나로 고정할 수 있게 하기
+- [ ] 다국어 문구 리소스 분리: MVP 문구 범위 확정 후 `Intl`/간단 dictionary 우선 검토, 복잡해질 때 i18n 라이브러리 도입 판단
 - [x] 실제 피드백 수집 URL 결정: MVP는 Google Form `https://forms.gle/Mz3Ght8TUQuwdPYi9`을 사용하고, 관리자페이지/DB 저장은 제보량이 생긴 뒤 검토
 - [ ] 앱인토스 제출 전 개인정보 처리방침의 운영자/CPO/문의처와 실제 수집 항목을 최종 확정하고 법률 검토
 - [x] TDS Provider 연결 및 핵심 액션 버튼 1차 치환
 - [x] TDS 컴포넌트 기준으로 기존 UI 치환 범위 산정
 - [x] TDS TextField/TextArea/Badge 1차 치환
 - [x] TDS primary color와 앱 CSS를 Toss neutral/shoyu amber 톤으로 정리
+- [x] 일반 웹 배포 호환을 위해 TDS Provider와 TDS 컴포넌트를 제거하고 local UI component로 대체
+- [x] 하단 탭바를 앱인토스 가이드의 플로팅 형태에 맞게 조정
 - [x] Stitch Shoyu Amber 시안 기준으로 홈/목록/폼 공통 화면 톤 1차 반영
 - [x] Stitch Shoyu Amber 시안 기준으로 주요 화면 레이아웃 반영
-- [ ] TDS ListRow/Dialog/Selector 적용 범위 산정
+- [ ] 앱인토스 사용자 안내/확인 flow가 필요한 화면에서 공식 가이드에 맞는 dialog/bottom sheet 적용 범위 산정
 - [x] `pnpm --filter web build:ait`로 앱인토스 Granite 산출물 생성 확인
 - [ ] Sentry 초기화 시 `enableNative: false` 적용 및 sourcemap upload 절차 확인
 - [ ] 주요 화면 query/mutation behavior test 전략 결정
