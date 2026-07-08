@@ -100,7 +100,7 @@
 - [ ] 미수집 전국 query 재개 작업: 아직 안 태운 국내 지역/상권 후보 sync
 - [ ] 수동 sync가 안정된 뒤 cron/scheduled job 도입 판단: 주기적 후보 수집은 `shop_candidates`까지만, 검수 없는 `shops` 자동 변경은 금지
 - [x] 앱 출시 전 초기 라멘집 seed 데이터 투입 방식 결정: Naver 후보 sync + admin 승격으로 214건 seed JSON 보관
-- [ ] `server/api/src/main/resources/seed/shops.seed.json` import script 또는 admin endpoint 작성
+- [x] `server/api/src/main/resources/seed/shops.seed.json` import script 작성
 - [x] Spring Boot Kotlin 프로젝트 생성
 - [x] Gradle wrapper 포함 프로젝트 구성
 - [x] Spring Web/JDBC/Flyway/PostgreSQL/Validation 의존성 구성

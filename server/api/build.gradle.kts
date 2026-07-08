@@ -43,3 +43,10 @@ kotlin {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.register<JavaExec>("importSeedShops") {
+	group = "application"
+	description = "Import seed ramen shops into the configured PostgreSQL database."
+	classpath = sourceSets["main"].runtimeClasspath
+	mainClass.set("com.ramendojang.seed.SeedShopImporterKt")
+}

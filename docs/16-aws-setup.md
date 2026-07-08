@@ -39,7 +39,7 @@ API 서버 환경변수:
 
 - 현재 `WebConfig.kt`의 CORS 허용 origin은 로컬 개발용이다. 운영 배포 전 Vercel, 앱인토스 실제 origin, 앱인토스 QR 테스트 origin만 허용하도록 바꿔야 한다.
 - `V1__create_initial_schema.sql`은 `CREATE EXTENSION IF NOT EXISTS postgis;`를 실행한다. RDS에서 Flyway 사용자가 extension 생성 권한을 가지지 못하면 `rds_superuser` 권한 사용자로 PostGIS를 한 번 수동 생성해야 한다.
-- seed JSON은 repo에 있지만, AWS DB에 넣는 import script 또는 admin endpoint는 아직 필요하다.
+- seed JSON은 repo에 있고, `./gradlew importSeedShops`로 로컬 DB나 AWS DB에 1회 적재할 수 있다.
 
 ## 0. 계정 안전 설정
 
@@ -172,13 +172,37 @@ VITE_API_BASE_URL=https://<elastic-beanstalk-env-domain>
 
 현재 seed JSON은 GitHub에 올려도 되는 검수 전 초기 후보 데이터다. ID는 제외되어 있어 다른 DB에 넣을 때 새 UUID를 만들 수 있다.
 
-AWS DB에 넣는 방식은 아직 결정해야 한다.
+로컬 DB에 적재:
 
-1. 가장 빠른 방식: seed JSON import script 작성 후 로컬에서 RDS에 1회 적재
-2. 운영 친화 방식: 관리자용 import endpoint를 만들고 인증/권한을 붙인다
-3. 가장 게으른 MVP 방식: 서버 배포 전까지 seed JSON을 프론트에 포함해 검색만 먼저 검증한다
+```bash
+cd server/api
+./gradlew importSeedShops
+```
 
-현재 목표는 API 서버 catalog를 쓰는 방향이다. RDS 상시 비용을 막기 위해 AWS 배포 전까지는 로컬 API 서버와 로컬 DB로 개발하고, RDS를 만들 때는 `shops.seed.json` import script를 먼저 만든다.
+AWS RDS에 적재:
+
+```bash
+cd server/api
+DATABASE_URL=jdbc:postgresql://<rds-endpoint>:5432/ramen_dojang \
+DATABASE_USERNAME=<db-user> \
+DATABASE_PASSWORD=<db-password> \
+./gradlew importSeedShops
+```
+
+다른 seed 파일을 임시로 넣을 때:
+
+```bash
+cd server/api
+SEED_SHOPS_FILE=/path/to/shops.seed.json ./gradlew importSeedShops
+```
+
+importer는 `name + address`로 기존 라멘집을 찾는다. 기존 row가 있으면 좌표, 연락처, place URL, 썸네일을 갱신하고, 없으면 새 UUID로 insert한다. 태그는 `tags.name` unique 제약을 기준으로 upsert하고 `shop_tags`를 붙인다.
+
+주의:
+
+- Flyway schema가 먼저 적용되어 있어야 한다.
+- 운영 DB에 넣기 전에는 seed가 검수 전 초기 후보 데이터라는 점을 유지한다.
+- RDS 상시 비용을 막기 위해 AWS 배포 전까지는 로컬 API 서버와 로컬 DB로 개발한다.
 
 ## 5. 배포 후 smoke test
 
