@@ -1,10 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Link, Outlet, RouterProvider, createRootRoute, createRoute, createRouter, useRouterState } from "@tanstack/react-router";
-import { TDSMobileProvider } from "@toss/tds-mobile";
-import { TDSMobileAITProvider } from "@toss/tds-mobile-ait";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import type { ComponentProps } from "react";
 import { Icon } from "./components/Icon";
 import { queryClient } from "./lib/queryClient";
 import { AboutPage } from "./routes/about";
@@ -20,9 +17,10 @@ import "./styles.css";
 function RootLayout() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const isNewVisitPage = pathname === "/visits/new";
+  const isMiniAppWebView = "ReactNativeWebView" in globalThis;
 
   return (
-    <div className={["app-shell", isNewVisitPage ? "app-shell--focused" : ""].filter(Boolean).join(" ")}>
+    <div className={["app-shell", isNewVisitPage ? "app-shell--focused" : "", isMiniAppWebView ? "app-shell--miniapp" : ""].filter(Boolean).join(" ")}>
       <header className="topbar">
         <Link className="brand" to="/">라멘 도장깨기</Link>
         <nav>
@@ -70,31 +68,8 @@ declare module "@tanstack/react-router" {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <TDSProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </TDSProvider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </React.StrictMode>,
 );
-
-function TDSProvider({ children }: { children: React.ReactNode }) {
-  const brandPrimaryColor = "#b45309";
-
-  if ("ReactNativeWebView" in globalThis) {
-    return <TDSMobileAITProvider brandPrimaryColor={brandPrimaryColor}>{children}</TDSMobileAITProvider>;
-  }
-
-  return (
-    <TDSMobileProvider userAgent={webUserAgent} token={{ color: { primary: brandPrimaryColor } }}>
-      {children}
-    </TDSMobileProvider>
-  );
-}
-
-const webUserAgent: ComponentProps<typeof TDSMobileProvider>["userAgent"] = {
-  fontA11y: undefined,
-  fontScale: undefined,
-  isAndroid: false,
-  isIOS: false,
-};

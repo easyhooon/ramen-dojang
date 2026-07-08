@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { Button } from "@toss/tds-mobile";
+import { Button } from "../components/ui";
 import { VisitForm } from "../features/visits/VisitForm";
 import { api } from "../lib/api";
 

@@ -1,7 +1,7 @@
 import type { VisitResponse } from "@ramen-dojang/api-client";
 import { Link } from "@tanstack/react-router";
-import { Badge } from "@toss/tds-mobile";
 import { Icon } from "../../components/Icon";
+import { Badge } from "../../components/ui";
 
 export function VisitCard({ visit }: { visit: VisitResponse }) {
   return (
@@ -9,7 +9,7 @@ export function VisitCard({ visit }: { visit: VisitResponse }) {
       <div>
         <div className="item-title-row">
           <h3>{visit.menuName}</h3>
-          <Badge size="small" variant="weak" color="green">{visit.overallRating}/5</Badge>
+          <Badge color="green">{visit.overallRating}/5</Badge>
         </div>
         <p className="muted">{visit.shopName} · {visit.visitedAt}</p>
         {visit.memo ? <p>{visit.memo}</p> : null}

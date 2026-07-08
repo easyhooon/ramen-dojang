@@ -1,7 +1,6 @@
 import type { CreateVisitRequest, ShopResponse, VisitResponse } from "@ramen-dojang/api-client";
-import { Button, TextArea, TextField } from "@toss/tds-mobile";
 import { useState } from "react";
-import { FormField } from "../../components/FormField";
+import { Button, TextArea, TextField } from "../../components/ui";
 
 export function VisitForm({
   shops,
@@ -43,10 +42,8 @@ export function VisitForm({
           {shops.map((shop) => <option key={shop.id} value={shop.id}>{shop.name}</option>)}
         </select>
       </label>
-      <TextField variant="box" label="방문일" type="date" value={value.visitedAt} onChange={(event) => setValue({ ...value, visitedAt: event.target.value })} required />
-      <FormField className="full" label="메뉴">
-        <TextField variant="box" label="메뉴" value={value.menuName} onChange={(event) => setValue({ ...value, menuName: event.target.value })} required />
-      </FormField>
+      <TextField label="방문일" type="date" value={value.visitedAt} onChange={(event) => setValue({ ...value, visitedAt: event.target.value })} required />
+      <TextField className="full" label="메뉴" value={value.menuName} onChange={(event) => setValue({ ...value, menuName: event.target.value })} required />
       {(["brothRating", "noodleRating", "toppingRating", "overallRating"] as const).map((key) => (
         <StarRating key={key} label={ratingLabel[key]} value={value[key]} onChange={(rating) => setValue({ ...value, [key]: rating })} />
       ))}
@@ -60,7 +57,7 @@ export function VisitForm({
           <button className={value.revisitIntention ? "active" : ""} type="button" onClick={() => setValue({ ...value, revisitIntention: true })}>있음</button>
         </div>
       </div>
-      <TextArea className="full" variant="box" label="메모" value={value.memo ?? ""} onChange={(event) => setValue({ ...value, memo: event.target.value })} minHeight={120} />
+      <TextArea className="full" label="메모" value={value.memo ?? ""} onChange={(event) => setValue({ ...value, memo: event.target.value })} minHeight={120} />
       <Button type="submit" display="full" disabled={!value.shopId}>{submitLabel}</Button>
     </form>
   );

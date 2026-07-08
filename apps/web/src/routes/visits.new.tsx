@@ -1,8 +1,8 @@
 import type { CreateVisitRequest } from "@ramen-dojang/api-client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Button, TextField } from "@toss/tds-mobile";
 import { useEffect, useState } from "react";
+import { Button, TextField } from "../components/ui";
 import { VisitForm } from "../features/visits/VisitForm";
 import { api } from "../lib/api";
 
@@ -76,7 +76,6 @@ export function NewVisitPage() {
             <p className="form-section-title">라멘집 선택</p>
             <div className="stack">
               <TextField
-                variant="box"
                 label="라멘집 검색"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
